@@ -133,12 +133,13 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
 
             {/* 心情標籤選擇 (定案：固定橫排 5×2，共2行，每行5個，左右完全對齊) */}
             <div className="w-full mb-2 sm:mb-2.5">
-              <div className="flex justify-between items-center mb-1.5 px-0.5">
-                <label className="text-[12.5px] sm:text-sm font-semibold text-amber-200 tracking-wide drop-shadow-sm">
+              {/* 「點選...」放在「此刻...」的下一行，分層清晰，字體加大清晰更舒適 */}
+              <div className="flex flex-col items-center sm:items-start mb-2 px-0.5">
+                <label className="text-[13.5px] xs:text-[14px] sm:text-base font-bold text-amber-100 tracking-wide drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] whitespace-nowrap">
                   此刻內心最貼近的感受
                 </label>
-                <span className="text-[10.5px] sm:text-xs text-indigo-200 font-normal tracking-tight">
-                  ✦ 點選感受即可一鍵放手，無須打字
+                <span className="text-[11.5px] xs:text-[12px] sm:text-[13px] text-indigo-200 font-medium tracking-wide mt-0.5 whitespace-nowrap">
+                  ✦ 點選感受即可一鍵放手，無須打字 ✦
                 </span>
               </div>
 
@@ -152,13 +153,13 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
                       sound.playSparkle();
                       setMood(t);
                     }}
-                    className={`w-full py-1.5 sm:py-2 px-0.5 rounded-xl transition-all cursor-pointer flex items-center justify-center text-center ${
+                    className={`w-full py-2 sm:py-2.5 px-0.5 rounded-xl transition-all cursor-pointer flex items-center justify-center text-center ${
                       mood === t
-                        ? 'bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 text-white font-bold shadow-[0_0_12px_rgba(99,102,241,0.65)] border border-indigo-200 scale-[1.02] z-10'
-                        : 'bg-white/10 text-amber-50 hover:bg-white/15 hover:text-white border border-white/15 hover:border-white/30 font-medium'
+                        ? 'bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 text-white font-bold shadow-[0_0_14px_rgba(99,102,241,0.7)] border border-indigo-200 scale-[1.02] z-10'
+                        : 'bg-white/12 text-amber-50 hover:bg-white/20 hover:text-white border border-white/20 hover:border-white/35 font-medium shadow-sm'
                     }`}
                   >
-                    <span className="text-[11px] xs:text-[11.5px] sm:text-xs tracking-tighter xs:tracking-tight font-medium whitespace-nowrap drop-shadow-sm select-none">
+                    <span className="text-[11.5px] xs:text-[12px] sm:text-[13px] tracking-tight font-semibold whitespace-nowrap drop-shadow-sm select-none">
                       {t}
                     </span>
                   </button>
@@ -172,12 +173,12 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 rows={3}
-                placeholder="（選填）寫下任何卡住的情緒、疲憊念頭或委屈... 亦可直接點選上方感受，一鍵放手清理"
+                placeholder="（選填）寫下任何卡住的情緒、疲憊念頭或委屈... 亦可直接點選上方感受，一鍵交給宇宙放手"
                 style={{
                   scrollbarWidth: 'thin',
                   scrollbarColor: 'rgba(129, 140, 248, 0.7) rgba(15, 23, 42, 0.45)',
                 }}
-                className="w-full h-20 sm:h-24 rounded-2xl bg-black/45 border border-indigo-400/35 p-3 pr-4 text-amber-50 placeholder-amber-200/35 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/50 backdrop-blur-md text-xs sm:text-sm resize-none shadow-inner leading-relaxed overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-black/40 [&::-webkit-scrollbar-track]:rounded-r-2xl [&::-webkit-scrollbar-thumb]:bg-indigo-500/70 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb:hover]:bg-indigo-400"
+                className="w-full h-20 sm:h-24 rounded-2xl bg-black/45 border border-indigo-400/35 p-3 pr-4 text-amber-50 placeholder-amber-200/40 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/50 backdrop-blur-md text-xs sm:text-sm resize-none shadow-inner leading-relaxed overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-black/40 [&::-webkit-scrollbar-track]:rounded-r-2xl [&::-webkit-scrollbar-thumb]:bg-indigo-500/70 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb:hover]:bg-indigo-400"
               />
               <span className="absolute bottom-2 right-3 text-[10px] sm:text-[11px] text-amber-200/40 select-none pointer-events-none">
                 {inputText.length > 0 ? `${inputText.length} 字` : '已選定感受，可直接交託'}
@@ -195,18 +196,18 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
               <span>交給宇宙並放手</span>
             </motion.button>
 
-            {/* 夏威夷零極限清理之門入口 (同頁直接可見，無需滾動即可點擊) */}
-            <div className="w-full mt-2 sm:mt-2.5 text-center">
+            {/* 夏威夷零極限清理之門入口 (加大、加亮、高對比醒目呈現) */}
+            <div className="w-full mt-2.5 sm:mt-3 text-center">
               <button
                 type="button"
                 onClick={() => {
                   sound.playSparkle();
                   setIsCleansingOpen(true);
                 }}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-teal-500/15 via-cyan-500/20 to-teal-500/15 border border-teal-400/40 hover:border-teal-300 text-teal-200 hover:text-white text-[11px] sm:text-xs tracking-wider transition-all duration-300 shadow-[0_0_12px_rgba(20,184,166,0.2)] hover:shadow-[0_0_16px_rgba(20,184,166,0.4)] group cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-teal-500/25 via-cyan-500/30 to-teal-500/25 hover:from-teal-500/40 hover:via-cyan-500/45 hover:to-teal-500/40 border-2 border-teal-300/60 hover:border-teal-200 text-teal-100 hover:text-white text-xs sm:text-sm font-semibold tracking-wider transition-all duration-300 shadow-[0_0_20px_rgba(20,184,166,0.35)] hover:shadow-[0_0_28px_rgba(20,184,166,0.6)] hover:scale-[1.02] active:scale-[0.98] group cursor-pointer"
               >
-                <Sparkles className="w-3 h-3 text-teal-300 animate-pulse group-hover:rotate-12 transition-transform" />
-                <span>請點擊「清理之門」‧ 夏威夷零極限和解 ➔</span>
+                <Sparkles className="w-4 h-4 text-teal-300 animate-pulse group-hover:rotate-12 transition-transform" />
+                <span className="whitespace-nowrap">請點擊「清理之門」‧ 夏威夷零極限和解 ➔</span>
               </button>
             </div>
           </motion.div>
