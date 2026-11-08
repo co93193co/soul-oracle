@@ -178,7 +178,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
                   scrollbarWidth: 'thin',
                   scrollbarColor: 'rgba(129, 140, 248, 0.7) rgba(15, 23, 42, 0.45)',
                 }}
-                className="w-full h-20 sm:h-24 rounded-2xl bg-black/45 border border-indigo-400/35 p-3 pr-4 text-amber-50 placeholder-amber-200/40 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/50 backdrop-blur-md text-xs sm:text-sm resize-none shadow-inner leading-relaxed overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-black/40 [&::-webkit-scrollbar-track]:rounded-r-2xl [&::-webkit-scrollbar-thumb]:bg-indigo-500/70 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb:hover]:bg-indigo-400"
+                className="w-full h-24 sm:h-28 rounded-2xl bg-black/45 border border-indigo-400/35 p-3 pr-4 text-amber-50 placeholder-amber-200/40 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/50 backdrop-blur-md text-xs sm:text-sm resize-none shadow-inner leading-relaxed overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-black/40 [&::-webkit-scrollbar-track]:rounded-r-2xl [&::-webkit-scrollbar-thumb]:bg-indigo-500/70 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb:hover]:bg-indigo-400"
               />
               <span className="absolute bottom-2 right-3 text-[10px] sm:text-[11px] text-amber-200/40 select-none pointer-events-none">
                 {inputText.length > 0 ? `${inputText.length} 字` : '已選定感受，可直接交託'}
@@ -209,6 +209,40 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
                 <Sparkles className="w-4 h-4 text-teal-300 animate-pulse group-hover:rotate-12 transition-transform" />
                 <span className="whitespace-nowrap">請點擊「清理之門」‧ 夏威夷零極限和解 ➔</span>
               </button>
+            </div>
+
+            {/* 夏威夷零極限和解智慧 (善用頁面下方空間，引導心靈與四句真言心法) */}
+            <div className="w-full mt-3 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-[#0b1d28]/70 via-[#0a1526]/80 to-[#0d1124]/70 border border-teal-400/25 shadow-lg backdrop-blur-md text-left">
+              <div className="flex items-center gap-1.5 text-teal-300 font-semibold text-xs sm:text-[13px] mb-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+                <span>夏威夷零極限和解智慧（Hoʻoponopono）</span>
+              </div>
+              <p className="text-[11.5px] sm:text-xs text-teal-100/90 leading-relaxed font-light mb-2">
+                外在所感知的一切糾結與人事，皆是潛意識深處的「重播記憶」。
+                由內在為自己所體驗的一切負起 <span className="text-amber-300 font-semibold">100% 全然責任</span>，
+                在心中默念四句神聖真言，以無條件純粹之愛將一切重播記憶洗滌歸零：
+              </p>
+              <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mb-2 text-center">
+                <div className="py-1.5 px-1 rounded-xl bg-teal-500/15 border border-teal-400/30 text-teal-200">
+                  <div className="text-xs sm:text-[13px] font-bold text-white">對不起</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-teal-300/80 mt-0.5 font-light">承擔記憶</div>
+                </div>
+                <div className="py-1.5 px-1 rounded-xl bg-purple-500/15 border border-purple-400/30 text-purple-200">
+                  <div className="text-xs sm:text-[13px] font-bold text-white">請原諒我</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-purple-300/80 mt-0.5 font-light">祈求寬恕</div>
+                </div>
+                <div className="py-1.5 px-1 rounded-xl bg-amber-500/15 border border-amber-400/30 text-amber-200">
+                  <div className="text-xs sm:text-[13px] font-bold text-white">謝謝你</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-amber-300/80 mt-0.5 font-light">感恩照見</div>
+                </div>
+                <div className="py-1.5 px-1 rounded-xl bg-pink-500/15 border border-pink-400/30 text-pink-200">
+                  <div className="text-xs sm:text-[13px] font-bold text-white">我愛你</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-pink-300/80 mt-0.5 font-light">大愛歸零</div>
+                </div>
+              </div>
+              <p className="text-[10.5px] sm:text-[11px] text-teal-300/80 font-light text-center">
+                ✦ 點擊上方按鈕進入「清理之門」，隨神聖音頻與放大真言深度和解 ✦
+              </p>
             </div>
           </motion.div>
         )}

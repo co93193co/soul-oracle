@@ -332,68 +332,18 @@ export default function HooponoponoCleansingModal({
           </div>
         </div>
 
-        {/* ================= 階段一：介紹與時長設定 (intro) ================= */}
+        {/* ================= 階段一：介紹與時長設定 (intro - 精簡單頁，免滾動) ================= */}
         {step === 'intro' && (
-          <div className="flex flex-col gap-5">
-            {/* 核心介紹卡片 */}
-            <div className="p-4 rounded-2xl bg-teal-950/30 border border-teal-400/25 text-xs sm:text-sm leading-relaxed text-teal-100/90 font-light shadow-inner">
-              <div className="flex items-center gap-1.5 text-teal-300 font-medium text-xs mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>夏威夷古老和解法（荷歐波諾波諾 Hoʻoponopono）</span>
-              </div>
-              <p className="mb-2 text-teal-50/95">
-                你眼中的世界，只是潛意識裡「過去重播的記憶」。無論是某個傷害你的人、糾結的心事、或體內的疲累，只要由內在為一切負起
-                <span className="text-amber-300 font-normal"> 100% 全然責任</span>，就能透過四句真言，將沉重記憶徹底歸零。
-              </p>
-
-              {/* 摺疊展開：深入介紹 */}
-              <button
-                type="button"
-                onClick={() => setShowMethodDetails(!showMethodDetails)}
-                className="inline-flex items-center gap-1 text-[11.5px] text-teal-300 hover:text-teal-200 font-medium underline underline-offset-4 cursor-pointer mt-1"
-              >
-                <span>{showMethodDetails ? '收起四句真言心法' : '點擊查看四句真言神聖心法'}</span>
-                {showMethodDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-              </button>
-
-              <AnimatePresence>
-                {showMethodDetails && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="mt-3 pt-3 border-t border-teal-500/20 flex flex-col gap-2 text-xs text-teal-200/90"
-                  >
-                    <div className="flex items-start gap-2">
-                      <span className="text-cyan-300 font-medium shrink-0">1. 對不起：</span>
-                      <span>承認自己內在重播著這份傷痛記憶，不再責怪他人，坦然承擔。</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-purple-300 font-medium shrink-0">2. 請原諒我：</span>
-                      <span>祈求神性原諒自己的執念與掌控，讓內心重新柔軟、接納寬恕。</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-amber-300 font-medium shrink-0">3. 謝謝你：</span>
-                      <span>感謝這段經歷作為鏡子照見內在陰影，感謝每一次得以清空的恩典。</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-pink-300 font-medium shrink-0">4. 我愛你：</span>
-                      <span>以無條件純粹的神聖之愛，融化所有沉重記憶，重回『零極限』純粹和平。</span>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
+          <div className="flex flex-col gap-3.5 sm:gap-4">
             {/* 和解對象設定（選填） */}
-            <div className="flex flex-col gap-2">
-              <label className="text-xs text-teal-200/90 flex items-center justify-between">
-                <span>此刻你心中最想與誰、或哪件事和解清理？（選填）</span>
-                <span className="text-[10px] text-teal-400/70 font-light">集中意念效果更佳</span>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs text-teal-200 font-medium flex items-center justify-between">
+                <span>此刻想與誰、或哪件事和解清理？（選填）</span>
+                <span className="text-[10.5px] text-teal-400/80 font-light">集中意念效果更佳</span>
               </label>
 
               {/* 快捷點選 */}
-              <div className="flex flex-wrap gap-1.5 mb-1">
+              <div className="flex flex-wrap gap-1.5">
                 {QUICK_TARGETS.map((t) => (
                   <button
                     key={t}
@@ -405,7 +355,7 @@ export default function HooponoponoCleansingModal({
                     className={`text-[11px] py-1 px-2.5 rounded-full border transition-all cursor-pointer ${
                       cleansingTarget === t
                         ? 'bg-teal-500/30 border-teal-300 text-white font-medium shadow-[0_0_10px_rgba(45,212,191,0.4)]'
-                        : 'bg-white/5 border-white/10 text-teal-200/70 hover:bg-white/10 hover:text-teal-100'
+                        : 'bg-white/5 border-white/10 text-teal-200/80 hover:bg-white/10 hover:text-white'
                     }`}
                   >
                     {t}
@@ -420,41 +370,40 @@ export default function HooponoponoCleansingModal({
                 onChange={(e) => setCleansingTarget(e.target.value)}
                 placeholder="例如：內在苛責的自己、父親、前任、工作專案的無力感..."
                 maxLength={40}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-teal-500/30 text-amber-50 placeholder-teal-300/35 text-xs sm:text-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400/50"
+                className="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-teal-500/30 text-amber-50 placeholder-teal-300/35 text-xs sm:text-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400/50"
               />
             </div>
 
             {/* 清理時長與扣點方案選擇 */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs text-teal-200/90 font-medium flex items-center gap-1.5">
+                <label className="text-xs text-teal-200 font-medium flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-teal-300" />
                   <span>選擇和解清理時長：</span>
                 </label>
-                <span className="text-[11px] text-amber-300 font-mono">
-                  1分免費 ‧ 3分扣1點 ‧ 5分扣3點 ‧ 10分扣5點
+                <span className="text-[10.5px] text-amber-300 font-mono">
+                  1分免費 ‧ 3分1點 ‧ 5分3點 ‧ 10分5點
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-2 gap-2">
                 {DURATION_OPTIONS.map((opt) => {
                   const isSelected = selectedDuration.minutes === opt.minutes;
-                  const canAfford = currentPoints >= opt.cost;
                   return (
                     <button
                       key={opt.minutes}
                       type="button"
                       onClick={() => handleSelectOption(opt)}
-                      className={`p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between cursor-pointer ${
+                      className={`p-2.5 sm:p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between cursor-pointer ${
                         isSelected
-                          ? 'bg-gradient-to-br from-teal-500/25 via-cyan-500/20 to-teal-900/40 border-teal-300 shadow-[0_0_20px_rgba(20,184,166,0.35)] scale-[1.02]'
+                          ? 'bg-gradient-to-br from-teal-500/25 via-cyan-500/20 to-teal-900/40 border-teal-300 shadow-[0_0_15px_rgba(20,184,166,0.35)] scale-[1.02]'
                           : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-teal-500/30 text-teal-100/80'
                       }`}
                     >
-                      <div className="flex items-center justify-between w-full mb-1">
-                        <span className="text-sm font-medium text-white">{opt.label}</span>
+                      <div className="flex items-center justify-between w-full mb-0.5">
+                        <span className="text-xs sm:text-sm font-semibold text-white">{opt.label}</span>
                         <span
-                          className={`text-[10.5px] px-2 py-0.5 rounded-full font-mono font-medium ${
+                          className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-medium ${
                             opt.cost === 0
                               ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30'
                               : isSelected
@@ -465,7 +414,7 @@ export default function HooponoponoCleansingModal({
                           {opt.cost === 0 ? '免費 0 點' : `扣 ${opt.cost} 點`}
                         </span>
                       </div>
-                      <p className="text-[10px] text-teal-200/70 font-light leading-snug line-clamp-1">
+                      <p className="text-[9.5px] sm:text-[10px] text-teal-200/70 font-light leading-tight line-clamp-1">
                         {opt.tag}
                       </p>
                     </button>
@@ -479,12 +428,12 @@ export default function HooponoponoCleansingModal({
               <motion.div
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-3 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs flex items-center gap-2"
+                className="p-2.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs flex items-center gap-2"
               >
                 <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>
                   星心點數不足（目前 {currentPoints} 點，需 {selectedDuration.cost} 點）。
-                  您可以選擇 1 分鐘免費體驗，或前往「02 靜心之門」透過呼吸累積點數。
+                  您可以選擇 1 分鐘免費體驗，或前往「02 靜心之門」呼吸集點。
                 </span>
               </motion.div>
             )}
@@ -495,7 +444,7 @@ export default function HooponoponoCleansingModal({
               whileTap={{ scale: 0.98 }}
               type="button"
               onClick={handleStartCleansing}
-              className="w-full py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 font-medium tracking-wider text-sm md:text-base text-white bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-600 hover:from-teal-400 hover:via-cyan-400 hover:to-teal-500 shadow-[0_0_25px_rgba(20,184,166,0.45)] border border-teal-300/40 cursor-pointer transition-all mt-2"
+              className="w-full py-3 sm:py-3.5 rounded-xl flex items-center justify-center gap-2 font-medium tracking-wider text-xs sm:text-sm text-white bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-600 hover:from-teal-400 hover:via-cyan-400 hover:to-teal-500 shadow-[0_0_20px_rgba(20,184,166,0.45)] border border-teal-300/40 cursor-pointer transition-all mt-1"
             >
               <Sparkles className="w-4 h-4 text-white animate-pulse" />
               <span>
