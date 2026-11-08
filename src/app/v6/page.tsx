@@ -213,7 +213,7 @@ export default function V6Page() {
   return (
     <div className="min-h-screen flex flex-col justify-between selection:bg-amber-400/20 bg-[#060814] text-amber-50">
       {/* ================= 第一行：靈魂之境改為 (憶起) ＋ 其餘鏈接不變 ================= */}
-      <header className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between z-20">
+      <header className="w-full max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex items-center justify-between z-20">
         {/* 左側：改為「憶起」(可點擊返回V5) */}
         <Link
           href="/v5"
@@ -296,7 +296,7 @@ export default function V6Page() {
       </header>
 
       {/* ================= 主體內容區 ================= */}
-      <main className="flex-1 flex flex-col items-center justify-center px-3.5 sm:px-6 py-2 sm:py-4 z-10 w-full max-w-4xl mx-auto">
+      <main className="flex-1 flex flex-col items-center justify-center px-3 sm:px-6 py-1 sm:py-4 z-10 w-full max-w-4xl mx-auto">
         <AnimatePresence mode="wait">
           {/* ================= 狀態 A：首頁 ================= */}
           {activeSanctuary === null && (
@@ -305,10 +305,10 @@ export default function V6Page() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96 }}
-              className="w-full flex flex-col items-center text-center space-y-3 sm:space-y-4"
+              className="w-full flex flex-col items-center text-center space-y-1.5 sm:space-y-4"
             >
               {/* 中央微笑光球 (安詳呼吸) */}
-              <div className="my-1 sm:my-2">
+              <div className="my-0.5 sm:my-2">
                 <SmilingCosmicOrb
                   size="md"
                   themeColor={currentGate.themeColor}
@@ -320,7 +320,7 @@ export default function V6Page() {
               <div>
                 <button
                   onClick={handleQuickDraw}
-                  className="flex items-center gap-2 py-2 px-5 rounded-full bg-gradient-to-r from-white/10 to-amber-400/10 hover:from-white/20 hover:to-amber-400/20 border border-amber-300/35 text-xs text-amber-200 tracking-widest transition-all shadow-md group active:scale-95"
+                  className="flex items-center gap-1.5 sm:gap-2 py-1 sm:py-2 px-4 sm:px-5 rounded-full bg-gradient-to-r from-white/10 to-amber-400/10 hover:from-white/20 hover:to-amber-400/20 border border-amber-300/35 text-[11px] sm:text-xs text-amber-200 tracking-wider sm:tracking-widest transition-all shadow-md group active:scale-95"
                 >
                   <Compass className="w-3.5 h-3.5 text-amber-300 group-hover:rotate-45 transition-transform" />
                   <span>✦ 快速抽取今日靈魂指引卡 ✦</span>
@@ -328,30 +328,30 @@ export default function V6Page() {
               </div>
 
               {/* ================= 四大門切換連結欄 (釋放之門、提問之門、接收之門、顯化之門) ================= */}
-              <div className="w-full max-w-md p-1.5 rounded-2xl bg-black/60 border border-white/15 grid grid-cols-4 gap-1 sm:gap-1.5 shadow-inner">
+              <div className="w-full max-w-md p-1 sm:p-1.5 rounded-2xl bg-black/60 border border-white/15 grid grid-cols-4 gap-1 sm:gap-1.5 shadow-inner">
                 {GATES_CONFIG.map((gate, idx) => {
                   const isSelected = selectedGateIndex === idx;
                   return (
                     <button
                       key={gate.id}
                       onClick={() => handleSelectGate(idx)}
-                      className={`py-2 px-1 rounded-xl transition-all flex flex-col items-center justify-center gap-0.5 text-center ${
+                      className={`py-1 sm:py-2 px-0.5 sm:px-1 rounded-xl transition-all flex flex-col items-center justify-center gap-0.5 text-center ${
                         isSelected
                           ? `${gate.bgGradient} ${gate.borderClass} border shadow-lg ring-1 ring-white/25 scale-[1.02]`
                           : 'text-white/60 hover:text-white hover:bg-white/5'
                       }`}
                     >
-                      <span className="text-base">{gate.iconSymbol}</span>
-                      <span className="text-[11px] font-medium leading-tight mt-0.5">
+                      <span className="text-sm sm:text-base">{gate.iconSymbol}</span>
+                      <span className="text-[10px] sm:text-[11px] font-medium leading-tight mt-0.5">
                         {gate.tabLabel}
                       </span>
-                      <span className="text-[9px] font-mono opacity-50">0{idx + 1}</span>
+                      <span className="text-[8px] sm:text-[9px] font-mono opacity-50">0{idx + 1}</span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* ================= 下方方框 (連動與左右滑動切換，只寫核心句子與推開進入) ================= */}
+              {/* ================= 下方方框 (連動與左右滑動切換，極簡兩行緊湊設計) ================= */}
               <div className="w-full max-w-md relative select-none">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -371,26 +371,26 @@ export default function V6Page() {
                       }
                     }}
                     onClick={handleEnterCurrentGate}
-                    className={`group relative p-6 sm:p-7 rounded-3xl bg-gradient-to-b ${currentGate.bgGradient} border ${currentGate.borderClass} shadow-2xl backdrop-blur-xl cursor-pointer text-center transition-all overflow-hidden active:scale-98`}
+                    className={`group relative p-3 sm:p-7 rounded-2xl sm:rounded-3xl bg-gradient-to-b ${currentGate.bgGradient} border ${currentGate.borderClass} shadow-2xl backdrop-blur-xl cursor-pointer text-center transition-all overflow-hidden active:scale-98`}
                   >
                     <div
                       className={`absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 rounded-full ${currentGate.glowBg} blur-3xl pointer-events-none`}
                     />
 
                     {/* 第一行：心情書寫 ‧ 覺察恐懼 (依門戶切換) */}
-                    <div className="py-2">
-                      <p className="text-base sm:text-lg font-light text-white tracking-widest">
+                    <div className="py-0.5 sm:py-2">
+                      <p className="text-sm sm:text-lg font-light text-white tracking-wider sm:tracking-widest">
                         {currentGate.corePhrase}
                       </p>
                     </div>
 
                     {/* 第二行：推門進入與箭頭符號 */}
-                    <div className="pt-3 flex items-center justify-center">
+                    <div className="pt-1.5 sm:pt-3 flex items-center justify-center">
                       <span
-                        className={`inline-flex items-center gap-2 py-2 px-6 sm:px-7 rounded-full bg-white/10 group-hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-medium ${currentGate.accentText} group-hover:text-white transition-all shadow-md group-hover:scale-105`}
+                        className={`inline-flex items-center gap-1.5 sm:gap-2 py-1 sm:py-2 px-4 sm:px-7 rounded-full bg-white/10 group-hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-medium ${currentGate.accentText} group-hover:text-white transition-all shadow-md group-hover:scale-105`}
                       >
                         <span>推門進入</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                       </span>
                     </div>
                   </motion.div>
@@ -399,25 +399,25 @@ export default function V6Page() {
                 {/* 左右輔助按鈕 */}
                 <button
                   onClick={handlePrevGate}
-                  className="absolute -left-3 sm:-left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 border border-white/20 text-white flex items-center justify-center hover:bg-black/90 active:scale-95 shadow-md"
+                  className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/60 border border-white/20 text-white flex items-center justify-center hover:bg-black/90 active:scale-95 shadow-md"
                   title="前一門"
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
                 <button
                   onClick={handleNextGate}
-                  className="absolute -right-3 sm:-right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 border border-white/20 text-white flex items-center justify-center hover:bg-black/90 active:scale-95 shadow-md"
+                  className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/60 border border-white/20 text-white flex items-center justify-center hover:bg-black/90 active:scale-95 shadow-md"
                   title="下一門"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
 
               {/* ================= 下面接：快速抽取宇宙給你的靈魂訊息 連結 ================= */}
-              <div className="pt-1">
+              <div className="pt-0.5 sm:pt-1">
                 <button
                   onClick={handleQuickDraw}
-                  className="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-gradient-to-r from-amber-400/15 via-purple-400/15 to-indigo-400/15 hover:from-amber-400/25 hover:via-purple-400/25 hover:to-indigo-400/25 border border-amber-300/35 text-xs text-amber-200 tracking-wider transition-all shadow-sm active:scale-95"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 py-1 sm:py-2 px-4 sm:px-5 rounded-full bg-gradient-to-r from-amber-400/15 via-purple-400/15 to-indigo-400/15 hover:from-amber-400/25 hover:via-purple-400/25 hover:to-indigo-400/25 border border-amber-300/35 text-[10px] sm:text-xs text-amber-200 tracking-wider transition-all shadow-sm active:scale-95"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                   <span>✦ 快速抽取宇宙給你的靈魂訊息 ✦</span>
@@ -427,18 +427,18 @@ export default function V6Page() {
               {/* ================= 下面是：宇宙匿名願望之河 (原本最底下一樣) ================= */}
               <div
                 onClick={() => setActiveSanctuary('manifest')}
-                className="w-full max-w-md p-3 rounded-2xl bg-black/40 border border-teal-400/25 hover:border-teal-400/50 cursor-pointer transition-all shadow-md overflow-hidden relative group text-left my-1"
+                className="w-full max-w-md p-1.5 sm:p-3 rounded-2xl bg-black/40 border border-teal-400/25 hover:border-teal-400/50 cursor-pointer transition-all shadow-md overflow-hidden relative group text-left my-0.5 sm:my-1"
                 title="點擊展開宇宙集體願望星河"
               >
-                <div className="flex items-center gap-2 text-xs text-teal-300 mb-1 px-1 font-mono">
-                  <Globe className="w-3.5 h-3.5 animate-pulse" />
+                <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-teal-300 mb-0.5 sm:mb-1 px-1 font-mono">
+                  <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-pulse" />
                   <span>✦ 宇宙匿名願望之河 ‧ 點入展開彼此加持「允許發生」✦</span>
                 </div>
                 <div className="w-full overflow-hidden whitespace-nowrap text-left">
-                  <div className="inline-block animate-marquee text-[11px] text-teal-100/80 font-light space-x-6">
+                  <div className="inline-block animate-marquee text-[10px] sm:text-[11px] text-teal-100/80 font-light space-x-6">
                     {TICKER_WISHES.map((wish, idx) => (
                       <span key={idx} className="inline-flex items-center gap-1.5">
-                        <Heart className="w-3 h-3 text-pink-400 inline" />
+                        <Heart className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-pink-400 inline" />
                         <span>{wish}</span>
                         <span className="text-teal-400/40">✦</span>
                       </span>
@@ -595,7 +595,7 @@ export default function V6Page() {
       </main>
 
       {/* ================= 底部資訊 (Footer) ================= */}
-      <footer className="w-full max-w-5xl mx-auto px-4 py-4 text-center text-amber-200/40 text-[11px] tracking-wider z-20">
+      <footer className="w-full max-w-5xl mx-auto px-4 py-1.5 sm:py-4 text-center text-amber-200/40 text-[10px] sm:text-[11px] tracking-wider z-20">
         <p>宇宙永遠在傾聽，你所渴望的美好正以超越想像的方式走向你 ✨</p>
       </footer>
 

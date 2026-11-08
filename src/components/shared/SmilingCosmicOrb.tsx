@@ -27,9 +27,9 @@ export default function SmilingCosmicOrb({
   };
 
   const sizeClasses = {
-    sm: 'w-24 h-24',
-    md: 'w-36 h-36 md:w-44 md:h-44',
-    lg: 'w-48 h-48 md:w-56 md:h-56',
+    sm: 'w-20 h-20 sm:w-24 sm:h-24',
+    md: 'w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44',
+    lg: 'w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56',
   }[size];
 
   // 顏色與漸變配置
@@ -182,9 +182,9 @@ export default function SmilingCosmicOrb({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.6 }}
-          className="mt-6 text-center max-w-xs"
+          className="mt-2 sm:mt-6 text-center max-w-xs"
         >
-          <p className="text-amber-100/90 text-sm md:text-base font-light tracking-widest leading-relaxed">
+          <p className="text-amber-100/90 text-xs sm:text-sm md:text-base font-light tracking-wider sm:tracking-widest leading-snug sm:leading-relaxed">
             {guideText ||
               (mode === 'breathing'
                 ? '深呼吸... 感受宇宙的心跳與接納'
@@ -192,7 +192,7 @@ export default function SmilingCosmicOrb({
                 ? '在心中默念這份肯定，對齊豐盛頻率'
                 : '宇宙正溫柔地微笑著看著你')}
           </p>
-          <span className="text-xs text-amber-200/50 block mt-1 tracking-wider">
+          <span className="text-[10px] sm:text-xs text-amber-200/50 block mt-0.5 sm:mt-1 tracking-wider">
             (點擊光球可感受平靜心跳)
           </span>
         </motion.div>
