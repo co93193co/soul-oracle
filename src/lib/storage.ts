@@ -215,6 +215,12 @@ export const localStore = {
     return true;
   },
 
+  setPoints(points: number): void {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(POINTS_KEY, points.toString());
+    }
+  },
+
   // 冥想紀錄 (1分=1點、3分=3點、5分=5點)
   getMeditationLogs(): MeditationLog[] {
     if (typeof window === 'undefined') return [];

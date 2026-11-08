@@ -112,7 +112,7 @@ export default function V5Page() {
           </div>
           <div>
             <h1 className="text-base sm:text-lg font-light tracking-widest text-amber-100 flex items-center gap-1.5">
-              <span>靈魂之境</span>
+              <span>憶起</span>
               <span className="text-[10px] text-amber-300 uppercase tracking-widest font-mono bg-amber-400/15 px-1.5 py-0.2 rounded border border-amber-300/30">
                 V5
               </span>
@@ -199,11 +199,12 @@ export default function V5Page() {
               exit={{ opacity: 0, scale: 0.96 }}
               className="w-full flex flex-col items-center text-center"
             >
-              {/* 中央微笑光球 (安詳呼吸) */}
+              {/* 中央微笑光球 (圓臉圖案) ＋ 憶起 Logo 主要名稱 */}
               <div className="my-2 sm:my-3">
                 <SmilingCosmicOrb
-                  size="md"
+                  size="sm"
                   themeColor="amber"
+                  logoText="憶起"
                   guideText="宇宙正溫柔地微笑著看著你，放鬆下來..."
                 />
               </div>

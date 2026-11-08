@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import SmilingCosmicOrb from '@/components/shared/SmilingCosmicOrb';
 import OracleCard from '@/components/shared/OracleCard';
+import MultiDeckDrawModal from '@/components/shared/MultiDeckDrawModal';
 import ReleaseSanctuary from '@/components/release/ReleaseSanctuary';
 import InquireSanctuary from '@/components/inquire/InquireSanctuary';
 import ManifestSanctuaryV5 from '@/components/manifest/ManifestSanctuaryV5';
@@ -45,7 +46,7 @@ interface GateConfig {
   title: string;
   corePhrase: string; // 用戶指定的核心文字
   english: string;
-  themeColor: 'indigo' | 'purple' | 'teal' | 'amber';
+  themeColor: 'indigo' | 'purple' | 'teal' | 'amber' | 'rose';
   bgGradient: string;
   borderClass: string;
   glowBg: string;
@@ -89,11 +90,11 @@ const GATES_CONFIG: GateConfig[] = [
     title: '🕊️ 接收之門',
     corePhrase: '靈感聆聽 ‧ 冥想覺察',
     english: 'RECEIVE & MEDITATE',
-    themeColor: 'teal',
-    bgGradient: 'from-[#0a2328]/90 via-[#07171b]/90 to-[#030d10]/95',
-    borderClass: 'border-teal-400/40 hover:border-teal-400/80',
-    glowBg: 'bg-teal-500/20',
-    accentText: 'text-teal-300',
+    themeColor: 'rose',
+    bgGradient: 'from-[#280c1e]/90 via-[#1b0814]/90 to-[#0e040a]/95',
+    borderClass: 'border-pink-400/40 hover:border-pink-400/80',
+    glowBg: 'bg-pink-500/20',
+    accentText: 'text-pink-300',
   },
   {
     id: 'manifest',
@@ -104,10 +105,10 @@ const GATES_CONFIG: GateConfig[] = [
     corePhrase: '願望播種 ‧ 允許顯化',
     english: 'MANIFEST & ALIGN',
     themeColor: 'amber',
-    bgGradient: 'from-[#251910]/90 via-[#18110b]/90 to-[#0c0805]/95',
-    borderClass: 'border-amber-400/40 hover:border-amber-400/80',
-    glowBg: 'bg-amber-500/20',
-    accentText: 'text-amber-300',
+    bgGradient: 'from-[#2c2207]/90 via-[#1e1704]/90 to-[#100c02]/95',
+    borderClass: 'border-yellow-400/50 hover:border-yellow-300/80',
+    glowBg: 'bg-yellow-400/25',
+    accentText: 'text-yellow-300',
   },
 ];
 
@@ -131,6 +132,7 @@ export default function V6Page() {
   const [isMeditationOpen, setIsMeditationOpen] = useState(false);
   const [isMusicOpen, setIsMusicOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isMultiDeckModalOpen, setIsMultiDeckModalOpen] = useState(false);
 
   const [isMuted, setIsMuted] = useState(false);
   const [points, setPoints] = useState(365);
@@ -316,18 +318,7 @@ export default function V6Page() {
                 />
               </div>
 
-              {/* 快速抽取今日靈魂指引卡 (與上圖完全一致) */}
-              <div>
-                <button
-                  onClick={handleQuickDraw}
-                  className="flex items-center gap-1.5 sm:gap-2 py-1 sm:py-2 px-4 sm:px-5 rounded-full bg-gradient-to-r from-white/10 to-amber-400/10 hover:from-white/20 hover:to-amber-400/20 border border-amber-300/35 text-[11px] sm:text-xs text-amber-200 tracking-wider sm:tracking-widest transition-all shadow-md group active:scale-95"
-                >
-                  <Compass className="w-3.5 h-3.5 text-amber-300 group-hover:rotate-45 transition-transform" />
-                  <span>✦ 快速抽取今日靈魂指引卡 ✦</span>
-                </button>
-              </div>
-
-              {/* ================= 四大門切換連結欄 (釋放之門、提問之門、接收之門、顯化之門) ================= */}
+              {/* ================= 四大門切換連結欄 (01釋放之門、02提問之門、03接收之門、04顯化之門 一行) ================= */}
               <div className="w-full max-w-md p-1 sm:p-1.5 rounded-2xl bg-black/60 border border-white/15 grid grid-cols-4 gap-1 sm:gap-1.5 shadow-inner">
                 {GATES_CONFIG.map((gate, idx) => {
                   const isSelected = selectedGateIndex === idx;
@@ -335,23 +326,22 @@ export default function V6Page() {
                     <button
                       key={gate.id}
                       onClick={() => handleSelectGate(idx)}
-                      className={`py-1 sm:py-2 px-0.5 sm:px-1 rounded-xl transition-all flex flex-col items-center justify-center gap-0.5 text-center ${
+                      className={`py-1.5 sm:py-2 px-1 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1 text-center ${
                         isSelected
                           ? `${gate.bgGradient} ${gate.borderClass} border shadow-lg ring-1 ring-white/25 scale-[1.02]`
                           : 'text-white/60 hover:text-white hover:bg-white/5'
                       }`}
                     >
-                      <span className="text-sm sm:text-base">{gate.iconSymbol}</span>
-                      <span className="text-[10px] sm:text-[11px] font-medium leading-tight mt-0.5">
-                        {gate.tabLabel}
+                      <span className="text-xs sm:text-sm">{gate.iconSymbol}</span>
+                      <span className="text-[10px] sm:text-[11px] font-medium whitespace-nowrap">
+                        0{idx + 1}{gate.tabLabel}
                       </span>
-                      <span className="text-[8px] sm:text-[9px] font-mono opacity-50">0{idx + 1}</span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* ================= 下方方框 (連動與左右滑動切換，極簡兩行緊湊設計) ================= */}
+              {/* ================= 下方方框 (連動與左右滑動切換，心情書寫與推門進入為同一行) ================= */}
               <div className="w-full max-w-md relative select-none">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -371,26 +361,23 @@ export default function V6Page() {
                       }
                     }}
                     onClick={handleEnterCurrentGate}
-                    className={`group relative p-3 sm:p-7 rounded-2xl sm:rounded-3xl bg-gradient-to-b ${currentGate.bgGradient} border ${currentGate.borderClass} shadow-2xl backdrop-blur-xl cursor-pointer text-center transition-all overflow-hidden active:scale-98`}
+                    className={`group relative py-2.5 px-3.5 sm:py-3.5 sm:px-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b ${currentGate.bgGradient} border ${currentGate.borderClass} shadow-xl backdrop-blur-xl cursor-pointer transition-all overflow-hidden active:scale-98`}
                   >
                     <div
                       className={`absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 rounded-full ${currentGate.glowBg} blur-3xl pointer-events-none`}
                     />
 
-                    {/* 第一行：心情書寫 ‧ 覺察恐懼 (依門戶切換) */}
-                    <div className="py-0.5 sm:py-2">
-                      <p className="text-sm sm:text-lg font-light text-white tracking-wider sm:tracking-widest">
+                    {/* 心情書寫...與推門進入為同一行 */}
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-xs sm:text-base font-light text-white tracking-wider truncate">
                         {currentGate.corePhrase}
                       </p>
-                    </div>
 
-                    {/* 第二行：推門進入與箭頭符號 */}
-                    <div className="pt-1.5 sm:pt-3 flex items-center justify-center">
                       <span
-                        className={`inline-flex items-center gap-1.5 sm:gap-2 py-1 sm:py-2 px-4 sm:px-7 rounded-full bg-white/10 group-hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-medium ${currentGate.accentText} group-hover:text-white transition-all shadow-md group-hover:scale-105`}
+                        className={`inline-flex items-center gap-1.5 py-1 px-3 sm:py-1.5 sm:px-4 rounded-full bg-white/10 group-hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-medium ${currentGate.accentText} group-hover:text-white transition-all shadow-sm shrink-0`}
                       >
                         <span>推門進入</span>
-                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </span>
                     </div>
                   </motion.div>
@@ -413,14 +400,17 @@ export default function V6Page() {
                 </button>
               </div>
 
-              {/* ================= 下面接：快速抽取宇宙給你的靈魂訊息 連結 ================= */}
+              {/* ================= 下面接：快速抽取宇宙給你的靈魂訊息 連結 (開啟多元神聖牌卡殿堂，自選抽卡扣點數) ================= */}
               <div className="pt-0.5 sm:pt-1">
                 <button
-                  onClick={handleQuickDraw}
-                  className="inline-flex items-center gap-1.5 sm:gap-2 py-1 sm:py-2 px-4 sm:px-5 rounded-full bg-gradient-to-r from-amber-400/15 via-purple-400/15 to-indigo-400/15 hover:from-amber-400/25 hover:via-purple-400/25 hover:to-indigo-400/25 border border-amber-300/35 text-[10px] sm:text-xs text-amber-200 tracking-wider transition-all shadow-sm active:scale-95"
+                  onClick={() => {
+                    sound.playSparkle();
+                    setIsMultiDeckModalOpen(true);
+                  }}
+                  className="inline-flex items-center gap-1.5 sm:gap-2 py-1.5 sm:py-2 px-4 sm:px-5 rounded-full bg-gradient-to-r from-amber-400/15 via-purple-400/15 to-indigo-400/15 hover:from-amber-400/25 hover:via-purple-400/25 hover:to-indigo-400/25 border border-amber-300/35 text-[10.5px] sm:text-xs text-amber-200 tracking-wider transition-all shadow-sm active:scale-95"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                  <span>✦ 快速抽取宇宙給你的靈魂訊息 ✦</span>
+                  <span>✦ 快速抽取宇宙給你的靈魂訊息 (多款神諭卡) ✦</span>
                 </button>
               </div>
 
@@ -598,6 +588,18 @@ export default function V6Page() {
       <footer className="w-full max-w-5xl mx-auto px-4 py-1.5 sm:py-4 text-center text-amber-200/40 text-[10px] sm:text-[11px] tracking-wider z-20">
         <p>宇宙永遠在傾聽，你所渴望的美好正以超越想像的方式走向你 ✨</p>
       </footer>
+
+      {/* ================= 多元神聖神諭牌卡抽卡殿堂彈窗 (宇宙指引、天使陪伴、獨角獸牌卡等自選扣點抽卡) ================= */}
+      <MultiDeckDrawModal
+        isOpen={isMultiDeckModalOpen}
+        onClose={() => setIsMultiDeckModalOpen(false)}
+        currentPoints={points}
+        onPointsUpdated={(newPts) => setPoints(newPts)}
+        onOpenArchive={() => {
+          setIsMultiDeckModalOpen(false);
+          setIsArchiveOpen(true);
+        }}
+      />
 
       {/* ================= 接收之門：V4 冥想殿堂全螢幕彈窗 ================= */}
       <DailyMeditationModalV4
