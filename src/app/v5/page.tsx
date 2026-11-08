@@ -331,7 +331,7 @@ export default function V5Page() {
               setIsAuthOpen(true);
             }}
             title={currentUser.isLoggedIn ? currentUser.nickname : '會員登入'}
-            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/[0.07] hover:bg-amber-400/15 border border-white/15 hover:border-amber-300/40 flex flex-col items-center justify-center gap-0.5 text-amber-100/90 hover:text-amber-50 transition-all shadow-sm active:scale-95 group cursor-pointer"
           >
             {currentUser.isLoggedIn ? (
               <img
@@ -342,7 +342,7 @@ export default function V5Page() {
             ) : (
               <User className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
             )}
-            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider max-w-[46px] truncate leading-none">
+            <span className="text-[9px] text-amber-100/90 group-hover:text-amber-50 tracking-wider max-w-[46px] truncate leading-none">
               {currentUser.isLoggedIn ? currentUser.nickname : '登入'}
             </span>
           </button>
@@ -351,14 +351,14 @@ export default function V5Page() {
           <button
             onClick={toggleSound}
             title={isMuted ? '開啟聲音' : '關閉聲音'}
-            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/[0.07] hover:bg-amber-400/15 border border-white/15 hover:border-amber-300/40 flex flex-col items-center justify-center gap-0.5 text-amber-100/90 hover:text-amber-50 transition-all shadow-sm active:scale-95 group cursor-pointer"
           >
             {isMuted ? (
               <VolumeX className="w-3.5 h-3.5 text-amber-300/60 group-hover:text-amber-200 transition-colors" />
             ) : (
               <Volume2 className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
             )}
-            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider leading-none">
+            <span className="text-[9px] text-amber-100/90 group-hover:text-amber-50 tracking-wider leading-none">
               聲音
             </span>
           </button>
@@ -370,10 +370,10 @@ export default function V5Page() {
               setIsArchiveOpen(true);
             }}
             title="靈魂記錄與檔案庫"
-            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/[0.07] hover:bg-amber-400/15 border border-white/15 hover:border-amber-300/40 flex flex-col items-center justify-center gap-0.5 text-amber-100/90 hover:text-amber-50 transition-all shadow-sm active:scale-95 group cursor-pointer"
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
-            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider leading-none">
+            <span className="text-[9px] text-amber-100/90 group-hover:text-amber-50 tracking-wider leading-none">
               記錄
             </span>
           </button>
@@ -385,10 +385,10 @@ export default function V5Page() {
               setIsArchiveOpen(true);
             }}
             title={`星光點數：${points}點`}
-            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-300/30 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
+            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-amber-400/15 hover:bg-amber-400/25 border border-amber-300/40 hover:border-amber-300/70 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
           >
             <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300 animate-pulse group-hover:scale-110 transition-transform" />
-            <span className="text-[9.5px] font-mono text-amber-100 tracking-wider leading-none">
+            <span className="text-[9.5px] font-mono text-amber-100 font-semibold tracking-wider leading-none">
               {points}點
             </span>
           </button>
@@ -407,14 +407,7 @@ export default function V5Page() {
               exit={{ opacity: 0, scale: 0.96 }}
               className="w-full flex flex-col items-center text-center my-auto"
             >
-              {/* 左右滑動引導提示微光文字 */}
-              <div className="flex items-center justify-center gap-1.5 mb-1.5 text-[10px] sm:text-xs text-amber-200/80 font-mono tracking-wider animate-pulse select-none whitespace-nowrap">
-                <span className="text-amber-300 font-bold">←</span>
-                <span>左右滑動探索 01～06 聖門 ‧ 點擊推開進入</span>
-                <span className="text-amber-300 font-bold">→</span>
-              </div>
-
-              {/* 中間01-06小鏈接分水嶺居中 (字體排版留意手機為一行字) */}
+              {/* 中間01-06小鏈接分水嶺居中 (字體排版留意手機為一行字，色彩明晰溫暖) */}
               <div className="w-full flex items-center justify-between gap-1 sm:gap-1.5 px-0.5 mb-2 sm:mb-2.5 overflow-x-auto scrollbar-none py-1">
                 {gates.map((g, idx) => {
                   const isActive = activeGateIndex === idx;
@@ -422,16 +415,18 @@ export default function V5Page() {
                     <button
                       key={g.id}
                       onClick={() => changeGate(idx)}
-                      className={`flex items-center justify-center gap-1 sm:gap-1.5 flex-1 min-w-0 py-1 sm:py-1.5 px-1 sm:px-2 rounded-xl text-[11px] sm:text-xs md:text-[13px] font-medium whitespace-nowrap transition-all shrink-0 active:scale-95 cursor-pointer ${
+                      className={`flex items-center justify-center gap-1 sm:gap-1.5 flex-1 min-w-0 py-1 sm:py-1.5 px-1 sm:px-2 rounded-xl text-[11px] sm:text-xs md:text-[13px] whitespace-nowrap transition-all shrink-0 active:scale-95 cursor-pointer group ${
                         isActive
-                          ? 'bg-amber-400/20 border border-amber-300/70 text-amber-200 shadow-[0_0_15px_rgba(251,191,36,0.3)] font-semibold scale-105'
-                          : 'bg-white/5 border border-white/10 text-white/60 hover:text-white/90 hover:bg-white/10'
+                          ? 'bg-gradient-to-r from-amber-400/25 via-amber-300/30 to-amber-400/25 border border-amber-300/90 text-amber-50 shadow-[0_0_15px_rgba(251,191,36,0.4)] font-bold scale-105'
+                          : 'bg-white/[0.07] border border-white/15 text-stone-200 hover:text-white hover:bg-white/15 hover:border-amber-300/30 font-medium'
                       }`}
                     >
-                      <span className={isActive ? 'text-amber-300 font-bold' : 'text-white/40'}>
+                      <span className={isActive ? 'text-amber-300 font-extrabold' : 'text-amber-200/70 group-hover:text-amber-200 font-mono font-medium'}>
                         {g.tabNumber}
                       </span>
-                      <span>{g.tabLabel.replace(/^\d+\s*/, '')}</span>
+                      <span className={isActive ? 'text-amber-50 drop-shadow-[0_0_6px_rgba(251,191,36,0.4)]' : 'text-stone-200 group-hover:text-white'}>
+                        {g.tabLabel.replace(/^\d+\s*/, '')}
+                      </span>
                     </button>
                   );
                 })}
@@ -443,7 +438,7 @@ export default function V5Page() {
                 <button
                   onClick={handlePrevGate}
                   title="上一個門"
-                  className="p-1.5 sm:p-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white/70 hover:text-amber-200 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)] hover:shadow-[0_0_15px_rgba(251,191,36,0.35)]"
+                  className="p-1.5 sm:p-2 rounded-full bg-amber-400/10 hover:bg-amber-400/25 border border-amber-300/30 hover:border-amber-300/70 text-amber-200/90 hover:text-amber-100 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)] hover:shadow-[0_0_15px_rgba(251,191,36,0.35)]"
                 >
                   <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
@@ -476,29 +471,29 @@ export default function V5Page() {
                         {/* 最上面頂部欄 (保留英文副標與序號標籤) */}
                         <div className="flex items-center justify-between mb-1.5 sm:mb-2">
                           <span
-                            className={`text-[11px] sm:text-xs ${currentGate.accentColor} opacity-75 tracking-widest uppercase font-mono whitespace-nowrap`}
+                            className={`text-[11px] sm:text-xs ${currentGate.accentColor} opacity-90 tracking-[0.2em] uppercase font-mono font-semibold drop-shadow-sm whitespace-nowrap`}
                           >
                             {currentGate.english}
                           </span>
                           <div className="flex items-center gap-1.5 shrink-0">
                             {currentGate.badge && (
-                              <span className="text-[9.5px] sm:text-[10px] text-teal-300 font-mono px-1.5 py-0.5 rounded bg-teal-400/20 border border-teal-300/30 whitespace-nowrap">
+                              <span className="text-[9.5px] sm:text-[10px] text-teal-200 font-mono px-2 py-0.5 rounded-full bg-teal-400/25 border border-teal-300/50 shadow-[0_0_8px_rgba(45,212,191,0.25)] whitespace-nowrap">
                                 {currentGate.badge}
                               </span>
                             )}
-                            <span className="text-[11px] sm:text-xs text-white/40 font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 whitespace-nowrap">
+                            <span className="text-[11px] sm:text-xs text-amber-100/90 font-mono px-2.5 py-0.5 rounded-full bg-white/10 border border-white/20 shadow-inner whitespace-nowrap">
                               {currentGate.tabNumber} / 06
                             </span>
                           </div>
                         </div>
 
                         {/* 主標題 (調小以確保手機上一行字，不換行成兩行) */}
-                        <h2 className="text-[15.5px] xs:text-[17px] sm:text-lg md:text-xl font-light text-white mb-1.5 sm:mb-2 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis">
+                        <h2 className="text-[15.5px] xs:text-[17px] sm:text-lg md:text-xl font-normal text-white mb-1.5 sm:mb-2 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)]">
                           {currentGate.title}
                         </h2>
 
                         {/* 說明文字 (行距舒適，精巧呈現) */}
-                        <p className="text-xs sm:text-[13px] md:text-sm text-white/85 leading-relaxed font-light min-h-[46px] sm:min-h-[52px]">
+                        <p className="text-xs sm:text-[13px] md:text-sm text-stone-100/95 leading-relaxed font-light min-h-[46px] sm:min-h-[52px] drop-shadow-sm">
                           {currentGate.description}
                         </p>
                       </div>
@@ -506,7 +501,7 @@ export default function V5Page() {
                       {/* 框內最右下邊：進入 ➔ */}
                       <div className="mt-2.5 sm:mt-3 flex justify-end items-center">
                         <span
-                          className={`inline-flex items-center gap-1 text-sm sm:text-base font-medium ${currentGate.accentColor} group-hover:translate-x-1.5 transition-transform`}
+                          className={`inline-flex items-center gap-1 text-sm sm:text-base font-semibold ${currentGate.accentColor} group-hover:translate-x-1.5 transition-transform drop-shadow-[0_0_10px_currentColor]`}
                         >
                           <span>進入</span>
                           <span className="text-base sm:text-lg font-bold">➔</span>
@@ -520,7 +515,7 @@ export default function V5Page() {
                 <button
                   onClick={handleNextGate}
                   title="下一個門"
-                  className="p-1.5 sm:p-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white/70 hover:text-amber-200 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)] hover:shadow-[0_0_15px_rgba(251,191,36,0.35)]"
+                  className="p-1.5 sm:p-2 rounded-full bg-amber-400/10 hover:bg-amber-400/25 border border-amber-300/30 hover:border-amber-300/70 text-amber-200/90 hover:text-amber-100 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)] hover:shadow-[0_0_15px_rgba(251,191,36,0.35)]"
                 >
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
@@ -534,8 +529,8 @@ export default function V5Page() {
                     onClick={() => changeGate(idx)}
                     className={`transition-all rounded-full cursor-pointer ${
                       activeGateIndex === idx
-                        ? 'w-6 h-1.5 bg-amber-300 shadow-[0_0_8px_rgba(251,191,36,0.6)]'
-                        : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/40'
+                        ? 'w-6 h-1.5 bg-gradient-to-r from-amber-300 to-yellow-200 shadow-[0_0_8px_rgba(251,191,36,0.7)]'
+                        : 'w-1.5 h-1.5 bg-white/35 hover:bg-white/60'
                     }`}
                     aria-label={`切換至門戶 ${idx + 1}`}
                   />
@@ -543,7 +538,7 @@ export default function V5Page() {
               </div>
 
               {/* 底部靈性低語引導 */}
-              <div className="mt-1.5 text-[10px] sm:text-[11px] text-amber-200/40 font-light tracking-wider whitespace-nowrap overflow-hidden text-ellipsis max-w-full px-2">
+              <div className="mt-1.5 text-[10px] sm:text-[11px] text-amber-200/85 font-light tracking-wider whitespace-nowrap overflow-hidden text-ellipsis max-w-full px-2 drop-shadow-sm">
                 ✦ 宇宙正溫柔地傾聽你的宣告，允許一切美好自然發生 ✦
               </div>
             </motion.div>
@@ -583,7 +578,7 @@ export default function V5Page() {
       </main>
 
       {/* ================= 4. 底部資訊 (Footer：文字清晰且在手機上剛好一行) ================= */}
-      <footer className="w-full max-w-xl mx-auto px-2 py-1.5 sm:py-2 text-center text-amber-100/85 text-[10px] sm:text-xs font-light tracking-tight sm:tracking-normal z-20 shrink-0 whitespace-nowrap overflow-hidden text-ellipsis">
+      <footer className="w-full max-w-xl mx-auto px-2 py-1.5 sm:py-2 text-center text-amber-100 font-light text-[10.5px] sm:text-xs tracking-tight sm:tracking-normal z-20 shrink-0 whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-sm">
         <p>宇宙永遠在傾聽，你所渴望的美好正以超越想像的方式走向你 ✨</p>
       </footer>
 

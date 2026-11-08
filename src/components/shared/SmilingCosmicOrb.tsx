@@ -116,7 +116,7 @@ export default function SmilingCosmicOrb({
             <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)] leading-tight text-center">
               {logoText}
             </h1>
-            <span className="text-[10px] sm:text-xs text-amber-300/75 font-mono tracking-widest mt-0.5 text-center">
+            <span className="text-[10px] sm:text-xs text-amber-200/90 font-mono tracking-[0.2em] mt-0.5 text-center">
               ✦ RECALLING ✦
             </span>
           </div>
@@ -228,7 +228,7 @@ export default function SmilingCosmicOrb({
             <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-amber-200 to-yellow-300 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)] leading-tight text-center">
               {logoText}
             </h1>
-            <span className="text-[10px] sm:text-xs text-amber-300/75 font-mono tracking-widest mt-0.5 text-center">
+            <span className="text-[10px] sm:text-xs text-amber-200/90 font-mono tracking-[0.2em] mt-0.5 text-center">
               ✦ RECALLING ✦
             </span>
           </div>
@@ -247,7 +247,7 @@ export default function SmilingCosmicOrb({
             align === 'left' ? 'text-left max-w-[280px] sm:max-w-md' : 'text-center max-w-[280px] sm:max-w-md px-1'
           }`}
         >
-          <p className="text-amber-100 text-[13px] sm:text-[15px] md:text-base font-light tracking-wide leading-relaxed whitespace-pre-line">
+          <p className="text-amber-50/95 text-[13px] sm:text-[15px] md:text-base font-light tracking-wide leading-relaxed whitespace-pre-line drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
             {guideText ||
               (mode === 'breathing'
                 ? '深呼吸... 感受宇宙的心跳與接納'
@@ -255,7 +255,7 @@ export default function SmilingCosmicOrb({
                 ? '在心中默念這份肯定，對齊豐盛頻率'
                 : '宇宙正溫柔地微笑著看著你，\n放鬆下來...')}
           </p>
-          <span className="text-[10px] sm:text-[11.5px] text-amber-200/70 block mt-1 tracking-wider whitespace-nowrap">
+          <span className="text-[10px] sm:text-[11.5px] text-amber-300 font-medium block mt-1 tracking-wider whitespace-nowrap drop-shadow-[0_0_8px_rgba(251,191,36,0.3)]">
             {subGuideText || (mode === 'breathing' ? '✦ 跟隨光球呼吸節奏，沉澱思緒 ✦' : '✦ 點擊或滑動下方 01～06 探索聖門 ✦')}
           </span>
         </motion.div>
