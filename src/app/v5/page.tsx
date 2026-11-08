@@ -255,7 +255,13 @@ export default function V5Page() {
   const currentGate = gates[activeGateIndex];
 
   return (
-    <div className="min-h-screen min-h-dvh h-auto flex flex-col justify-between overflow-x-hidden overflow-y-auto selection:bg-amber-400/20 bg-[#070919] text-amber-50">
+    <div
+      className={`w-full selection:bg-amber-400/20 bg-[#070919] text-amber-50 flex flex-col justify-between overflow-x-hidden ${
+        currentView === 'home'
+          ? 'v5-screen-container'
+          : 'min-h-screen min-h-dvh h-auto overflow-y-auto'
+      }`}
+    >
       {/* ================= 1. 最頂端天際線：宇宙匿名願望之河 (右上宇宙允許已刪除) ================= */}
       <div
         onClick={() => {
@@ -286,7 +292,7 @@ export default function V5Page() {
       {currentView === 'home' ? (
         <>
           {/* ================= 2. 頂部區域：方案 B (神聖中軸垂直排列：憶起 ➔ RECALLING ➔ 加大微笑光球 ➔ 允許自己成為自己) ================= */}
-          <header className="relative w-full max-w-xl mx-auto px-3 sm:px-4 pt-1 sm:pt-2 pb-1 flex flex-col items-center justify-center z-20 h-auto shrink-0">
+          <header className="relative w-full max-w-xl mx-auto px-3 sm:px-4 pt-3.5 sm:pt-4 md:pt-5 pb-0.5 sm:pb-1 flex flex-col items-center justify-center z-20 h-auto shrink-0">
             {/* 中央神聖中軸容器 (方案 B：全部垂直置中依序排版) */}
             <div className="flex flex-col items-center justify-center text-center select-none w-full max-w-xs sm:max-w-md">
               {/* 1. 憶起 (最大金光字，置中) */}
@@ -300,7 +306,7 @@ export default function V5Page() {
               </span>
 
               {/* 3. 微笑圓臉動畫加大置中 */}
-              <div className="my-1.5 sm:my-2 relative flex items-center justify-center">
+              <div className="my-1 sm:my-1.5 relative flex items-center justify-center">
                 <SmilingCosmicOrb
                   size="md"
                   themeColor="amber"
@@ -318,7 +324,7 @@ export default function V5Page() {
             </div>
 
             {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數：星星在上方，下方365點) */}
-            <div className="absolute right-2 sm:right-3 top-2 sm:top-2.5 bottom-1 flex flex-col justify-between items-center w-[52px] sm:w-[56px] py-0.5">
+            <div className="absolute right-2 sm:right-3 top-3.5 sm:top-4 bottom-0.5 sm:bottom-1 flex flex-col justify-between items-center w-[52px] sm:w-[56px] py-0.5">
               {/* 1. 👤 登入 */}
               <button
                 onClick={() => {
@@ -391,7 +397,7 @@ export default function V5Page() {
           </header>
 
           {/* ================= 3. 主體內容區 (首頁六大門戶選取) ================= */}
-          <main className="flex-1 flex flex-col items-center justify-center px-2.5 sm:px-6 py-1 z-10 w-full max-w-xl mx-auto">
+          <main className="flex-1 flex flex-col items-center justify-center px-2.5 sm:px-6 py-0.5 sm:py-1 z-10 w-full max-w-xl mx-auto landscape:py-4 landscape:pb-10">
             <motion.div
               key="home"
               initial={{ opacity: 0, y: 8 }}
@@ -458,7 +464,7 @@ export default function V5Page() {
                         else if (offset.x > 40) handlePrevGate();
                       }}
                       onClick={currentGate.onClick}
-                      className={`group relative p-3.5 sm:p-4.5 rounded-2xl sm:rounded-3xl bg-gradient-to-b ${currentGate.themeGradient} border ${currentGate.borderClass} shadow-2xl backdrop-blur-xl cursor-pointer flex flex-col justify-between transition-all overflow-hidden min-h-[185px] sm:min-h-[205px] w-full select-none text-left`}
+                      className={`group relative p-3 sm:p-4 rounded-2xl sm:rounded-3xl bg-gradient-to-b ${currentGate.themeGradient} border ${currentGate.borderClass} shadow-2xl backdrop-blur-xl cursor-pointer flex flex-col justify-between transition-all overflow-hidden min-h-[165px] sm:min-h-[190px] w-full select-none text-left`}
                     >
                       <div
                         className={`absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full ${currentGate.blobColor} blur-2xl group-hover:scale-125 transition-all pointer-events-none`}
@@ -466,7 +472,7 @@ export default function V5Page() {
 
                       <div>
                         {/* 最上面頂部欄 (保留英文副標與序號標籤) */}
-                        <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+                        <div className="flex items-center justify-between mb-1 sm:mb-1.5">
                           <span
                             className={`text-[11px] sm:text-xs ${currentGate.accentColor} opacity-90 tracking-[0.2em] uppercase font-mono font-semibold drop-shadow-sm whitespace-nowrap`}
                           >
@@ -485,18 +491,18 @@ export default function V5Page() {
                         </div>
 
                         {/* 主標題 (調小以確保手機上一行字，不換行成兩行) */}
-                        <h2 className="text-[15.5px] xs:text-[17px] sm:text-lg md:text-xl font-normal text-white mb-1.5 sm:mb-2 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)]">
+                        <h2 className="text-[15.5px] xs:text-[17px] sm:text-lg md:text-xl font-normal text-white mb-1 sm:mb-1.5 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)]">
                           {currentGate.title}
                         </h2>
 
                         {/* 說明文字 (行距舒適，精巧呈現) */}
-                        <p className="text-xs sm:text-[13px] md:text-sm text-stone-100/95 leading-relaxed font-light min-h-[46px] sm:min-h-[52px] drop-shadow-sm">
+                        <p className="text-xs sm:text-[13px] md:text-sm text-stone-100/95 leading-relaxed font-light min-h-[40px] sm:min-h-[48px] drop-shadow-sm">
                           {currentGate.description}
                         </p>
                       </div>
 
                       {/* 框內最右下邊：進入 ➔ */}
-                      <div className="mt-2.5 sm:mt-3 flex justify-end items-center">
+                      <div className="mt-2 sm:mt-2.5 flex justify-end items-center">
                         <span
                           className={`inline-flex items-center gap-1 text-sm sm:text-base font-semibold ${currentGate.accentColor} group-hover:translate-x-1.5 transition-transform drop-shadow-[0_0_10px_currentColor]`}
                         >
@@ -519,7 +525,7 @@ export default function V5Page() {
               </div>
 
               {/* 6門位置指示點 */}
-              <div className="flex items-center justify-center gap-1.5 mt-1.5 sm:mt-2">
+              <div className="flex items-center justify-center gap-1.5 mt-1 sm:mt-1.5">
                 {gates.map((_, idx) => (
                   <button
                     key={idx}
@@ -535,14 +541,14 @@ export default function V5Page() {
               </div>
 
               {/* 底部靈性低語引導 */}
-              <div className="mt-1.5 text-[10px] sm:text-[11.5px] text-amber-200/90 font-light tracking-wider whitespace-nowrap overflow-hidden text-ellipsis max-w-full px-2 drop-shadow-sm">
+              <div className="mt-1 sm:mt-1.5 text-[10px] sm:text-[11.5px] text-amber-200/90 font-light tracking-wider whitespace-nowrap overflow-hidden text-ellipsis max-w-full px-2 drop-shadow-sm">
                 ✦ 感恩一切發生都是最好的安排 ✦
               </div>
             </motion.div>
           </main>
 
           {/* ================= 4. 底部資訊 (Footer：只在首頁顯示) ================= */}
-          <footer className="w-full max-w-xl mx-auto px-2 py-1.5 sm:py-2 text-center text-amber-100 font-light text-[10.5px] sm:text-xs tracking-tight sm:tracking-normal z-20 shrink-0 whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-sm">
+          <footer className="w-full max-w-xl mx-auto px-2 py-1 sm:py-1.5 text-center text-amber-100 font-light text-[10.5px] sm:text-xs tracking-tight sm:tracking-normal z-20 shrink-0 whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-sm landscape:py-3">
             <p>宇宙永遠在傾聽，你所渴望的美好正以超越想像的方式走向你 ✨</p>
           </footer>
         </>

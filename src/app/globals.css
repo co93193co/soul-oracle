@@ -57,3 +57,25 @@ body {
   scrollbar-width: none;
 }
 
+/* 首頁單頁鎖定與旋轉橫屏滑動適配 */
+.v5-screen-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+/* 當手機轉為橫屏（高度小於 540px 且橫放）時，允許滑動瀏覽 */
+@media (orientation: landscape) and (max-height: 540px) {
+  .v5-screen-container {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+

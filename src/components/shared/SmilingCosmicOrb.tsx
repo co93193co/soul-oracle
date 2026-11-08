@@ -45,7 +45,7 @@ export default function SmilingCosmicOrb({
   const sizeClasses = {
     xs: 'w-10 h-10 sm:w-12 sm:h-12',
     sm: 'w-[68px] h-[68px] sm:w-[78px] sm:h-[78px]',
-    md: 'w-[82px] h-[82px] sm:w-[94px] sm:h-[94px]',
+    md: 'w-[96px] h-[96px] sm:w-[110px] sm:h-[110px]',
     lg: 'w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48',
   }[size];
 
