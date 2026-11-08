@@ -16,6 +16,7 @@ export interface OracleDeck {
   icon: string;
   description: string;
   costPerDraw: number; // 抽一張卡扣除的點數 (可在後台/設定中自訂修改)
+  dailyFree?: boolean; // 是否支援每日首次免費
   themeGradient: string;
   borderClass: string;
   accentText: string;
@@ -23,14 +24,15 @@ export interface OracleDeck {
 }
 
 export const DEFAULT_ORACLE_DECKS: OracleDeck[] = [
-  // ================= 1. 🌌 宇宙靈魂指引卡 =================
+  // ================= 1. ✨ 今日宇宙金句卡 (每日首次免費，第2次起扣10點) =================
   {
     id: 'cosmic_soul',
-    name: '宇宙靈魂指引卡',
-    english: 'COSMIC SOUL ORACLE',
+    name: '今日宇宙金句卡',
+    english: 'TODAY COSMIC WISDOM',
     icon: '✨',
-    description: '連結源頭宇宙意識高頻共振，穿透迷霧，指引靈魂當前生命課題與最佳走向。',
-    costPerDraw: 5,
+    description: '連結源頭宇宙高頻意識，每日接收專屬心靈金句，穿透迷霧，指引今日靈魂課題與最佳方向。',
+    costPerDraw: 10,
+    dailyFree: true,
     themeGradient: 'from-indigo-950/90 via-purple-950/80 to-[#070919]/95',
     borderClass: 'border-indigo-400/40 hover:border-indigo-400/80',
     accentText: 'text-indigo-300',
@@ -78,14 +80,15 @@ export const DEFAULT_ORACLE_DECKS: OracleDeck[] = [
     ],
   },
 
-  // ================= 2. 🪽 大天使守護陪伴卡 =================
+  // ================= 2. 🪽 今日陪伴天使卡 (每日首次免費，第2次起扣10點) =================
   {
     id: 'angel_guardians',
-    name: '大天使守護陪伴卡',
-    english: 'ARCHANGEL GUARDIANS',
+    name: '今日陪伴天使卡',
+    english: 'TODAY GUARDIAN ANGELS',
     icon: '🪽',
-    description: '大天使麥可、拉斐爾與加百列的慈悲羽翼，提供無條件勇氣、身心療癒與清晰話語。',
+    description: '大天使麥可、拉斐爾與加百列的慈悲羽翼，提供無條件勇氣、身心療癒、靈感與清晰話語。',
     costPerDraw: 10,
+    dailyFree: true,
     themeGradient: 'from-[#1a1c38]/90 via-[#101228]/90 to-[#090b16]/95',
     borderClass: 'border-sky-400/40 hover:border-sky-400/80',
     accentText: 'text-sky-300',
@@ -133,14 +136,15 @@ export const DEFAULT_ORACLE_DECKS: OracleDeck[] = [
     ],
   },
 
-  // ================= 3. 🦄 獨角獸純淨奇蹟卡 =================
+  // ================= 3. 🦄 獨角獸卡 (每次抽扣10點) =================
   {
     id: 'unicorn_miracle',
-    name: '獨角獸純淨奇蹟卡',
+    name: '獨角獸卡',
     english: 'UNICORN MIRACLE ORACLE',
     icon: '🦄',
     description: '第七次元純白獨角獸之光，吹拂世俗塵埃，重拾純真無畏的童心，召喚生命奇蹟。',
     costPerDraw: 10,
+    dailyFree: false,
     themeGradient: 'from-[#270f2d]/90 via-[#19091d]/90 to-[#0e0411]/95',
     borderClass: 'border-fuchsia-400/40 hover:border-fuchsia-400/80',
     accentText: 'text-fuchsia-300',
@@ -195,7 +199,8 @@ export const DEFAULT_ORACLE_DECKS: OracleDeck[] = [
     english: 'GODDESS ABUNDANCE ORACLE',
     icon: '🌸',
     description: '大地之母蓋亞與豐盛女神的溫柔滋養，扎根大地，盛接物質財富與靈性圓滿。',
-    costPerDraw: 8,
+    costPerDraw: 10,
+    dailyFree: false,
     themeGradient: 'from-[#2b1f06]/90 via-[#1d1403]/90 to-[#0e0901]/95',
     borderClass: 'border-amber-400/50 hover:border-amber-300/80',
     accentText: 'text-amber-300',
@@ -270,4 +275,48 @@ export function drawCardFromDeck(deckId: string, decks: OracleDeck[] = DEFAULT_O
   if (!targetDeck || targetDeck.cards.length === 0) return null;
   const randomIndex = Math.floor(Math.random() * targetDeck.cards.length);
   return targetDeck.cards[randomIndex];
+}
+
+// 取得今日日期字串 YYYY-MM-DD
+export function getTodayDateString(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// 檢查指定牌組今日是否尚有免費次數 (「今日宇宙金句卡」與「今日陪伴天使卡」每日第一次免費)
+export function isDeckFreeToday(deckId: string): boolean {
+  if (deckId !== 'cosmic_soul' && deckId !== 'angel_guardians') {
+    return false;
+  }
+  if (typeof window === 'undefined') return true;
+  try {
+    const today = getTodayDateString();
+    const key = `soul_oracle_free_used_${today}_${deckId}`;
+    return !localStorage.getItem(key);
+  } catch {
+    return false;
+  }
+}
+
+// 標記指定牌組今日已使用免費次數
+export function markDeckFreeUsedToday(deckId: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const today = getTodayDateString();
+    const key = `soul_oracle_free_used_${today}_${deckId}`;
+    localStorage.setItem(key, 'true');
+  } catch (e) {
+    console.error('Error marking free draw used:', e);
+  }
+}
+
+// 取得抽卡實際費用與是否免費 (今日宇宙金句卡與陪伴天使卡第1次免費，第2次起10點；獨角獸卡每次10點)
+export function getDeckDrawCost(deck: OracleDeck): { effectiveCost: number; isFree: boolean } {
+  if (isDeckFreeToday(deck.id)) {
+    return { effectiveCost: 0, isFree: true };
+  }
+  return { effectiveCost: deck.costPerDraw, isFree: false };
 }

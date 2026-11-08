@@ -12,7 +12,10 @@ import {
   BookOpen,
   Check,
   AlertCircle,
-  Plus,
+  Compass,
+  FileSpreadsheet,
+  RefreshCw,
+  ExternalLink,
 } from 'lucide-react';
 import {
   OracleDeck,
@@ -21,9 +24,13 @@ import {
   saveOracleDecks,
   resetOracleDecksToDefault,
   drawCardFromDeck,
+  isDeckFreeToday,
+  markDeckFreeUsedToday,
+  getDeckDrawCost,
 } from '@/lib/presets/oracleDecks';
 import { sound } from '@/lib/sound';
 import { localStore } from '@/lib/storage';
+import { googleSheetsService } from '@/lib/googleSheets';
 
 interface MultiDeckDrawModalProps {
   isOpen: boolean;
@@ -48,6 +55,11 @@ export default function MultiDeckDrawModal({
   const [savedSuccessMsg, setSavedSuccessMsg] = useState('');
   const [insufficientError, setInsufficientError] = useState<string | null>(null);
   const [isSavedToArchive, setIsSavedToArchive] = useState(false);
+  const [wasLastDrawFree, setWasLastDrawFree] = useState(false);
+
+  // Google 試算表後台設定
+  const [sheetId, setSheetId] = useState('');
+  const [isSyncingSheet, setIsSyncingSheet] = useState(false);
 
   // 載入牌組
   useEffect(() => {
@@ -58,16 +70,24 @@ export default function MultiDeckDrawModal({
       setIsSettingsOpen(false);
       setInsufficientError(null);
       setIsSavedToArchive(false);
+      setWasLastDrawFree(false);
+      if (typeof window !== 'undefined') {
+        setSheetId(localStorage.getItem('soul_oracle_sheet_id') || '');
+      }
     }
   }, [isOpen]);
 
   if (!isOpen) return null;
 
-  // 處理抽卡
+  // 處理抽卡 (支援首次免費與扣點)
   const handleDrawCard = (deck: OracleDeck) => {
-    // 檢查點數
-    if (currentPoints < deck.costPerDraw) {
-      setInsufficientError(`點數不足！抽取「${deck.name}」需要 ${deck.costPerDraw} 點，您目前擁有 ${currentPoints} 點。您可以透過四方箱型冥想或每日登入獲取點數 ✨`);
+    const { effectiveCost, isFree } = getDeckDrawCost(deck);
+
+    // 檢查點數 (若為免費則不受點數不足阻擋)
+    if (!isFree && currentPoints < effectiveCost) {
+      setInsufficientError(
+        `點數不足！抽取「${deck.name}」需要 ${effectiveCost} 點，您目前擁有 ${currentPoints} 點。您可以透過四方箱型呼吸冥想或每日登入累積星光點數 ✨`
+      );
       sound.playSparkle();
       return;
     }
@@ -75,12 +95,17 @@ export default function MultiDeckDrawModal({
     setInsufficientError(null);
     setSelectedDeck(deck);
     setIsDrawing(true);
+    setWasLastDrawFree(isFree);
     sound.playSingingBowl432();
 
-    // 扣除點數
-    const newPoints = Math.max(0, currentPoints - deck.costPerDraw);
-    localStore.setPoints(newPoints);
-    onPointsUpdated(newPoints);
+    // 扣除點數與記錄每日免費
+    if (isFree) {
+      markDeckFreeUsedToday(deck.id);
+    } else {
+      const newPoints = Math.max(0, currentPoints - effectiveCost);
+      localStore.setPoints(newPoints);
+      onPointsUpdated(newPoints);
+    }
 
     // 模擬洗牌神秘延遲
     setTimeout(() => {
@@ -90,6 +115,14 @@ export default function MultiDeckDrawModal({
       setIsSavedToArchive(false);
       sound.playSparkle();
     }, 650);
+  };
+
+  // 快速抽取今日宇宙靈魂牌卡
+  const handleQuickDrawCosmic = () => {
+    const cosmicDeck = decks.find((d) => d.id === 'cosmic_soul') || decks[0];
+    if (cosmicDeck) {
+      handleDrawCard(cosmicDeck);
+    }
   };
 
   // 收藏至檔案庫
@@ -135,6 +168,53 @@ export default function MultiDeckDrawModal({
     setTimeout(() => setSavedSuccessMsg(''), 2500);
   };
 
+  // 同步 Google 試算表牌卡後台
+  const handleSyncGoogleSheets = async () => {
+    if (!sheetId.trim()) {
+      setSavedSuccessMsg('⚠️ 請先輸入 Google 試算表 ID');
+      setTimeout(() => setSavedSuccessMsg(''), 3000);
+      return;
+    }
+    setIsSyncingSheet(true);
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soul_oracle_sheet_id', sheetId.trim());
+      }
+      const fetchedCards = await googleSheetsService.getCards(sheetId.trim());
+      if (fetchedCards && fetchedCards.length > 0) {
+        // 將試算表牌卡同步至今日宇宙金句卡中
+        const updatedDecks = decks.map((d) => {
+          if (d.id === 'cosmic_soul') {
+            const sheetDeckCards: OracleDeckCard[] = fetchedCards.map((c) => ({
+              id: c.id,
+              title: c.title,
+              quote: c.quote,
+              guide: c.guide,
+              category: c.category,
+              colorGradient: c.colorGradient,
+            }));
+            return {
+              ...d,
+              cards: sheetDeckCards,
+            };
+          }
+          return d;
+        });
+        setDecks(updatedDecks);
+        saveOracleDecks(updatedDecks);
+        setSavedSuccessMsg(`✓ 成功從 Google 試算表同步 ${fetchedCards.length} 張牌卡！`);
+      } else {
+        setSavedSuccessMsg('✓ 試算表連線成功，已為最新版本');
+      }
+    } catch (e) {
+      console.error(e);
+      setSavedSuccessMsg('⚠️ 同步發生異常，請確認試算表已「共用 ➔ 發布到網絡 (.csv)」');
+    } finally {
+      setIsSyncingSheet(false);
+      setTimeout(() => setSavedSuccessMsg(''), 3500);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
       <motion.div
@@ -155,7 +235,7 @@ export default function MultiDeckDrawModal({
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-light text-white tracking-wider flex items-center gap-1.5">
-                <span>神聖牌卡殿堂</span>
+                <span>05 抽卡專區 ‧ 靈魂牌卡館</span>
               </h2>
               <p className="text-[10px] sm:text-xs text-amber-200/60 font-mono tracking-widest">
                 SACRED ORACLE SANCTUARY
@@ -170,13 +250,13 @@ export default function MultiDeckDrawModal({
               <span>{currentPoints} 點</span>
             </div>
 
-            {/* 後台點數設定開關 */}
+            {/* 後台與試算表設定開關 */}
             <button
               onClick={() => {
                 sound.playSparkle();
                 setIsSettingsOpen(!isSettingsOpen);
               }}
-              title="牌組點數管理與設定"
+              title="Google 試算表後台與點數管理"
               className={`p-1.5 rounded-full border transition-all ${
                 isSettingsOpen
                   ? 'bg-amber-400/20 border-amber-300 text-amber-200'
@@ -212,64 +292,95 @@ export default function MultiDeckDrawModal({
           </div>
         )}
 
-        {/* 設定模式：自訂修改扣除點數與重設 */}
+        {/* 設定模式：Google 試算表後台同步 & 點數自訂管理 */}
         {isSettingsOpen && (
-          <div className="mt-3 p-3 sm:p-4 rounded-2xl bg-black/60 border border-amber-300/30 relative z-10 animate-fade-in">
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
-              <span className="text-xs text-amber-200 font-medium flex items-center gap-1.5">
-                <Settings className="w-3.5 h-3.5 text-amber-300" />
-                <span>⚙️ 牌組抽卡點數後台管理 (隨時可修改)</span>
-              </span>
-              <button
-                onClick={handleResetDefaults}
-                className="flex items-center gap-1 text-[11px] text-white/60 hover:text-amber-200 transition-colors"
-                title="恢復預設點數與牌卡"
-              >
-                <RotateCcw className="w-3 h-3" />
-                <span>恢復原廠預設</span>
-              </button>
-            </div>
-
-            {savedSuccessMsg && (
-              <div className="mb-2.5 text-xs text-emerald-300 flex items-center gap-1 font-mono">
-                <Check className="w-3.5 h-3.5" />
-                <span>{savedSuccessMsg}</span>
+          <div className="mt-3 p-3.5 sm:p-4 rounded-2xl bg-black/75 border border-amber-300/35 relative z-10 animate-fade-in space-y-3">
+            {/* Google 試算表 CMS 後台整合區塊 */}
+            <div className="p-3 rounded-xl bg-gradient-to-r from-emerald-950/40 to-teal-950/40 border border-emerald-400/30">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-emerald-200 font-medium flex items-center gap-1.5">
+                  <FileSpreadsheet className="w-4 h-4 text-emerald-300" />
+                  <span>Google 試算表後台同步 (修改文字內容與增加牌卡)</span>
+                </span>
+                <span className="text-[10px] text-emerald-300/70 font-mono">雲端即時同步</span>
               </div>
-            )}
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-              {decks.map((deck) => (
-                <div
-                  key={deck.id}
-                  className="p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between gap-2"
+              <p className="text-[11px] text-white/70 font-light mb-2.5 leading-relaxed">
+                您可以在 Google 試算表中自由修改牌卡金句、指引練習或新增卡片。試算表點選「檔案 ➔ 共用 ➔ 發布到網絡 (CSV)」後，在此填入 Sheet ID 即可一鍵同步！
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="請輸入 Google Sheet ID (例如：1BxiMVs0XRA...)"
+                  value={sheetId}
+                  onChange={(e) => setSheetId(e.target.value)}
+                  className="flex-1 px-3 py-1.5 rounded-xl bg-black/70 border border-emerald-400/40 text-xs text-emerald-100 placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-emerald-300"
+                />
+                <button
+                  onClick={handleSyncGoogleSheets}
+                  disabled={isSyncingSheet}
+                  className="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all shadow active:scale-95 disabled:opacity-50 shrink-0"
                 >
-                  <div className="flex items-center gap-1.5 truncate">
-                    <span>{deck.icon}</span>
-                    <span className="text-white font-medium truncate">{deck.name}</span>
-                  </div>
-                  <div className="flex items-center gap-1 shrink-0">
-                    <span className="text-white/60 text-[11px]">扣除:</span>
-                    <input
-                      type="number"
-                      min="0"
-                      max="999"
-                      value={deck.costPerDraw}
-                      onChange={(e) => handleUpdateCost(deck.id, parseInt(e.target.value) || 0)}
-                      className="w-14 px-2 py-0.5 rounded-lg bg-black/80 border border-amber-300/40 text-amber-200 text-center font-mono text-xs focus:outline-none focus:ring-1 focus:ring-amber-300"
-                    />
-                    <span className="text-amber-300 text-[11px]">點</span>
-                  </div>
-                </div>
-              ))}
+                  <RefreshCw className={`w-3.5 h-3.5 ${isSyncingSheet ? 'animate-spin' : ''}`} />
+                  <span>{isSyncingSheet ? '同步中...' : '同步牌卡'}</span>
+                </button>
+              </div>
             </div>
-            <p className="text-[10px] text-white/40 mt-2 text-right">
-              ※ 修改立即生效，資料儲存於瀏覽器專屬空間，可自由隨時調整
-            </p>
+
+            {/* 牌組抽卡點數手動微調 */}
+            <div className="pt-2 border-t border-white/10">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-amber-200 font-medium flex items-center gap-1.5">
+                  <Settings className="w-3.5 h-3.5 text-amber-300" />
+                  <span>⚙️ 各牌組抽卡扣除點數微調</span>
+                </span>
+                <button
+                  onClick={handleResetDefaults}
+                  className="flex items-center gap-1 text-[11px] text-white/60 hover:text-amber-200 transition-colors"
+                  title="恢復預設點數與牌卡"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>恢復預設</span>
+                </button>
+              </div>
+
+              {savedSuccessMsg && (
+                <div className="mb-2 text-xs text-emerald-300 flex items-center gap-1 font-mono">
+                  <Check className="w-3.5 h-3.5" />
+                  <span>{savedSuccessMsg}</span>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                {decks.map((deck) => (
+                  <div
+                    key={deck.id}
+                    className="p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between gap-2"
+                  >
+                    <div className="flex items-center gap-1.5 truncate">
+                      <span>{deck.icon}</span>
+                      <span className="text-white font-medium truncate">{deck.name}</span>
+                    </div>
+                    <div className="flex items-center gap-1 shrink-0">
+                      <span className="text-white/60 text-[11px]">扣除:</span>
+                      <input
+                        type="number"
+                        min="0"
+                        max="999"
+                        value={deck.costPerDraw}
+                        onChange={(e) => handleUpdateCost(deck.id, parseInt(e.target.value) || 0)}
+                        className="w-14 px-2 py-0.5 rounded-lg bg-black/80 border border-amber-300/40 text-amber-200 text-center font-mono text-xs focus:outline-none focus:ring-1 focus:ring-amber-300"
+                      />
+                      <span className="text-amber-300 text-[11px]">點</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
         {/* 主畫面：卡片揭曉 (狀態 1) 或 牌組選擇 (狀態 2) */}
-        <div className="mt-4 relative z-10">
+        <div className="mt-3 sm:mt-4 relative z-10">
           {/* ================= 狀態 1：牌卡揭曉 ================= */}
           {drawnCard && selectedDeck && !isDrawing ? (
             <motion.div
@@ -291,9 +402,11 @@ export default function MultiDeckDrawModal({
               >
                 <div className="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 rounded-full bg-amber-400/10 blur-2xl pointer-events-none" />
 
-                <div className="flex items-center justify-between text-xs text-amber-200/60 font-mono mb-2">
+                <div className="flex items-center justify-between text-xs text-amber-200/70 font-mono mb-2">
                   <span>✦ SACRED CARD REVEALED ✦</span>
-                  <span>扣除 {selectedDeck.costPerDraw} 點</span>
+                  <span className={wasLastDrawFree ? 'text-emerald-300 font-bold' : ''}>
+                    {wasLastDrawFree ? '✨ 今日首次免費恩典' : `扣除 ${selectedDeck.costPerDraw} 點`}
+                  </span>
                 </div>
 
                 <h3 className="text-xl sm:text-2xl font-light text-white tracking-wide mb-3 flex items-center gap-2">
@@ -318,7 +431,13 @@ export default function MultiDeckDrawModal({
                   className="flex items-center gap-1.5 py-2 px-5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-bold text-xs tracking-wider transition-all shadow-md active:scale-95"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>再抽一張 (扣 {selectedDeck.costPerDraw} 點)</span>
+                  <span>
+                    再抽一張 (
+                    {getDeckDrawCost(selectedDeck).isFree
+                      ? '免費'
+                      : `扣 ${getDeckDrawCost(selectedDeck).effectiveCost} 點`}
+                    )
+                  </span>
                 </button>
 
                 <button
@@ -368,76 +487,136 @@ export default function MultiDeckDrawModal({
               </motion.div>
               <div className="space-y-1">
                 <p className="text-sm text-white font-light tracking-widest">
-                  正在洗牌並連結高頻訊息...
+                  正在洗牌並連結神聖指引...
                 </p>
                 <p className="text-xs text-amber-200/60 font-mono">
-                  ALIGNING FREQUENCY & DEDUCTING {selectedDeck?.costPerDraw} PTS
+                  {wasLastDrawFree
+                    ? '✨ CONNECTING HIGHER CONSCIOUSNESS (FIRST DRAW FREE)'
+                    : `ALIGNING FREQUENCY & DEDUCTING ${selectedDeck?.costPerDraw} PTS`}
                 </p>
               </div>
             </div>
           ) : (
             /* ================= 狀態 2：多套組牌卡選擇列表 ================= */
             <div className="space-y-3">
-              <div className="flex items-center justify-between text-xs text-amber-200/70 px-1">
-                <span>請選擇您想連結的神聖牌卡套組：</span>
-                <span className="text-[11px] text-white/50">共 {decks.length} 組神諭卡</span>
+              {/* 原首頁中間之【快速抽取今日宇宙靈魂牌卡】改放入此處最上方 */}
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-purple-500/15 to-indigo-500/15 border border-amber-300/30 flex flex-col sm:flex-row items-center justify-between gap-2.5 shadow-md">
+                <div className="text-center sm:text-left">
+                  <div className="flex items-center justify-center sm:justify-start gap-1.5 text-xs text-amber-200 font-medium">
+                    <Compass className="w-4 h-4 text-amber-300" />
+                    <span>今日直覺調頻 ‧ 宇宙指引</span>
+                  </div>
+                  <p className="text-[11px] text-white/60 font-light mt-0.5">
+                    今日首次抽卡免費，點擊立即接收源頭宇宙對你的第一道光芒祝福
+                  </p>
+                </div>
+                <button
+                  onClick={handleQuickDrawCosmic}
+                  className="flex items-center gap-1.5 py-2 px-4 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-bold text-xs tracking-wider transition-all shadow-md group active:scale-95 shrink-0"
+                >
+                  <Compass className="w-3.5 h-3.5 text-slate-950 group-hover:rotate-45 transition-transform" />
+                  <span>✦ 快速抽取今日宇宙靈魂牌卡 ✦</span>
+                </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[55vh] overflow-y-auto pr-1">
-                {decks.map((deck) => (
-                  <motion.div
-                    key={deck.id}
-                    whileHover={{ scale: 1.01 }}
-                    className={`p-3.5 sm:p-4 rounded-2xl bg-gradient-to-b ${deck.themeGradient} border ${deck.borderClass} shadow-lg transition-all flex flex-col justify-between gap-3 text-left group`}
-                  >
-                    <div>
-                      {/* 標題與圖示 */}
-                      <div className="flex items-center justify-between gap-2 mb-1.5">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xl sm:text-2xl">{deck.icon}</span>
-                          <div>
-                            <h4 className="text-sm sm:text-base font-light text-white tracking-wide group-hover:text-amber-200 transition-colors">
-                              {deck.name}
-                            </h4>
-                            <span className="text-[9px] font-mono text-white/40 block">
-                              {deck.english}
-                            </span>
+              {/* 牌卡清單引導與後台提示 */}
+              <div className="flex items-center justify-between text-xs text-amber-200/70 px-1 pt-1">
+                <span>請選擇您想連結的神聖牌卡套組：</span>
+                <span className="text-[11px] text-white/50">共 {decks.length} 組神諭卡 ‧ 支援後台即時更新</span>
+              </div>
+
+              {/* 牌組清單 Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1">
+                {decks.map((deck) => {
+                  const { effectiveCost, isFree } = getDeckDrawCost(deck);
+                  const isAffordable = isFree || currentPoints >= effectiveCost;
+
+                  return (
+                    <motion.div
+                      key={deck.id}
+                      whileHover={{ scale: 1.01 }}
+                      className={`p-3.5 sm:p-4 rounded-2xl bg-gradient-to-b ${deck.themeGradient} border ${deck.borderClass} shadow-lg transition-all flex flex-col justify-between gap-3 text-left group`}
+                    >
+                      <div>
+                        {/* 標題與圖示 */}
+                        <div className="flex items-start justify-between gap-2 mb-1.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl sm:text-2xl">{deck.icon}</span>
+                            <div>
+                              <h4 className="text-sm sm:text-base font-light text-white tracking-wide group-hover:text-amber-200 transition-colors">
+                                {deck.name}
+                              </h4>
+                              <span className="text-[9px] font-mono text-white/40 block">
+                                {deck.english}
+                              </span>
+                            </div>
                           </div>
+
+                          {/* 消耗點數與免費 Badge */}
+                          {deck.id === 'cosmic_soul' || deck.id === 'angel_guardians' ? (
+                            isFree ? (
+                              <div className="flex items-center gap-1 px-2.5 py-0.8 rounded-full bg-emerald-400/20 border border-emerald-300/40 text-emerald-200 text-[10.5px] font-mono shrink-0 shadow-sm animate-pulse">
+                                <Sparkles className="w-3 h-3 text-emerald-300" />
+                                <span>首次免費</span>
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-1 px-2 py-0.8 rounded-full bg-amber-400/10 border border-amber-300/30 text-amber-200 text-[10.5px] font-mono shrink-0 shadow-sm">
+                                <Star className="w-3 h-3 text-amber-300" />
+                                <span>{deck.costPerDraw} 點/張</span>
+                              </div>
+                            )
+                          ) : (
+                            <div className="flex items-center gap-1 px-2 py-0.8 rounded-full bg-amber-400/10 border border-amber-300/30 text-amber-200 text-[10.5px] font-mono shrink-0 shadow-sm">
+                              <Star className="w-3 h-3 text-amber-300" />
+                              <span>{deck.costPerDraw} 點/張</span>
+                            </div>
+                          )}
                         </div>
 
-                        {/* 消耗點數 Badge */}
-                        <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-300/30 text-amber-200 text-xs font-mono shrink-0 shadow-sm">
-                          <Sparkles className="w-3 h-3 text-amber-300" />
-                          <span>{deck.costPerDraw} 點/張</span>
+                        {/* 說明文字 */}
+                        <p className="text-xs text-white/70 font-light leading-relaxed line-clamp-2">
+                          {deck.description}
+                        </p>
+
+                        {/* 費用規則備註 */}
+                        <div className="mt-1 text-[10.5px] text-amber-300/70 font-mono">
+                          {deck.id === 'cosmic_soul' || deck.id === 'angel_guardians' ? (
+                            isFree ? (
+                              <span>✨ 今日第 1 次免費，第 2 次起扣 10 點</span>
+                            ) : (
+                              <span className="text-white/40">今日免費已使用 ‧ 扣 10 點/張</span>
+                            )
+                          ) : (
+                            <span>🪙 每次抽取扣 10 點</span>
+                          )}
                         </div>
                       </div>
 
-                      {/* 說明文字 */}
-                      <p className="text-xs text-white/70 font-light leading-relaxed line-clamp-2">
-                        {deck.description}
-                      </p>
-                    </div>
+                      {/* 底部按鈕 */}
+                      <div className="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
+                        <span className="text-[11px] text-white/40 font-mono">
+                          內含 {deck.cards.length} 張指引卡
+                        </span>
 
-                    {/* 底部按鈕 */}
-                    <div className="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
-                      <span className="text-[11px] text-white/40 font-mono">
-                        內含 {deck.cards.length} 張指引卡
-                      </span>
-
-                      <button
-                        onClick={() => handleDrawCard(deck)}
-                        className={`inline-flex items-center gap-1.5 py-1.5 px-4 rounded-full font-medium text-xs transition-all shadow-sm active:scale-95 ${
-                          currentPoints >= deck.costPerDraw
-                            ? 'bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-bold'
-                            : 'bg-white/10 text-white/50 border border-white/10 hover:bg-white/15'
-                        }`}
-                      >
-                        <span>{currentPoints >= deck.costPerDraw ? '洗牌抽取' : '點數不足'}</span>
-                        <Sparkles className="w-3 h-3" />
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
+                        <button
+                          onClick={() => handleDrawCard(deck)}
+                          className={`inline-flex items-center gap-1.5 py-1.5 px-4 rounded-full font-medium text-xs transition-all shadow-sm active:scale-95 ${
+                            isFree
+                              ? 'bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 text-slate-950 font-bold'
+                              : isAffordable
+                              ? 'bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-bold'
+                              : 'bg-white/10 text-white/50 border border-white/10 hover:bg-white/15'
+                          }`}
+                        >
+                          <span>
+                            {isFree ? '今日免費抽取 ✨' : isAffordable ? '洗牌抽取' : '點數不足'}
+                          </span>
+                          <Sparkles className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           )}
