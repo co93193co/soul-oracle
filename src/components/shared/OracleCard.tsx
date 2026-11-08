@@ -29,7 +29,21 @@ export default function OracleCard({
     }
   };
 
-  const isRelease = card.deckType === 'release';
+  const getDeckMeta = () => {
+    switch (card.deckType) {
+      case 'release':
+        return { label: '🌙 釋放', icon: <Moon className="w-8 h-8 text-indigo-300 animate-pulse" /> };
+      case 'inquire':
+        return { label: '🔮 提問', icon: <Sparkles className="w-8 h-8 text-purple-300 animate-pulse" /> };
+      case 'receive':
+        return { label: '🕊️ 接收', icon: <Sparkles className="w-8 h-8 text-teal-300 animate-pulse" /> };
+      case 'manifest':
+      default:
+        return { label: '☀️ 顯化', icon: <Sun className="w-8 h-8 text-amber-300 animate-pulse" /> };
+    }
+  };
+
+  const deckMeta = getDeckMeta();
 
   return (
     <div
@@ -55,7 +69,7 @@ export default function OracleCard({
           {/* 四角星紋 */}
           <div className="w-full flex justify-between items-center text-amber-300/40 text-xs tracking-widest">
             <span>✧ SOUL ORACLE ✧</span>
-            <span>{isRelease ? '🌙 釋放' : '☀️ 顯化'}</span>
+            <span>{deckMeta.label}</span>
           </div>
 
           {/* 中央神秘徽章 */}
@@ -66,11 +80,7 @@ export default function OracleCard({
               className="w-28 h-28 rounded-full border border-dashed border-amber-300/30 flex items-center justify-center"
             >
               <div className="w-20 h-20 rounded-full border border-amber-300/40 flex items-center justify-center bg-amber-400/5">
-                {isRelease ? (
-                  <Moon className="w-8 h-8 text-indigo-300 animate-pulse" />
-                ) : (
-                  <Sun className="w-8 h-8 text-amber-300 animate-pulse" />
-                )}
+                {deckMeta.icon}
               </div>
             </motion.div>
             <p className="mt-6 text-amber-100/80 tracking-widest text-sm font-light">

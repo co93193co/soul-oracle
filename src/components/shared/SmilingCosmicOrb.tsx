@@ -9,7 +9,7 @@ export type OrbMode = 'idle' | 'breathing' | 'affirming' | 'transmitting';
 interface SmilingCosmicOrbProps {
   mode?: OrbMode;
   guideText?: string;
-  themeColor?: 'amber' | 'indigo' | 'rose';
+  themeColor?: 'amber' | 'indigo' | 'rose' | 'purple' | 'teal';
   onOrbClick?: () => void;
   size?: 'sm' | 'md' | 'lg';
 }
@@ -37,6 +37,8 @@ export default function SmilingCosmicOrb({
     amber: 'from-amber-200 via-rose-200 to-indigo-200',
     indigo: 'from-indigo-300 via-purple-200 to-sky-200',
     rose: 'from-rose-300 via-amber-200 to-fuchsia-200',
+    purple: 'from-purple-300 via-pink-200 to-indigo-200',
+    teal: 'from-teal-300 via-cyan-200 to-emerald-200',
   }[themeColor];
 
   const glowColors = {
@@ -57,6 +59,18 @@ export default function SmilingCosmicOrb({
       'drop-shadow(0 0 45px rgba(251, 113, 133, 0.75)) drop-shadow(0 0 80px rgba(251, 191, 36, 0.6))',
       'drop-shadow(0 0 30px rgba(251, 113, 133, 0.5)) drop-shadow(0 0 55px rgba(251, 191, 36, 0.45))',
       'drop-shadow(0 0 25px rgba(251, 113, 133, 0.45)) drop-shadow(0 0 50px rgba(251, 191, 36, 0.4))',
+    ],
+    purple: [
+      'drop-shadow(0 0 25px rgba(168, 85, 247, 0.45)) drop-shadow(0 0 50px rgba(236, 72, 153, 0.4))',
+      'drop-shadow(0 0 45px rgba(168, 85, 247, 0.75)) drop-shadow(0 0 80px rgba(236, 72, 153, 0.6))',
+      'drop-shadow(0 0 30px rgba(168, 85, 247, 0.5)) drop-shadow(0 0 55px rgba(236, 72, 153, 0.45))',
+      'drop-shadow(0 0 25px rgba(168, 85, 247, 0.45)) drop-shadow(0 0 50px rgba(236, 72, 153, 0.4))',
+    ],
+    teal: [
+      'drop-shadow(0 0 25px rgba(20, 184, 166, 0.45)) drop-shadow(0 0 50px rgba(52, 211, 153, 0.4))',
+      'drop-shadow(0 0 45px rgba(20, 184, 166, 0.75)) drop-shadow(0 0 80px rgba(52, 211, 153, 0.6))',
+      'drop-shadow(0 0 30px rgba(20, 184, 166, 0.5)) drop-shadow(0 0 55px rgba(52, 211, 153, 0.45))',
+      'drop-shadow(0 0 25px rgba(20, 184, 166, 0.45)) drop-shadow(0 0 50px rgba(52, 211, 153, 0.4))',
     ],
   }[themeColor];
 
