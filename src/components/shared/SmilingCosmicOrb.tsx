@@ -47,8 +47,8 @@ export default function SmilingCosmicOrb({
   const sizeClasses = {
     xs: 'w-10 h-10 sm:w-12 sm:h-12',
     sm: 'w-[68px] h-[68px] sm:w-[78px] sm:h-[78px]',
-    md: 'w-[96px] h-[96px] sm:w-[110px] sm:h-[110px]',
-    lg: 'w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48',
+    md: 'w-[120px] h-[120px] sm:w-[138px] sm:h-[138px]',
+    lg: 'w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52',
   }[size];
 
   // 顏色與漸變配置
@@ -237,9 +237,9 @@ export default function SmilingCosmicOrb({
                   rotate: [0, 90, 180, 270, 360],
                 }}
                 transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute top-1.5 right-3 sm:top-2 sm:right-3.5 pointer-events-none drop-shadow-[0_0_12px_rgba(251,191,36,0.95)] drop-shadow-[0_0_24px_rgba(254,240,138,0.85)]"
+                className="absolute top-2 right-4 sm:top-2.5 sm:right-5 pointer-events-none drop-shadow-[0_0_12px_rgba(251,191,36,0.95)] drop-shadow-[0_0_24px_rgba(254,240,138,0.85)]"
               >
-                <svg viewBox="0 0 24 24" className="w-5 h-5 sm:w-6 sm:h-6 overflow-visible">
+                <svg viewBox="0 0 24 24" className="w-6 h-6 sm:w-7 sm:h-7 overflow-visible">
                   <path
                     d="M12 1 C12 7.5 7.5 12 1 12 C7.5 12 12 16.5 12 23 C12 16.5 16.5 12 23 12 C16.5 12 12 7.5 12 1 Z"
                     fill="url(#starGradientV5)"
