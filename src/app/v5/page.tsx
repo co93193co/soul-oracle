@@ -137,7 +137,7 @@ export default function V5Page() {
       english: 'RELEASE & SURRENDER',
       title: '🌙 釋放之門 ‧ 心靈傾訴',
       description:
-        '倒出積壓的心事與煩惱，在文字散去的星塵中放手，透過 4-4 呼吸調頻，接收宇宙智者的三層溫暖回信與解憂覺察卡。',
+        '倒出心底積壓的疲憊與心事，看著文字如星光輕輕散去。在 4-4 深呼吸中放鬆下來，接收來自宇宙的溫暖回應，找回內在的輕鬆與平靜。',
       actionText: '推開釋放之門 ➔',
       themeGradient: 'from-[#111636]/90 via-[#0d1028]/90 to-[#070919]/95',
       borderClass: 'border-indigo-400/40 hover:border-indigo-400/80',
@@ -157,7 +157,7 @@ export default function V5Page() {
       english: 'INQUIRE & CLARIFY',
       title: '🔮 提問之門 ‧ 靈魂探問',
       description:
-        '帶著你心中最核心的困惑與抉擇，向浩瀚宇宙提出真誠探問。撥開盲點迷霧，看見事件背後的深層學習與靈魂方向指引。',
+        '帶著你心裡最在意的疑問，向浩瀚宇宙真誠聊聊。撥開紛亂的想法，看清內在真正的需要，在溫柔的視角裡看見答案與前行方向。',
       actionText: '推開提問之門 ➔',
       themeGradient: 'from-[#1d1135]/90 via-[#130a24]/90 to-[#090513]/95',
       borderClass: 'border-purple-400/40 hover:border-purple-400/80',
@@ -178,7 +178,7 @@ export default function V5Page() {
       title: '🕊️ 接收之門 ‧ 靈感聆聽',
       badge: `+${meditationStats.streakDays}天`,
       description:
-        '放下掌控與內在緊繃，將心輪完全敞開如同一只純淨空杯。透過四方神聖箱型呼吸冥想與心靈音樂，盛接宇宙的高頻靈感與恩典卡。',
+        '暫時放下頭腦的忙碌與緊繃，給自己一段安靜放空的時光。在舒緩的深呼吸與心靈音樂中放鬆身心，盛接宇宙為你準備的滿滿靈感與暖心祝福。',
       actionText: '推開接收之門 (進入冥想與音樂) ➔',
       themeGradient: 'from-[#0a2328]/90 via-[#07171b]/90 to-[#030d10]/95',
       borderClass: 'border-teal-400/40 hover:border-teal-400/80',
@@ -195,10 +195,10 @@ export default function V5Page() {
       tabNumber: '04',
       tabLabel: '04 宣告之門',
       icon: Globe,
-      english: 'PROCLAIM & ALIGN TO COSMOS',
+      english: 'PROCLAIM & ALIGN',
       title: '💫 宣告之門 ‧ 宇宙發願',
       description:
-        '將深藏心底的真摯祈願，化作純淨星塵向浩瀚宇宙大聲宣告。在此寫下匿名心願注入集體星河，彼此加持「允許發生」，信任宇宙必有回響。',
+        '把你心底最真誠的心願與期待，化作星光向廣闊宇宙大聲說出來。在此寫下匿名願望注入大家的心願星河，彼此溫柔祝福「允許發生」，宇宙正認真聽著你的聲音。',
       actionText: '推開宣告之門 (寫下願望星願) ➔',
       themeGradient: 'from-[#0b252c]/90 via-[#06191f]/90 to-[#020e12]/95',
       borderClass: 'border-teal-400/40 hover:border-teal-300/80',
@@ -217,7 +217,7 @@ export default function V5Page() {
       english: 'MANIFEST & ACTUALIZE',
       title: '☀️ 顯化之門 ‧ 願景成真',
       description:
-        '當真摯心願已向天宣告，此門為你築起實相顯影的基石。深植信念種子，藉由肯定句頻率洗滌潛意識盲點，信任宇宙安排，體驗『早已圓滿』，靜待一切美好自然成真。',
+        '當真心許下的願望已經出發，此門為你築起夢想成真的溫暖基石。深植信心種子，藉由肯定句慢慢融化自我懷疑，體驗當下的踏實與安心，靜待一切美好自然到來。',
       actionText: '推開顯化之門 (金種播種‧肯定句) ➔',
       themeGradient: 'from-[#251910]/90 via-[#18110b]/90 to-[#0c0805]/95',
       borderClass: 'border-amber-400/40 hover:border-amber-400/80',
@@ -238,8 +238,8 @@ export default function V5Page() {
       english: 'SYNCHRONICITY & ORACLES',
       title: '✨ 共時之門 ‧ 靈魂指引',
       description:
-        '匯聚浩瀚宇宙的高頻神聖牌卡。靜心深呼吸，傾聽直覺呼喚，接收今日宇宙金句、守護天使與魔法獨角獸帶來的即時恩典與能量指引。',
-      actionText: '推開共時之門 (今日金句‧天使‧獨角獸) ➔',
+        '每一次直覺的相遇，都是宇宙為你準備的心靈默契。靜心做個深呼吸，跟隨直覺抽取今日金句卡、陪伴天使卡、獨角獸卡……等卡，感受奇蹟密碼。',
+      actionText: '推開共時之門 (今日金句‧天使‧獨角獸…等卡) ➔',
       themeGradient: 'from-[#22102f]/90 via-[#160a22]/90 to-[#0a0412]/95',
       borderClass: 'border-fuchsia-400/40 hover:border-amber-300/80',
       accentColor: 'text-amber-200',

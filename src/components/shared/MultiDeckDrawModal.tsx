@@ -405,7 +405,7 @@ export default function MultiDeckDrawModal({
                 <div className="flex items-center justify-between text-xs text-amber-200/70 font-mono mb-2">
                   <span>✦ SACRED CARD REVEALED ✦</span>
                   <span className={wasLastDrawFree ? 'text-emerald-300 font-bold' : ''}>
-                    {wasLastDrawFree ? '✨ 今日首次免費恩典' : `扣除 ${selectedDeck.costPerDraw} 點`}
+                    {wasLastDrawFree ? '✨ 今日首次免費' : `扣除 ${selectedDeck.costPerDraw} 點`}
                   </span>
                 </div>
 
