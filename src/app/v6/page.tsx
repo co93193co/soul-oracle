@@ -377,33 +377,21 @@ export default function V6Page() {
                       className={`absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 rounded-full ${currentGate.glowBg} blur-3xl pointer-events-none`}
                     />
 
-                    {/* 門戶名稱 */}
-                    <div className="text-xs font-mono tracking-widest text-white/50 uppercase mb-1">
-                      STEP 0{selectedGateIndex + 1} ‧ {currentGate.english}
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-light text-white tracking-wide mb-3 flex items-center justify-center gap-2">
-                      <span>{currentGate.title}</span>
-                    </h3>
-
-                    {/* 用戶指定的精簡核心內容 (只寫這行) */}
-                    <div className="my-4 py-3 px-4 rounded-2xl bg-white/5 border border-white/10 shadow-inner">
-                      <p className="text-base sm:text-lg font-light text-white tracking-wider">
-                        「{currentGate.corePhrase}」
+                    {/* 第一行：心情書寫 ‧ 覺察恐懼 (依門戶切換) */}
+                    <div className="py-2">
+                      <p className="text-base sm:text-lg font-light text-white tracking-widest">
+                        {currentGate.corePhrase}
                       </p>
                     </div>
 
-                    {/* 推開進入與箭頭圖示按鈕 */}
-                    <div className="pt-2 flex items-center justify-center">
+                    {/* 第二行：推開進入與箭頭圖示 */}
+                    <div className="pt-3 flex items-center justify-center">
                       <span
-                        className={`inline-flex items-center gap-2 py-2.5 px-6 rounded-full bg-white/10 group-hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-medium ${currentGate.accentText} group-hover:text-white transition-all shadow-md group-hover:scale-105`}
+                        className={`inline-flex items-center gap-2 py-2 px-6 sm:px-7 rounded-full bg-white/10 group-hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-medium ${currentGate.accentText} group-hover:text-white transition-all shadow-md group-hover:scale-105`}
                       >
                         <span>推開進入</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </span>
-                    </div>
-
-                    <div className="text-[10px] text-white/40 mt-3 font-light">
-                      (可點擊進入 ‧ 左右滑動切換門戶)
                     </div>
                   </motion.div>
                 </AnimatePresence>
