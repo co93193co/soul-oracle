@@ -79,6 +79,9 @@ export default function V5Page() {
   // 快速抽卡
   const [quickCard, setQuickCard] = useState<OracleCardData | null>(null);
 
+  // Logo 微笑光球光點/心跳動畫樣式即時比對：'original' | 'star' | 'heartCore'
+  const [orbSparkleStyle, setOrbSparkleStyle] = useState<'original' | 'star' | 'heartCore'>('star');
+
   useEffect(() => {
     setCurrentUser(localStore.getUser());
     setPoints(localStore.getPoints() || 365);
@@ -311,6 +314,7 @@ export default function V5Page() {
                   size="md"
                   themeColor="amber"
                   align="center"
+                  sparkleStyle={orbSparkleStyle}
                   onOrbClick={() => {
                     sound.playHeartbeat();
                   }}
@@ -321,6 +325,52 @@ export default function V5Page() {
               <p className="text-[12.5px] sm:text-[14px] md:text-base text-amber-50/95 font-light tracking-wide text-center drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
                 允許自己成為自己
               </p>
+
+              {/* 5. 樣式即時比對切換器 (方便您直觀評估：原本 vs 方案 A vs 方案 C) */}
+              <div className="flex items-center justify-center gap-1 sm:gap-1.5 mt-1 sm:mt-1.5 py-0.5 px-2 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-sm select-none">
+                <span className="text-[9.5px] sm:text-[10px] text-amber-200/60 font-mono tracking-wider">
+                  樣式比對:
+                </span>
+                <button
+                  onClick={() => {
+                    sound.playSparkle();
+                    setOrbSparkleStyle('original');
+                  }}
+                  className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-medium transition-all cursor-pointer ${
+                    orbSparkleStyle === 'original'
+                      ? 'bg-amber-400/30 text-amber-100 border border-amber-300/60 shadow-[0_0_8px_rgba(251,191,36,0.3)]'
+                      : 'text-stone-300 hover:text-white'
+                  }`}
+                >
+                  原本(白光點)
+                </button>
+                <button
+                  onClick={() => {
+                    sound.playSparkle();
+                    setOrbSparkleStyle('star');
+                  }}
+                  className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-medium transition-all cursor-pointer ${
+                    orbSparkleStyle === 'star'
+                      ? 'bg-amber-400/30 text-amber-100 border border-amber-300/60 shadow-[0_0_8px_rgba(251,191,36,0.3)]'
+                      : 'text-stone-300 hover:text-white'
+                  }`}
+                >
+                  方案A(四芒星✦)
+                </button>
+                <button
+                  onClick={() => {
+                    sound.playSparkle();
+                    setOrbSparkleStyle('heartCore');
+                  }}
+                  className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-medium transition-all cursor-pointer ${
+                    orbSparkleStyle === 'heartCore'
+                      ? 'bg-pink-400/30 text-pink-100 border border-pink-300/60 shadow-[0_0_8px_rgba(244,114,182,0.3)]'
+                      : 'text-stone-300 hover:text-white'
+                  }`}
+                >
+                  方案C(粉晶心輪❤️)
+                </button>
+              </div>
             </div>
 
             {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數：星星在上方，下方365點) */}

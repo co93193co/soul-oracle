@@ -13,6 +13,7 @@ interface SmilingCosmicOrbProps {
   themeColor?: 'amber' | 'indigo' | 'rose' | 'purple' | 'teal';
   onOrbClick?: () => void;
   size?: 'xs' | 'sm' | 'md' | 'lg';
+  sparkleStyle?: 'original' | 'star' | 'heartCore';
   logoText?: string;
   logoPosition?: 'left' | 'right';
   align?: 'left' | 'center';
@@ -27,6 +28,7 @@ export default function SmilingCosmicOrb({
   themeColor = 'amber',
   onOrbClick,
   size = 'md',
+  sparkleStyle = 'star',
   logoText,
   logoPosition = 'left',
   align = 'center',
@@ -222,8 +224,45 @@ export default function SmilingCosmicOrb({
               />
             </svg>
 
-            {/* 呼吸微星光點裝飾 */}
-            <div className="absolute top-3 right-5 w-2 h-2 rounded-full bg-white/90 blur-[0.5px] animate-ping" />
+            {/* 呼吸微星光點裝飾：支援 原本 / 方案 A (四芒星) / 方案 C (粉晶心輪) */}
+            {sparkleStyle === 'original' && (
+              <div className="absolute top-3 right-5 w-2 h-2 rounded-full bg-white/90 blur-[0.5px] animate-ping pointer-events-none" />
+            )}
+
+            {sparkleStyle === 'star' && (
+              <motion.div
+                animate={{
+                  scale: [0.85, 1.25, 0.85],
+                  opacity: [0.7, 1, 0.7],
+                  rotate: [0, 90, 180, 270, 360],
+                }}
+                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+                className="absolute top-2.5 right-4 pointer-events-none drop-shadow-[0_0_10px_rgba(254,240,138,0.95)]"
+              >
+                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-amber-100 fill-amber-100">
+                  <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" />
+                </svg>
+              </motion.div>
+            )}
+
+            {sparkleStyle === 'heartCore' && (
+              <motion.div
+                animate={{
+                  scale: [0.95, 1.25, 1.15, 1.28, 0.95],
+                  opacity: [0.75, 1, 0.85, 1, 0.75],
+                }}
+                transition={{
+                  duration: 2.2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+                className="absolute bottom-2.5 flex items-center justify-center pointer-events-none drop-shadow-[0_0_8px_rgba(244,114,182,0.9)]"
+              >
+                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-pink-300 text-pink-300">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+              </motion.div>
+            )}
           </motion.div>
         </div>
 
