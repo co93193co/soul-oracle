@@ -115,7 +115,7 @@ export default function SmilingCosmicOrb({
               {logoText}
             </h1>
             <span className="text-[9.5px] sm:text-[11px] text-amber-300/70 font-mono tracking-widest mt-0.5">
-              ✦ RECALL ✦
+              ✦ RECALLING ✦
             </span>
           </div>
         )}
@@ -227,7 +227,7 @@ export default function SmilingCosmicOrb({
               {logoText}
             </h1>
             <span className="text-[10px] sm:text-xs text-amber-300/70 font-mono tracking-widest mt-0.5">
-              ✦ RECALL ✦
+              ✦ RECALLING ✦
             </span>
           </div>
         )}
