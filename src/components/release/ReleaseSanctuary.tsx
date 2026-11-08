@@ -14,7 +14,16 @@ interface ReleaseSanctuaryProps {
   onOpenArchive: () => void;
 }
 
-const MOOD_TAGS = ['迷茫焦慮', '心力交瘁', '關係卡關', '自我懷疑', '憤怒委屈', '需要指引'];
+const MOOD_TAGS = [
+  '迷茫焦慮',
+  '心力交瘁',
+  '關係卡關',
+  '自我懷疑',
+  '憤怒委屈',
+  '悲傷失落',
+  '放不下過去',
+  '需要被理解',
+];
 
 export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanctuaryProps) {
   const [step, setStep] = useState<'input' | 'dissolving' | 'breathing' | 'revealing'>('input');
@@ -25,7 +34,8 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
   const [breathText, setBreathText] = useState('深吸一口氣... 吸入平靜');
 
   const handleRelease = async () => {
-    if (!inputText.trim()) return;
+    // 支援直接點選標籤放手，或書寫文字後放手
+    const finalContent = inputText.trim() || `此刻內在的感受：${mood}`;
 
     // 1. 播放 432Hz 接地磬聲
     sound.playSingingBowl432();
@@ -39,7 +49,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
     const apiPromise = fetch('/api/universe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mode: 'release', input: inputText, tag: mood }),
+      body: JSON.stringify({ mode: 'release', input: finalContent, tag: mood }),
     })
       .then((res) => res.json())
       .catch(() => ({ reply: '宇宙已全然聽見你的心事，在無條件的愛中，答案已靜靜來到...' }));
@@ -67,7 +77,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
         // 存入本機歷史紀錄
         localStore.saveInquiry({
           moodTag: mood,
-          journalText: inputText,
+          journalText: finalContent,
           universeReply: replyText,
           card,
         });
@@ -91,7 +101,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
         </button>
         <span className="text-xs tracking-widest text-indigo-300/80 font-light flex items-center gap-1.5">
           <Wind className="w-3.5 h-3.5 text-indigo-400" />
-          🌙 釋放之門 ‧ 心靈傾訴
+          🌙 釋放之門 ‧ 放手清理
         </span>
       </div>
 
@@ -109,24 +119,33 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
               <SmilingCosmicOrb
                 size="sm"
                 themeColor="indigo"
-                guideText="將心中的緊繃交給我，這裡完全包容你的一切"
+                sparkleStyle="original"
+                guideText="將心底沉積的疲憊與心事交付宇宙，在這裡，你被全然包容，允許放手"
               />
             </div>
 
-            {/* 心情標籤選擇 */}
+            {/* 心情標籤選擇 (支援直接點選即可一鍵放手) */}
             <div className="w-full mb-4">
-              <label className="text-xs text-amber-100/70 block mb-2 tracking-wider">
-                此刻內心最接近的感受：
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-xs text-amber-100/70 tracking-wider">
+                  此刻內心最貼近的感受（點選即可放手）：
+                </label>
+                <span className="text-[11px] text-indigo-300/80 font-light">
+                  ✦ 可直接選取，不必強迫打字
+                </span>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {MOOD_TAGS.map((t) => (
                   <button
                     key={t}
-                    onClick={() => setMood(t)}
-                    className={`text-xs py-1.5 px-3.5 rounded-full transition-all ${
+                    onClick={() => {
+                      sound.playSparkle();
+                      setMood(t);
+                    }}
+                    className={`text-xs py-1.5 px-3.5 rounded-full transition-all cursor-pointer ${
                       mood === t
-                        ? 'bg-indigo-600/90 text-white shadow-[0_0_15px_rgba(99,102,241,0.5)] border border-indigo-400'
-                        : 'bg-white/5 text-amber-100/60 hover:bg-white/10 border border-white/10'
+                        ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.6)] border border-indigo-300 font-medium scale-105'
+                        : 'bg-white/5 text-amber-100/70 hover:bg-white/10 hover:text-white border border-white/10'
                     }`}
                   >
                     {t}
@@ -135,34 +154,29 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
               </div>
             </div>
 
-            {/* 書寫文字框 */}
-            <div className="w-full relative mb-6">
+            {/* 書寫文字框 (選填：想多聊聊可寫，不想寫可直接交託) */}
+            <div className="w-full relative mb-5">
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                rows={5}
-                placeholder="寫下讓你感到沉重的煩惱、卡住的念頭，或想對宇宙說的心裡話..."
-                className="w-full rounded-2xl bg-black/40 border border-indigo-400/30 p-4 text-amber-50 placeholder-amber-200/30 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/50 backdrop-blur-md text-sm md:text-base resize-none shadow-inner leading-relaxed"
+                rows={4}
+                placeholder="（選填）寫下任何卡住的情緒、疲憊念頭或委屈... 亦可直接點選上方感受，一鍵放手清理"
+                className="w-full rounded-2xl bg-black/40 border border-indigo-400/30 p-4 text-amber-50 placeholder-amber-200/35 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/50 backdrop-blur-md text-sm md:text-base resize-none shadow-inner leading-relaxed"
               />
               <span className="absolute bottom-3 right-4 text-xs text-amber-200/40">
-                {inputText.length} 字
+                {inputText.length > 0 ? `${inputText.length} 字` : '已選定感受，可直接交託'}
               </span>
             </div>
 
-            {/* 放手按鈕 */}
+            {/* 放手清理按鈕 (永遠可點選，有寫字或直接點標籤皆能一鍵放手清理) */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              disabled={!inputText.trim()}
               onClick={handleRelease}
-              className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium tracking-wider text-sm md:text-base transition-all shadow-xl ${
-                inputText.trim()
-                  ? 'bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white shadow-[0_0_25px_rgba(99,102,241,0.4)] cursor-pointer'
-                  : 'bg-white/10 text-white/40 cursor-not-allowed border border-white/5'
-              }`}
+              className="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium tracking-wider text-sm md:text-base transition-all shadow-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-500 hover:via-purple-500 hover:to-indigo-600 text-white shadow-[0_0_25px_rgba(99,102,241,0.45)] border border-indigo-300/40 cursor-pointer"
             >
-              <Sparkles className="w-4 h-4 text-amber-300" />
-              <span>交給宇宙並放手釋懷</span>
+              <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+              <span>交給宇宙並放手清理</span>
             </motion.button>
           </motion.div>
         )}
@@ -181,7 +195,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
               transition={{ duration: 1.2 }}
               className="text-amber-200/80 text-base tracking-widest font-light"
             >
-              ✧ 文字化作星塵，回歸浩瀚虛空 ✧
+              ✧ {inputText.trim() ? '心事化作星塵' : `「${mood}」化作星塵`}，回歸浩瀚虛空 ✧
             </motion.div>
             <div className="flex gap-1.5 mt-4">
               <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping" />
@@ -204,6 +218,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
               mode="breathing"
               size="lg"
               themeColor="indigo"
+              sparkleStyle="original"
               guideText={breathText}
             />
             <p className="mt-8 text-xs text-amber-200/50 tracking-widest uppercase">
@@ -250,7 +265,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
                 }}
                 className="flex-1 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-amber-100 text-xs tracking-wider border border-white/10 transition-colors"
               >
-                再次傾訴或提問
+                再次放手清理
               </button>
               <button
                 onClick={onOpenArchive}
