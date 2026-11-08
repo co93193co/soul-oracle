@@ -23,8 +23,10 @@ const MOOD_TAGS = [
   '自我懷疑',
   '憤怒委屈',
   '悲傷失落',
-  '放不下過去',
-  '需要被理解',
+  '執著過去',
+  '渴望理解',
+  '金錢匱乏',
+  '習慣討好',
 ];
 
 export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdated }: ReleaseSanctuaryProps) {
@@ -35,6 +37,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
   const [drawnCard, setDrawnCard] = useState<OracleCardData | null>(null);
   const [breathText, setBreathText] = useState('深吸一口氣... 吸入平靜');
   const [isCleansingOpen, setIsCleansingOpen] = useState(false);
+  const [tagLayout, setTagLayout] = useState<'grid5' | 'vertical1'>('grid5');
 
   const handleRelease = async () => {
     // 支援直接點選標籤放手，或書寫文字後放手
@@ -130,32 +133,104 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
 
             {/* 心情標籤選擇 (支援直接點選即可一鍵放手) */}
             <div className="w-full mb-4">
-              <div className="flex justify-between items-center mb-2">
-                <label className="text-xs text-amber-100/70 tracking-wider">
-                  此刻內心最貼近的感受（點選即可放手）：
-                </label>
-                <span className="text-[11px] text-indigo-300/80 font-light">
-                  ✦ 可直接選取，不必強迫打字
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {MOOD_TAGS.map((t) => (
+              {/* 頂部標題與排版切換器 (高對比度清晰字體，杜絕眼睛吃力與手機折行混亂) */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 mb-2.5 pb-1 border-b border-white/10">
+                <div className="flex flex-col">
+                  <label className="text-[13.5px] sm:text-sm font-semibold text-amber-200 tracking-wide drop-shadow-sm">
+                    此刻內心最貼近的感受
+                  </label>
+                  <span className="text-[11px] sm:text-xs text-indigo-200 font-normal tracking-wide mt-0.5">
+                    ✦ 點選感受即可一鍵放手清理，不需強迫打字 ✦
+                  </span>
+                </div>
+
+                {/* 切換按鈕：橫排 5×2 / 直排 1行 */}
+                <div className="flex items-center gap-1 self-end sm:self-auto bg-black/50 p-0.5 rounded-lg border border-white/15 shrink-0">
                   <button
-                    key={t}
+                    type="button"
                     onClick={() => {
                       sound.playSparkle();
-                      setMood(t);
+                      setTagLayout('grid5');
                     }}
-                    className={`text-xs py-1.5 px-3.5 rounded-full transition-all cursor-pointer ${
-                      mood === t
-                        ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.6)] border border-indigo-300 font-medium scale-105'
-                        : 'bg-white/5 text-amber-100/70 hover:bg-white/10 hover:text-white border border-white/10'
+                    className={`text-[10.5px] px-2.5 py-1 rounded-md transition-all cursor-pointer ${
+                      tagLayout === 'grid5'
+                        ? 'bg-indigo-600 text-white font-medium shadow-sm'
+                        : 'text-amber-100/70 hover:text-white'
                     }`}
                   >
-                    {t}
+                    橫排 5×2
                   </button>
-                ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      sound.playSparkle();
+                      setTagLayout('vertical1');
+                    }}
+                    className={`text-[10.5px] px-2.5 py-1 rounded-md transition-all cursor-pointer ${
+                      tagLayout === 'vertical1'
+                        ? 'bg-indigo-600 text-white font-medium shadow-sm'
+                        : 'text-amber-100/70 hover:text-white'
+                    }`}
+                  >
+                    直排 1行
+                  </button>
+                </div>
               </div>
+
+              {/* 模式 A：橫式 5個1行 (共2行，每行5個，工整對齊) */}
+              {tagLayout === 'grid5' && (
+                <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
+                  {MOOD_TAGS.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => {
+                        sound.playSparkle();
+                        setMood(t);
+                      }}
+                      className={`w-full py-2.5 px-0.5 rounded-xl transition-all cursor-pointer flex items-center justify-center text-center ${
+                        mood === t
+                          ? 'bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-600 text-white font-bold shadow-[0_0_15px_rgba(99,102,241,0.65)] border border-indigo-200 scale-[1.03] z-10'
+                          : 'bg-white/10 text-amber-50 hover:bg-white/15 hover:text-white border border-white/15 hover:border-white/30 font-medium'
+                      }`}
+                    >
+                      <span className="text-[11px] xs:text-[11.5px] sm:text-xs tracking-tighter xs:tracking-tight font-medium whitespace-nowrap drop-shadow-sm select-none">
+                        {t}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* 模式 B：直式並排1行 (10個標籤直立字排列在一橫排內) */}
+              {tagLayout === 'vertical1' && (
+                <div className="grid grid-cols-10 gap-1 sm:gap-1.5">
+                  {MOOD_TAGS.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => {
+                        sound.playSparkle();
+                        setMood(t);
+                      }}
+                      className={`h-[94px] sm:h-[105px] py-2 px-0.5 rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center ${
+                        mood === t
+                          ? 'bg-gradient-to-b from-indigo-500 to-purple-600 text-white font-bold shadow-[0_0_15px_rgba(99,102,241,0.65)] border border-indigo-200 scale-[1.04] z-10'
+                          : 'bg-white/10 text-amber-50 hover:bg-white/15 hover:text-white border border-white/15 hover:border-white/30 font-medium'
+                      }`}
+                    >
+                      {t.split('').map((char, charIdx) => (
+                        <span
+                          key={charIdx}
+                          className="text-[11px] xs:text-[11.5px] sm:text-xs leading-[1.15] font-medium drop-shadow-sm select-none"
+                        >
+                          {char}
+                        </span>
+                      ))}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* 書寫文字框 (選填：想多聊聊可寫，不想寫可直接交託) */}
