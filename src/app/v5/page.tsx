@@ -318,10 +318,26 @@ export default function V5Page() {
                 />
               </div>
 
-              {/* 4. 允許自己成為自己 (字體更清晰更大，手機上維持優雅單行) */}
-              <p className="text-[14px] xs:text-[15.5px] sm:text-[17px] md:text-lg text-amber-100 font-normal tracking-[0.1em] sm:tracking-[0.15em] text-center drop-shadow-[0_0_12px_rgba(251,191,36,0.35)] whitespace-nowrap leading-relaxed">
+              {/* 4. 允許自己成為自己 (純白加粗，依呼吸頻率由遠至近縮小到放大動畫) */}
+              <motion.p
+                animate={{
+                  scale: [0.93, 1.07, 0.93],
+                  opacity: [0.85, 1, 0.85],
+                  filter: [
+                    'drop-shadow(0 0 6px rgba(255,255,255,0.4))',
+                    'drop-shadow(0 0 16px rgba(255,255,255,0.85)) drop-shadow(0 0 28px rgba(255,255,255,0.45))',
+                    'drop-shadow(0 0 6px rgba(255,255,255,0.4))',
+                  ],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+                className="text-[14.5px] xs:text-[16px] sm:text-[17.5px] md:text-lg text-white font-bold tracking-[0.1em] sm:tracking-[0.15em] text-center whitespace-nowrap leading-relaxed select-none"
+              >
                 允許自己成為自己
-              </p>
+              </motion.p>
             </div>
 
             {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數：星星在上方，下方365點) */}
