@@ -295,15 +295,118 @@ export default function V5Page() {
           <header className="relative w-full max-w-xl mx-auto px-3 sm:px-4 pt-3.5 sm:pt-4 md:pt-5 pb-1 sm:pb-2 flex flex-col items-center justify-center z-20 h-auto shrink-0">
             {/* 中央神聖中軸容器 (方案 B：全部垂直置中依序排版) */}
             <div className="flex flex-col items-center justify-center text-center select-none w-full max-w-xs sm:max-w-md">
-              {/* 1. 憶起 (最大金光字，置中) */}
-              <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)] leading-tight text-center">
-                憶起
-              </h1>
+              {/* 1. 憶起 (最大金光字 + 7秒週期宇宙流星流光掠過動態) */}
+              <div className="relative inline-flex items-center justify-center">
+                <motion.h1
+                  animate={{
+                    backgroundPosition: ['-140% 0%', '240% 0%', '240% 0%'],
+                  }}
+                  transition={{
+                    duration: 7,
+                    times: [0, 0.22, 1],
+                    repeat: Infinity,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
+                  className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-light tracking-widest text-transparent bg-clip-text bg-[linear-gradient(110deg,#fbbf24_0%,#fef08a_25%,#ffffff_50%,#fef08a_75%,#f59e0b_100%)] bg-[length:260%_100%] drop-shadow-[0_0_25px_rgba(251,191,36,0.5)] leading-tight text-center select-none"
+                >
+                  憶起
+                </motion.h1>
 
-              {/* 2. ✦ RECALLING ✦ (精緻香檳金，置中) */}
-              <span className="text-[10px] sm:text-xs text-amber-200/90 font-mono tracking-[0.2em] mt-0.5 text-center">
-                ✦ RECALLING ✦
-              </span>
+                {/* 流星彗核與拖曳星軌 (由左上至右下優雅飛越「憶起」) */}
+                <motion.div
+                  animate={{
+                    x: [-40, 110],
+                    y: [-4, 26],
+                    opacity: [0, 1, 1, 0],
+                    scale: [0.6, 1.3, 0.9, 0],
+                  }}
+                  transition={{
+                    duration: 7,
+                    times: [0, 0.08, 0.18, 0.23],
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                  className="absolute -top-1 left-4 pointer-events-none z-10"
+                >
+                  {/* 流星核心微光 */}
+                  <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_10px_#ffffff,0_0_20px_#fde047]" />
+                  {/* 流星拖曳彗尾 */}
+                  <div className="absolute top-1/2 -left-7 -translate-y-1/2 w-7 h-0.5 bg-gradient-to-r from-transparent via-amber-200/70 to-white -rotate-12 blur-[0.5px]" />
+                </motion.div>
+              </div>
+
+              {/* 2. ✦ RECALLING ✦ (流星接力點亮雙側星芒與字母光浪) */}
+              <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-0.5 text-center select-none">
+                {/* 左側四芒星 */}
+                <motion.span
+                  animate={{
+                    scale: [1, 1.5, 1.7, 1],
+                    opacity: [0.7, 1, 1, 0.7],
+                    filter: [
+                      'drop-shadow(0 0 2px rgba(251,191,36,0.3))',
+                      'drop-shadow(0 0 10px rgba(255,255,255,1)) drop-shadow(0 0 16px rgba(251,191,36,0.9))',
+                      'drop-shadow(0 0 12px rgba(255,255,255,0.9)) drop-shadow(0 0 18px rgba(251,191,36,0.8))',
+                      'drop-shadow(0 0 2px rgba(251,191,36,0.3))',
+                    ],
+                    rotate: [0, 45, 90, 0],
+                  }}
+                  transition={{
+                    duration: 7,
+                    times: [0.2, 0.28, 0.36, 0.45],
+                    repeat: Infinity,
+                    ease: 'easeOut',
+                  }}
+                  className="text-[10px] sm:text-xs text-amber-200 inline-block font-mono"
+                >
+                  ✦
+                </motion.span>
+
+                {/* RECALLING 字母微浪潮浮現 */}
+                <motion.span
+                  animate={{
+                    letterSpacing: ['0.2em', '0.24em', '0.2em'],
+                    color: ['rgba(253, 230, 138, 0.85)', '#ffffff', 'rgba(253, 230, 138, 0.85)'],
+                    filter: [
+                      'drop-shadow(0 0 2px rgba(251,191,36,0.2))',
+                      'drop-shadow(0 0 8px rgba(255,255,255,0.85)) drop-shadow(0 0 14px rgba(251,191,36,0.6))',
+                      'drop-shadow(0 0 2px rgba(251,191,36,0.2))',
+                    ],
+                  }}
+                  transition={{
+                    duration: 7,
+                    times: [0.22, 0.32, 0.46],
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                  className="text-[10px] sm:text-xs text-amber-200/90 font-mono tracking-[0.2em] font-medium"
+                >
+                  RECALLING
+                </motion.span>
+
+                {/* 右側四芒星 */}
+                <motion.span
+                  animate={{
+                    scale: [1, 1.5, 1.7, 1],
+                    opacity: [0.7, 1, 1, 0.7],
+                    filter: [
+                      'drop-shadow(0 0 2px rgba(251,191,36,0.3))',
+                      'drop-shadow(0 0 10px rgba(255,255,255,1)) drop-shadow(0 0 16px rgba(251,191,36,0.9))',
+                      'drop-shadow(0 0 12px rgba(255,255,255,0.9)) drop-shadow(0 0 18px rgba(251,191,36,0.8))',
+                      'drop-shadow(0 0 2px rgba(251,191,36,0.3))',
+                    ],
+                    rotate: [0, -45, -90, 0],
+                  }}
+                  transition={{
+                    duration: 7,
+                    times: [0.24, 0.32, 0.4, 0.48],
+                    repeat: Infinity,
+                    ease: 'easeOut',
+                  }}
+                  className="text-[10px] sm:text-xs text-amber-200 inline-block font-mono"
+                >
+                  ✦
+                </motion.span>
+              </div>
 
               {/* 3. 微笑圓臉動畫加大置中 (直立單頁視野內最大化) */}
               <div className="my-1 sm:my-1.5 relative flex items-center justify-center">
