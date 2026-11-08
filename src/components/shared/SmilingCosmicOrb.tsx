@@ -107,14 +107,14 @@ export default function SmilingCosmicOrb({
         {logoText && logoPosition === 'left' && (
           <div
             onClick={handleLogoClick}
-            className={`flex flex-col select-none ${
-              align === 'left' ? 'items-start text-left' : 'items-end text-right'
-            } ${onLogoClick ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}
+            className={`flex flex-col select-none items-center text-center ${
+              onLogoClick ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''
+            }`}
           >
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_20px_rgba(251,191,36,0.35)] leading-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_20px_rgba(251,191,36,0.35)] leading-tight text-center">
               {logoText}
             </h1>
-            <span className="text-[9.5px] sm:text-[11px] text-amber-300/70 font-mono tracking-widest mt-0.5">
+            <span className="text-[9.5px] sm:text-[11px] text-amber-300/70 font-mono tracking-widest mt-0.5 text-center">
               ✦ RECALLING ✦
             </span>
           </div>
@@ -222,11 +222,11 @@ export default function SmilingCosmicOrb({
 
         {/* 旁邊的 Logo 主要名稱 (如：憶起) - 位於右側 */}
         {logoText && logoPosition === 'right' && (
-          <div className="flex flex-col items-start text-left select-none">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-amber-200 to-yellow-300 drop-shadow-[0_0_20px_rgba(251,191,36,0.35)] leading-tight">
+          <div className="flex flex-col items-center text-center select-none">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-amber-200 to-yellow-300 drop-shadow-[0_0_20px_rgba(251,191,36,0.35)] leading-tight text-center">
               {logoText}
             </h1>
-            <span className="text-[10px] sm:text-xs text-amber-300/70 font-mono tracking-widest mt-0.5">
+            <span className="text-[10px] sm:text-xs text-amber-300/70 font-mono tracking-widest mt-0.5 text-center">
               ✦ RECALLING ✦
             </span>
           </div>
