@@ -29,6 +29,12 @@ class SoundManager {
     this.playChime(528, duration, 0.25);
   }
 
+  // 清理之門專屬：柔和純淨和解磬音
+  public playCleansingChime(freq = 432, duration = 3.5) {
+    if (this.isMuted) return;
+    this.playChime(freq, duration, 0.18);
+  }
+
   // 微心跳音效 (Lub-Dub 兩聲平靜的心律共振)
   public playHeartbeat() {
     if (this.isMuted) return;

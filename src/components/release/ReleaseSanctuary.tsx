@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowLeft, Wind, CheckCircle2 } from 'lucide-react';
 import SmilingCosmicOrb from '@/components/shared/SmilingCosmicOrb';
 import OracleCard from '@/components/shared/OracleCard';
+import HooponoponoCleansingModal from './HooponoponoCleansingModal';
 import { getRandomCard, OracleCardData } from '@/lib/presets/cardsData';
 import { sound } from '@/lib/sound';
 import { localStore } from '@/lib/storage';
@@ -12,6 +13,7 @@ import { localStore } from '@/lib/storage';
 interface ReleaseSanctuaryProps {
   onBack: () => void;
   onOpenArchive: () => void;
+  onPointsUpdated?: (newPoints: number) => void;
 }
 
 const MOOD_TAGS = [
@@ -25,13 +27,14 @@ const MOOD_TAGS = [
   '需要被理解',
 ];
 
-export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanctuaryProps) {
+export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdated }: ReleaseSanctuaryProps) {
   const [step, setStep] = useState<'input' | 'dissolving' | 'breathing' | 'revealing'>('input');
   const [mood, setMood] = useState(MOOD_TAGS[0]);
   const [inputText, setInputText] = useState('');
   const [universeReply, setUniverseReply] = useState('');
   const [drawnCard, setDrawnCard] = useState<OracleCardData | null>(null);
   const [breathText, setBreathText] = useState('深吸一口氣... 吸入平靜');
+  const [isCleansingOpen, setIsCleansingOpen] = useState(false);
 
   const handleRelease = async () => {
     // 支援直接點選標籤放手，或書寫文字後放手
@@ -115,12 +118,13 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
             exit={{ opacity: 0, scale: 0.95 }}
             className="w-full flex flex-col items-center"
           >
-            <div className="mb-6">
+            <div className="mb-6 w-full flex justify-center">
               <SmilingCosmicOrb
                 size="sm"
                 themeColor="indigo"
                 sparkleStyle="original"
-                guideText="將心底沉積的疲憊與心事交付宇宙，在這裡，你被全然包容，允許放手"
+                guideText="將心事 疑惑 恐懼 交付宇宙，在這，你被全然包容，允許放手"
+                guideTextClassName="text-[11px] xs:text-[12px] sm:text-[13.5px] md:text-sm text-amber-50/95 font-light tracking-tight sm:tracking-normal whitespace-nowrap drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)] text-center select-none"
               />
             </div>
 
@@ -178,6 +182,21 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
               <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
               <span>交給宇宙並放手清理</span>
             </motion.button>
+
+            {/* 夏威夷零極限清理之門入口 */}
+            <div className="w-full mt-6 text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playSparkle();
+                  setIsCleansingOpen(true);
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-teal-500/15 via-cyan-500/20 to-teal-500/15 border border-teal-400/40 hover:border-teal-300 text-teal-200 hover:text-white text-xs sm:text-sm tracking-wider transition-all duration-300 shadow-[0_0_15px_rgba(20,184,166,0.2)] hover:shadow-[0_0_20px_rgba(20,184,166,0.4)] group cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-teal-300 animate-pulse group-hover:rotate-12 transition-transform" />
+                <span>還需要清理？請點擊「清理之門」鏈接（夏威夷零極限和解）➔</span>
+              </button>
+            </div>
           </motion.div>
         )}
 
@@ -256,6 +275,21 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
               </div>
             )}
 
+            {/* 還需要清理？請點擊清理之門鏈接 */}
+            <div className="w-full text-center py-2">
+              <button
+                type="button"
+                onClick={() => {
+                  sound.playSparkle();
+                  setIsCleansingOpen(true);
+                }}
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-teal-500/20 via-cyan-500/25 to-teal-500/20 border border-teal-300/50 hover:border-teal-200 text-teal-100 text-xs sm:text-sm tracking-wider transition-all shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:scale-[1.02] cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4 text-teal-300 animate-pulse" />
+                <span>🌊 還需要清理？請點擊「清理之門」鏈接（夏威夷零極限和解）➔</span>
+              </button>
+            </div>
+
             {/* 底部操作 */}
             <div className="w-full flex flex-col sm:flex-row gap-3 pt-4">
               <button
@@ -277,6 +311,13 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive }: ReleaseSanct
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* 夏威夷零極限 ‧ 清理之門獨立彈窗 */}
+      <HooponoponoCleansingModal
+        isOpen={isCleansingOpen}
+        onClose={() => setIsCleansingOpen(false)}
+        onPointsUpdated={onPointsUpdated}
+      />
     </div>
   );
 }

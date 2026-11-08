@@ -687,6 +687,7 @@ export default function V5Page() {
                 <ReleaseSanctuary
                   onBack={() => setCurrentView('home')}
                   onOpenArchive={() => setIsArchiveOpen(true)}
+                  onPointsUpdated={(p) => setPoints(p)}
                 />
               </motion.div>
             )}

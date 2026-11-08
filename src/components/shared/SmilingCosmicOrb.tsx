@@ -10,6 +10,7 @@ interface SmilingCosmicOrbProps {
   mode?: OrbMode;
   guideText?: string;
   subGuideText?: string;
+  guideTextClassName?: string;
   themeColor?: 'amber' | 'indigo' | 'rose' | 'purple' | 'teal';
   onOrbClick?: () => void;
   size?: 'xs' | 'sm' | 'md' | 'lg';
@@ -25,6 +26,7 @@ export default function SmilingCosmicOrb({
   mode = 'idle',
   guideText,
   subGuideText,
+  guideTextClassName,
   themeColor = 'amber',
   onOrbClick,
   size = 'md',
@@ -307,11 +309,11 @@ export default function SmilingCosmicOrb({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.6 }}
-            className={`mt-1.5 sm:mt-2 ${
-              align === 'left' ? 'text-left max-w-[280px] sm:max-w-md' : 'text-center max-w-[280px] sm:max-w-md px-1'
+            className={`mt-1.5 sm:mt-2 w-full flex flex-col items-center justify-center ${
+              align === 'left' ? 'text-left max-w-full' : 'text-center max-w-full px-1'
             }`}
           >
-            <p className="text-amber-50/95 text-[13px] sm:text-[15px] md:text-base font-light tracking-wide leading-relaxed whitespace-pre-line drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+            <p className={guideTextClassName || "text-amber-50/95 text-[13px] sm:text-[15px] md:text-base font-light tracking-wide leading-relaxed whitespace-pre-line drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]"}>
               {guideText ||
                 (mode === 'breathing'
                   ? '深呼吸... 感受宇宙的心跳與接納'
