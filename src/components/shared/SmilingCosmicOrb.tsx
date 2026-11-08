@@ -245,13 +245,13 @@ export default function SmilingCosmicOrb({
             align === 'left' ? 'text-left max-w-[240px] sm:max-w-xs' : 'text-center max-w-[220px] sm:max-w-sm px-1'
           }`}
         >
-          <p className="text-amber-100/90 text-[10px] sm:text-xs md:text-sm font-light tracking-wide leading-snug">
+          <p className="text-amber-100/90 text-[10px] sm:text-xs md:text-sm font-light tracking-wide leading-relaxed whitespace-pre-line">
             {guideText ||
               (mode === 'breathing'
                 ? '深呼吸... 感受宇宙的心跳與接納'
                 : mode === 'affirming'
                 ? '在心中默念這份肯定，對齊豐盛頻率'
-                : '宇宙正溫柔地微笑著看著你')}
+                : '宇宙正溫柔地微笑著看著你，\n放鬆下來...')}
           </p>
           <span className="text-[8.5px] sm:text-[9.5px] text-amber-200/50 block mt-0.5 tracking-wider">
             (點擊光球可感受平靜心跳)

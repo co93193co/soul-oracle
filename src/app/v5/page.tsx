@@ -129,7 +129,7 @@ export default function V5Page() {
             }}
             guideText={
               currentView === 'home'
-                ? '宇宙正溫柔地微笑著看著你，放鬆下來...'
+                ? '宇宙正溫柔地微笑著看著你，\n放鬆下來...'
                 : '✦ 點擊返回首頁靈魂殿堂 ✦'
             }
           />
