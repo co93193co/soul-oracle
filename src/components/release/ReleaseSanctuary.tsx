@@ -184,7 +184,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
               </span>
             </div>
 
-            {/* 放手清理按鈕 (永遠可點選，有寫字或直接點標籤皆能一鍵放手清理) */}
+            {/* 放手按鈕 (永遠可點選，有寫字或直接點標籤皆能一鍵放手) */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -192,7 +192,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
               className="w-full py-3 sm:py-3.5 rounded-xl flex items-center justify-center gap-2 font-medium tracking-wider text-xs sm:text-sm transition-all shadow-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-500 hover:via-purple-500 hover:to-indigo-600 text-white shadow-[0_0_20px_rgba(99,102,241,0.4)] border border-indigo-300/40 cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-              <span>交給宇宙並放手清理</span>
+              <span>交給宇宙並放手</span>
             </motion.button>
 
             {/* 夏威夷零極限清理之門入口 (同頁直接可見，無需滾動即可點擊) */}
@@ -206,7 +206,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-teal-500/15 via-cyan-500/20 to-teal-500/15 border border-teal-400/40 hover:border-teal-300 text-teal-200 hover:text-white text-[11px] sm:text-xs tracking-wider transition-all duration-300 shadow-[0_0_12px_rgba(20,184,166,0.2)] hover:shadow-[0_0_16px_rgba(20,184,166,0.4)] group cursor-pointer"
               >
                 <Sparkles className="w-3 h-3 text-teal-300 animate-pulse group-hover:rotate-12 transition-transform" />
-                <span>還需要清理？請點擊「清理之門」鏈接（夏威夷零極限和解）➔</span>
+                <span>請點擊「清理之門」‧ 夏威夷零極限和解 ➔</span>
               </button>
             </div>
           </motion.div>
@@ -287,7 +287,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
               </div>
             )}
 
-            {/* 還需要清理？請點擊清理之門鏈接 */}
+            {/* 請點擊清理之門 */}
             <div className="w-full text-center py-2">
               <button
                 type="button"
@@ -298,7 +298,7 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-teal-500/20 via-cyan-500/25 to-teal-500/20 border border-teal-300/50 hover:border-teal-200 text-teal-100 text-xs sm:text-sm tracking-wider transition-all shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:scale-[1.02] cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-teal-300 animate-pulse" />
-                <span>🌊 還需要清理？請點擊「清理之門」鏈接（夏威夷零極限和解）➔</span>
+                <span>🌊 請點擊「清理之門」‧ 夏威夷零極限和解 ➔</span>
               </button>
             </div>
 
