@@ -253,7 +253,7 @@ export default function SmilingCosmicOrb({
                 ? '深呼吸... 感受宇宙的心跳與接納'
                 : mode === 'affirming'
                 ? '在心中默念這份肯定，對齊豐盛頻率'
-                : '宇宙正溫柔地微笑著看著你，\n放鬆下來...')}
+                : '允許自己成為自己')}
           </p>
           <span className="text-[10px] sm:text-[11.5px] text-amber-300 font-medium block mt-1 tracking-wider whitespace-nowrap drop-shadow-[0_0_8px_rgba(251,191,36,0.3)]">
             {subGuideText || (mode === 'breathing' ? '✦ 跟隨光球呼吸節奏，沉澱思緒 ✦' : '✦ 點擊或滑動下方 01～06 探索聖門 ✦')}

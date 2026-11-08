@@ -311,7 +311,7 @@ export default function V5Page() {
             }}
             guideText={
               currentView === 'home'
-                ? '宇宙正溫柔地微笑著看著你，\n放鬆下來...'
+                ? '允許自己成為自己'
                 : '✦ 點擊返回首頁靈魂殿堂 ✦'
             }
             subGuideText={
@@ -538,8 +538,8 @@ export default function V5Page() {
               </div>
 
               {/* 底部靈性低語引導 */}
-              <div className="mt-1.5 text-[10px] sm:text-[11px] text-amber-200/85 font-light tracking-wider whitespace-nowrap overflow-hidden text-ellipsis max-w-full px-2 drop-shadow-sm">
-                ✦ 宇宙正溫柔地傾聽你的宣告，允許一切美好自然發生 ✦
+              <div className="mt-1.5 text-[10px] sm:text-[11.5px] text-amber-200/90 font-light tracking-wider whitespace-nowrap overflow-hidden text-ellipsis max-w-full px-2 drop-shadow-sm">
+                ✦ 感恩一切發生都是最好的安排 ✦
               </div>
             </motion.div>
           )}
