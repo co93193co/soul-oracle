@@ -9,6 +9,7 @@ export type OrbMode = 'idle' | 'breathing' | 'affirming' | 'transmitting';
 interface SmilingCosmicOrbProps {
   mode?: OrbMode;
   guideText?: string;
+  subGuideText?: string;
   themeColor?: 'amber' | 'indigo' | 'rose' | 'purple' | 'teal';
   onOrbClick?: () => void;
   size?: 'xs' | 'sm' | 'md' | 'lg';
@@ -22,6 +23,7 @@ interface SmilingCosmicOrbProps {
 export default function SmilingCosmicOrb({
   mode = 'idle',
   guideText,
+  subGuideText,
   themeColor = 'amber',
   onOrbClick,
   size = 'md',
@@ -103,7 +105,7 @@ export default function SmilingCosmicOrb({
           align === 'left' ? 'justify-start' : 'justify-center'
         }`}
       >
-        {/* 旁邊的 Logo 主要名稱 (如：憶起) - 位於左側 (字體全頁最大最顯眼) */}
+        {/* 旁邊的 Logo 主要名稱 (如：憶起) - 位於左側，全頁字體最大 */}
         {logoText && logoPosition === 'left' && (
           <div
             onClick={handleLogoClick}
@@ -111,10 +113,10 @@ export default function SmilingCosmicOrb({
               onLogoClick ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''
             }`}
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)] leading-tight text-center">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)] leading-tight text-center">
               {logoText}
             </h1>
-            <span className="text-[10px] sm:text-xs text-amber-300/80 font-mono tracking-widest mt-0.5 text-center">
+            <span className="text-[10px] sm:text-xs text-amber-300/75 font-mono tracking-widest mt-0.5 text-center">
               ✦ RECALLING ✦
             </span>
           </div>
@@ -220,20 +222,20 @@ export default function SmilingCosmicOrb({
           </motion.div>
         </div>
 
-        {/* 旁邊的 Logo 主要名稱 (如：憶起) - 位於右側 */}
+        {/* 旁邊的 Logo 主要名稱 (如：憶起) - 位於右側，全頁字體最大 */}
         {logoText && logoPosition === 'right' && (
           <div className="flex flex-col items-center text-center select-none">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-amber-200 to-yellow-300 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)] leading-tight text-center">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-amber-200 to-yellow-300 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)] leading-tight text-center">
               {logoText}
             </h1>
-            <span className="text-[10px] sm:text-xs text-amber-300/80 font-mono tracking-widest mt-0.5 text-center">
+            <span className="text-[10px] sm:text-xs text-amber-300/75 font-mono tracking-widest mt-0.5 text-center">
               ✦ RECALLING ✦
             </span>
           </div>
         )}
       </div>
 
-      {/* 呼吸或肯定句引導文字 (字體放大更親切溫暖) */}
+      {/* 呼吸或肯定句引導小字 (字體調大，副標題提醒點擊或滑動01-06鏈接) */}
       <AnimatePresence mode="wait">
         <motion.div
           key={guideText || mode}
@@ -245,7 +247,7 @@ export default function SmilingCosmicOrb({
             align === 'left' ? 'text-left max-w-[280px] sm:max-w-md' : 'text-center max-w-[280px] sm:max-w-md px-1'
           }`}
         >
-          <p className="text-amber-100 text-sm sm:text-base md:text-[17px] font-light tracking-wide leading-relaxed whitespace-pre-line drop-shadow-sm">
+          <p className="text-amber-100 text-[13px] sm:text-[15px] md:text-base font-light tracking-wide leading-relaxed whitespace-pre-line">
             {guideText ||
               (mode === 'breathing'
                 ? '深呼吸... 感受宇宙的心跳與接納'
@@ -253,8 +255,8 @@ export default function SmilingCosmicOrb({
                 ? '在心中默念這份肯定，對齊豐盛頻率'
                 : '宇宙正溫柔地微笑著看著你，\n放鬆下來...')}
           </p>
-          <span className="text-[10.5px] sm:text-xs text-amber-200/60 block mt-1 tracking-wider">
-            (點擊光球可感受平靜心跳)
+          <span className="text-[10px] sm:text-[11.5px] text-amber-200/70 block mt-1 tracking-wider whitespace-nowrap">
+            {subGuideText || (mode === 'breathing' ? '✦ 跟隨光球呼吸節奏，沉澱思緒 ✦' : '✦ 點擊或滑動下方 01～06 探索聖門 ✦')}
           </span>
         </motion.div>
       </AnimatePresence>

@@ -255,7 +255,7 @@ export default function V5Page() {
   const currentGate = gates[activeGateIndex];
 
   return (
-    <div className="h-screen max-h-screen overflow-hidden flex flex-col justify-between selection:bg-amber-400/20 bg-[#070919] text-amber-50">
+    <div className="min-h-screen min-h-dvh h-auto flex flex-col justify-between overflow-x-hidden overflow-y-auto selection:bg-amber-400/20 bg-[#070919] text-amber-50">
       {/* ================= 1. 最頂端天際線：宇宙匿名願望之河 (右上宇宙允許已刪除) ================= */}
       <div
         onClick={() => {
@@ -283,388 +283,307 @@ export default function V5Page() {
         </div>
       </div>
 
-      {/* ================= 2. 主版面：首頁模式下支援手機直立 (上下排列) 與 平行橫向旋轉 (左半部Logo/連結 + 右半部六門/可上下滑動) ================= */}
-      {currentView === 'home' && (
-        <div className="flex-1 flex flex-col landscape:flex-row items-center justify-center w-full max-w-xl landscape:max-w-5xl mx-auto overflow-hidden px-2.5 sm:px-4 py-0.5 gap-2 landscape:gap-4">
-          {/* 左半邊 (橫向時為左半部，直立時為頂部 Header) */}
-          <header className="relative w-full landscape:w-[44%] landscape:max-w-[360px] flex flex-col items-center justify-center z-20 shrink-0 landscape:h-full landscape:border-r landscape:border-amber-400/20 landscape:pr-3 py-1">
-            {/* 憶起 Logo + 微笑圓臉光球 + 引導大字 */}
-            <div
-              onClick={() => {
-                if (currentView !== 'home') setCurrentView('home');
-              }}
-              className={`flex flex-col items-center justify-center text-center w-full max-w-xs sm:max-w-md ${
-                currentView !== 'home' ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''
-              }`}
-              title={currentView !== 'home' ? '點擊返回首頁' : '憶起'}
+      {/* ================= 2. 頂部區域：中央 (憶起 Logo + 微笑圓臉光球 + 引導小字 全部置中) ＆ 右上角 (垂直排列之四連結) ================= */}
+      <header className="relative w-full max-w-xl mx-auto px-3 sm:px-4 pt-2 sm:pt-2.5 pb-1 flex items-center justify-center z-20 h-auto min-h-[145px] sm:min-h-[160px] shrink-0">
+        {/* 中央：憶起 Logo + 微笑光球 + 引導小字 (字體放大、清晰溫潤，憶起LOGO全頁最大) */}
+        <div
+          onClick={() => {
+            if (currentView !== 'home') setCurrentView('home');
+          }}
+          className={`h-full flex flex-col items-center justify-between text-center w-full max-w-[calc(100%-110px)] sm:max-w-md ${
+            currentView !== 'home' ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''
+          }`}
+          title={currentView !== 'home' ? '點擊返回首頁' : '憶起'}
+        >
+          <SmilingCosmicOrb
+            size="sm"
+            themeColor="amber"
+            logoText="憶起"
+            logoPosition="left"
+            align="center"
+            className="h-full"
+            onLogoClick={() => {
+              if (currentView !== 'home') setCurrentView('home');
+            }}
+            onOrbClick={() => {
+              sound.playHeartbeat();
+              if (currentView !== 'home') setCurrentView('home');
+            }}
+            guideText={
+              currentView === 'home'
+                ? '宇宙正溫柔地微笑著看著你，\n放鬆下來...'
+                : '✦ 點擊返回首頁靈魂殿堂 ✦'
+            }
+            subGuideText={
+              currentView === 'home'
+                ? '✦ 點擊或滑動下方 01～06 探索聖門 ✦'
+                : '✦ 點擊返回首頁 ✦'
+            }
+          />
+        </div>
+
+        {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數：星星在上方，下方365點) */}
+        <div className="absolute right-2 sm:right-3 top-2 sm:top-2.5 bottom-1 flex flex-col justify-between items-center w-[52px] sm:w-[56px] py-0.5">
+          {/* 1. 👤 登入 */}
+          <button
+            onClick={() => {
+              sound.playSparkle();
+              setIsAuthOpen(true);
+            }}
+            title={currentUser.isLoggedIn ? currentUser.nickname : '會員登入'}
+            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+          >
+            {currentUser.isLoggedIn ? (
+              <img
+                src={currentUser.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.email}`}
+                alt={currentUser.nickname}
+                className="w-3.5 h-3.5 rounded-full border border-amber-300/60"
+              />
+            ) : (
+              <User className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
+            )}
+            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider max-w-[46px] truncate leading-none">
+              {currentUser.isLoggedIn ? currentUser.nickname : '登入'}
+            </span>
+          </button>
+
+          {/* 2. 🔊 聲音 */}
+          <button
+            onClick={toggleSound}
+            title={isMuted ? '開啟聲音' : '關閉聲音'}
+            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+          >
+            {isMuted ? (
+              <VolumeX className="w-3.5 h-3.5 text-amber-300/60 group-hover:text-amber-200 transition-colors" />
+            ) : (
+              <Volume2 className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
+            )}
+            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider leading-none">
+              聲音
+            </span>
+          </button>
+
+          {/* 3. 📖 記錄 */}
+          <button
+            onClick={() => {
+              sound.playSparkle();
+              setIsArchiveOpen(true);
+            }}
+            title="靈魂記錄與檔案庫"
+            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
+            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider leading-none">
+              記錄
+            </span>
+          </button>
+
+          {/* 4. ⭐ 星光點數 (星星符號在上方，下方365點) */}
+          <button
+            onClick={() => {
+              sound.playSparkle();
+              setIsArchiveOpen(true);
+            }}
+            title={`星光點數：${points}點`}
+            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-300/30 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
+          >
+            <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300 animate-pulse group-hover:scale-110 transition-transform" />
+            <span className="text-[9.5px] font-mono text-amber-100 tracking-wider leading-none">
+              {points}點
+            </span>
+          </button>
+        </div>
+      </header>
+
+      {/* ================= 3. 主體內容區 (中間01-06小鏈接為分水嶺居中，上下大框大小調整一致) ================= */}
+      <main className="flex-1 flex flex-col items-center justify-center px-2.5 sm:px-6 py-1 z-10 w-full max-w-xl mx-auto">
+        <AnimatePresence mode="wait">
+          {/* ================= 視圖：首頁六大門戶左右滑動選取 ================= */}
+          {currentView === 'home' && (
+            <motion.div
+              key="home"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              className="w-full flex flex-col items-center text-center my-auto"
             >
-              <SmilingCosmicOrb
-                size="sm"
-                themeColor="amber"
-                logoText="憶起"
-                logoPosition="left"
-                align="center"
-                onLogoClick={() => {
-                  if (currentView !== 'home') setCurrentView('home');
-                }}
-                onOrbClick={() => {
-                  sound.playHeartbeat();
-                  if (currentView !== 'home') setCurrentView('home');
-                }}
-                guideText={
-                  currentView === 'home'
-                    ? '宇宙正溫柔地微笑著看著你，\n放鬆下來...'
-                    : '✦ 點擊返回首頁靈魂殿堂 ✦'
-                }
+              {/* 左右滑動引導提示微光文字 */}
+              <div className="flex items-center justify-center gap-1.5 mb-1.5 text-[10px] sm:text-xs text-amber-200/80 font-mono tracking-wider animate-pulse select-none whitespace-nowrap">
+                <span className="text-amber-300 font-bold">←</span>
+                <span>左右滑動探索 01～06 聖門 ‧ 點擊推開進入</span>
+                <span className="text-amber-300 font-bold">→</span>
+              </div>
+
+              {/* 中間01-06小鏈接分水嶺居中 (字體排版留意手機為一行字) */}
+              <div className="w-full flex items-center justify-between gap-1 sm:gap-1.5 px-0.5 mb-2 sm:mb-2.5 overflow-x-auto scrollbar-none py-1">
+                {gates.map((g, idx) => {
+                  const isActive = activeGateIndex === idx;
+                  return (
+                    <button
+                      key={g.id}
+                      onClick={() => changeGate(idx)}
+                      className={`flex items-center justify-center gap-1 sm:gap-1.5 flex-1 min-w-0 py-1 sm:py-1.5 px-1 sm:px-2 rounded-xl text-[11px] sm:text-xs md:text-[13px] font-medium whitespace-nowrap transition-all shrink-0 active:scale-95 cursor-pointer ${
+                        isActive
+                          ? 'bg-amber-400/20 border border-amber-300/70 text-amber-200 shadow-[0_0_15px_rgba(251,191,36,0.3)] font-semibold scale-105'
+                          : 'bg-white/5 border border-white/10 text-white/60 hover:text-white/90 hover:bg-white/10'
+                      }`}
+                    >
+                      <span className={isActive ? 'text-amber-300 font-bold' : 'text-white/40'}>
+                        {g.tabNumber}
+                      </span>
+                      <span>{g.tabLabel.replace(/^\d+\s*/, '')}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* 下方大方框鏈接區 (按鈕更精巧，預留更多寬度給卡片) */}
+              <div className="w-full flex items-center justify-center gap-1 sm:gap-2 relative">
+                {/* 左切換箭頭 */}
+                <button
+                  onClick={handlePrevGate}
+                  title="上一個門"
+                  className="p-1.5 sm:p-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white/70 hover:text-amber-200 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)] hover:shadow-[0_0_15px_rgba(251,191,36,0.35)]"
+                >
+                  <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+
+                {/* 當前門戶大方框卡片 (大小與標題調小，在手機上確保是一行字不要變成兩行字) */}
+                <div className="flex-1 overflow-hidden py-0.5 min-w-0">
+                  <AnimatePresence mode="wait" custom={slideDirection}>
+                    <motion.div
+                      key={currentGate.id}
+                      custom={slideDirection}
+                      initial={{ opacity: 0, x: slideDirection * 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -slideDirection * 50 }}
+                      transition={{ duration: 0.22, ease: 'easeOut' }}
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 0 }}
+                      dragElastic={0.2}
+                      onDragEnd={(e, { offset }) => {
+                        if (offset.x < -40) handleNextGate();
+                        else if (offset.x > 40) handlePrevGate();
+                      }}
+                      onClick={currentGate.onClick}
+                      className={`group relative p-3.5 sm:p-4.5 rounded-2xl sm:rounded-3xl bg-gradient-to-b ${currentGate.themeGradient} border ${currentGate.borderClass} shadow-2xl backdrop-blur-xl cursor-pointer flex flex-col justify-between transition-all overflow-hidden min-h-[185px] sm:min-h-[205px] w-full select-none text-left`}
+                    >
+                      <div
+                        className={`absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full ${currentGate.blobColor} blur-2xl group-hover:scale-125 transition-all pointer-events-none`}
+                      />
+
+                      <div>
+                        {/* 最上面頂部欄 (保留英文副標與序號標籤) */}
+                        <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+                          <span
+                            className={`text-[11px] sm:text-xs ${currentGate.accentColor} opacity-75 tracking-widest uppercase font-mono whitespace-nowrap`}
+                          >
+                            {currentGate.english}
+                          </span>
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            {currentGate.badge && (
+                              <span className="text-[9.5px] sm:text-[10px] text-teal-300 font-mono px-1.5 py-0.5 rounded bg-teal-400/20 border border-teal-300/30 whitespace-nowrap">
+                                {currentGate.badge}
+                              </span>
+                            )}
+                            <span className="text-[11px] sm:text-xs text-white/40 font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 whitespace-nowrap">
+                              {currentGate.tabNumber} / 06
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 主標題 (調小以確保手機上一行字，不換行成兩行) */}
+                        <h2 className="text-[15.5px] xs:text-[17px] sm:text-lg md:text-xl font-light text-white mb-1.5 sm:mb-2 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis">
+                          {currentGate.title}
+                        </h2>
+
+                        {/* 說明文字 (行距舒適，精巧呈現) */}
+                        <p className="text-xs sm:text-[13px] md:text-sm text-white/85 leading-relaxed font-light min-h-[46px] sm:min-h-[52px]">
+                          {currentGate.description}
+                        </p>
+                      </div>
+
+                      {/* 框內最右下邊：進入 ➔ */}
+                      <div className="mt-2.5 sm:mt-3 flex justify-end items-center">
+                        <span
+                          className={`inline-flex items-center gap-1 text-sm sm:text-base font-medium ${currentGate.accentColor} group-hover:translate-x-1.5 transition-transform`}
+                        >
+                          <span>進入</span>
+                          <span className="text-base sm:text-lg font-bold">➔</span>
+                        </span>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                {/* 右切換箭頭 */}
+                <button
+                  onClick={handleNextGate}
+                  title="下一個門"
+                  className="p-1.5 sm:p-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white/70 hover:text-amber-200 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)] hover:shadow-[0_0_15px_rgba(251,191,36,0.35)]"
+                >
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              </div>
+
+              {/* 6門位置指示點 */}
+              <div className="flex items-center justify-center gap-1.5 mt-1.5 sm:mt-2">
+                {gates.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => changeGate(idx)}
+                    className={`transition-all rounded-full cursor-pointer ${
+                      activeGateIndex === idx
+                        ? 'w-6 h-1.5 bg-amber-300 shadow-[0_0_8px_rgba(251,191,36,0.6)]'
+                        : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/40'
+                    }`}
+                    aria-label={`切換至門戶 ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* 底部靈性低語引導 */}
+              <div className="mt-1.5 text-[10px] sm:text-[11px] text-amber-200/40 font-light tracking-wider whitespace-nowrap overflow-hidden text-ellipsis max-w-full px-2">
+                ✦ 宇宙正溫柔地傾聽你的宣告，允許一切美好自然發生 ✦
+              </div>
+            </motion.div>
+          )}
+
+          {/* ================= 視圖：釋放之門流程頁 ================= */}
+          {currentView === 'release' && (
+            <div className="w-full h-full overflow-y-auto">
+              <ReleaseSanctuary
+                onBack={() => setCurrentView('home')}
+                onOpenArchive={() => setIsArchiveOpen(true)}
               />
             </div>
+          )}
 
-            {/* 直立模式：右上角四個按鈕由上而下垂直排列 */}
-            <div className="portrait:flex landscape:hidden absolute right-1 sm:right-2 top-0 bottom-0 flex-col justify-between items-center w-[52px] sm:w-[56px] py-1">
-              {/* 1. 👤 登入 */}
-              <button
-                onClick={() => {
-                  sound.playSparkle();
-                  setIsAuthOpen(true);
-                }}
-                title={currentUser.isLoggedIn ? currentUser.nickname : '會員登入'}
-                className="w-full h-[32px] sm:h-[35px] rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
-              >
-                {currentUser.isLoggedIn ? (
-                  <img
-                    src={currentUser.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.email}`}
-                    alt={currentUser.nickname}
-                    className="w-3.5 h-3.5 rounded-full border border-amber-300/60"
-                  />
-                ) : (
-                  <User className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
-                )}
-                <span className="text-[8.5px] sm:text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider max-w-[44px] truncate leading-none">
-                  {currentUser.isLoggedIn ? currentUser.nickname : '登入'}
-                </span>
-              </button>
-
-              {/* 2. 🔊 聲音 */}
-              <button
-                onClick={toggleSound}
-                title={isMuted ? '開啟聲音' : '關閉聲音'}
-                className="w-full h-[32px] sm:h-[35px] rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
-              >
-                {isMuted ? (
-                  <VolumeX className="w-3.5 h-3.5 text-amber-300/60 group-hover:text-amber-200 transition-colors" />
-                ) : (
-                  <Volume2 className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
-                )}
-                <span className="text-[8.5px] sm:text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider leading-none">
-                  聲音
-                </span>
-              </button>
-
-              {/* 3. 📖 記錄 */}
-              <button
-                onClick={() => {
-                  sound.playSparkle();
-                  setIsArchiveOpen(true);
-                }}
-                title="靈魂記錄與檔案庫"
-                className="w-full h-[32px] sm:h-[35px] rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
-              >
-                <BookOpen className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
-                <span className="text-[8.5px] sm:text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider leading-none">
-                  記錄
-                </span>
-              </button>
-
-              {/* 4. ⭐ 星光點數 */}
-              <button
-                onClick={() => {
-                  sound.playSparkle();
-                  setIsArchiveOpen(true);
-                }}
-                title={`星光點數：${points}點`}
-                className="w-full h-[32px] sm:h-[35px] rounded-xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-300/30 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
-              >
-                <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300 animate-pulse group-hover:scale-110 transition-transform" />
-                <span className="text-[9px] font-mono text-amber-100 tracking-wider leading-none">
-                  {points}點
-                </span>
-              </button>
+          {/* ================= 視圖：提問之門流程頁 ================= */}
+          {currentView === 'inquire' && (
+            <div className="w-full h-full overflow-y-auto">
+              <InquireSanctuary
+                onBack={() => setCurrentView('home')}
+                onOpenArchive={() => setIsArchiveOpen(true)}
+              />
             </div>
+          )}
 
-            {/* 平行旋轉模式：四個按鈕自動調整到左半邊下方，水平一字排開 */}
-            <div className="hidden landscape:flex items-center justify-center gap-1.5 sm:gap-2 mt-2.5 w-full max-w-[340px]">
-              {/* 1. 👤 登入 */}
-              <button
-                onClick={() => {
-                  sound.playSparkle();
-                  setIsAuthOpen(true);
-                }}
-                title={currentUser.isLoggedIn ? currentUser.nickname : '會員登入'}
-                className="flex-1 py-1 px-1.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center gap-1 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 cursor-pointer text-[10.5px] whitespace-nowrap"
-              >
-                {currentUser.isLoggedIn ? (
-                  <img
-                    src={currentUser.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.email}`}
-                    alt={currentUser.nickname}
-                    className="w-3 h-3 rounded-full border border-amber-300/60"
-                  />
-                ) : (
-                  <User className="w-3 h-3 text-amber-300" />
-                )}
-                <span className="truncate max-w-[46px]">
-                  {currentUser.isLoggedIn ? currentUser.nickname : '登入'}
-                </span>
-              </button>
-
-              {/* 2. 🔊 聲音 */}
-              <button
-                onClick={toggleSound}
-                title={isMuted ? '開啟聲音' : '關閉聲音'}
-                className="flex-1 py-1 px-1.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center gap-1 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 cursor-pointer text-[10.5px] whitespace-nowrap"
-              >
-                {isMuted ? (
-                  <VolumeX className="w-3 h-3 text-amber-300/60" />
-                ) : (
-                  <Volume2 className="w-3 h-3 text-amber-300" />
-                )}
-                <span>聲音</span>
-              </button>
-
-              {/* 3. 📖 記錄 */}
-              <button
-                onClick={() => {
-                  sound.playSparkle();
-                  setIsArchiveOpen(true);
-                }}
-                title="靈魂記錄與檔案庫"
-                className="flex-1 py-1 px-1.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center gap-1 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 cursor-pointer text-[10.5px] whitespace-nowrap"
-              >
-                <BookOpen className="w-3 h-3 text-amber-300" />
-                <span>記錄</span>
-              </button>
-
-              {/* 4. ⭐ 星光點數 */}
-              <button
-                onClick={() => {
-                  sound.playSparkle();
-                  setIsArchiveOpen(true);
-                }}
-                title={`星光點數：${points}點`}
-                className="flex-1 py-1 px-1.5 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-300/30 flex items-center justify-center gap-1 text-amber-200 transition-all shadow-sm active:scale-95 cursor-pointer text-[10.5px] whitespace-nowrap"
-              >
-                <Star className="w-3 h-3 fill-amber-300 text-amber-300 animate-pulse" />
-                <span className="font-mono text-amber-100">{points}點</span>
-              </button>
+          {/* ================= 視圖：顯化之門流程頁 (含肯定句音檔與匿名願望星河) ================= */}
+          {currentView === 'manifest' && (
+            <div className="w-full h-full overflow-y-auto">
+              <ManifestSanctuaryV5
+                onBack={() => setCurrentView('home')}
+                onOpenArchive={() => setIsArchiveOpen(true)}
+                initialSubView={manifestInitialSubView}
+              />
             </div>
-          </header>
-
-          {/* 右半邊 (直立時為下方，平行旋轉橫向時在右側且可上下滾動滑動與左右滑動切換) */}
-          <main className="w-full landscape:w-[56%] landscape:flex-1 landscape:h-full flex flex-col items-center justify-center landscape:overflow-y-auto landscape:overflow-x-hidden landscape:pl-3 scrollbar-none py-0.5">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key="home"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                className="w-full flex flex-col items-center text-center my-auto"
-              >
-                {/* 左右滑動引導提示微光文字 (手機確保單行) */}
-                <div className="flex items-center justify-center gap-1.5 mb-1 sm:mb-1.5 text-[10px] sm:text-[11px] text-amber-200/80 font-mono tracking-wider animate-pulse select-none whitespace-nowrap">
-                  <span className="text-amber-300 font-bold">←</span>
-                  <span>左右滑動探索 01～06 聖門 ‧ 點擊推開進入</span>
-                  <span className="text-amber-300 font-bold">→</span>
-                </div>
-
-                {/* 中間 01-06 小標籤 (手機剛好一行，精簡大小) */}
-                <div className="w-full flex items-center justify-between gap-1 px-0.5 mb-2 sm:mb-2.5 overflow-x-auto scrollbar-none py-0.5">
-                  {gates.map((g, idx) => {
-                    const isActive = activeGateIndex === idx;
-                    return (
-                      <button
-                        key={g.id}
-                        onClick={() => changeGate(idx)}
-                        className={`flex items-center justify-center gap-1 flex-1 min-w-0 py-1 sm:py-1.5 px-1 sm:px-1.5 rounded-xl text-[11px] sm:text-xs font-medium whitespace-nowrap transition-all shrink-0 active:scale-95 cursor-pointer ${
-                          isActive
-                            ? 'bg-amber-400/20 border border-amber-300/70 text-amber-200 shadow-[0_0_12px_rgba(251,191,36,0.3)] font-semibold scale-[1.03]'
-                            : 'bg-white/5 border border-white/10 text-white/60 hover:text-white/90 hover:bg-white/10'
-                        }`}
-                      >
-                        <span className={isActive ? 'text-amber-300 font-bold' : 'text-white/40'}>
-                          {g.tabNumber}
-                        </span>
-                        <span>{g.tabLabel.replace(/^\d+\s*/, '')}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* 下方大方框鏈接區 (調小更精巧緊湊，右下角只要寫 進入➔) */}
-                <div className="w-full flex items-center justify-center gap-1 sm:gap-2 relative">
-                  {/* 左切換箭頭 */}
-                  <button
-                    onClick={handlePrevGate}
-                    title="上一個門"
-                    className="p-1.5 sm:p-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white/70 hover:text-amber-200 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)]"
-                  >
-                    <ChevronLeft className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-                  </button>
-
-                  {/* 當前門戶大方框卡片 (調小一些，各文字大小適當且手機單行標題) */}
-                  <div className="flex-1 overflow-hidden py-0.5">
-                    <AnimatePresence mode="wait" custom={slideDirection}>
-                      <motion.div
-                        key={currentGate.id}
-                        custom={slideDirection}
-                        initial={{ opacity: 0, x: slideDirection * 40 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -slideDirection * 40 }}
-                        transition={{ duration: 0.2, ease: 'easeOut' }}
-                        drag="x"
-                        dragConstraints={{ left: 0, right: 0 }}
-                        dragElastic={0.2}
-                        onDragEnd={(e, { offset }) => {
-                          if (offset.x < -40) handleNextGate();
-                          else if (offset.x > 40) handlePrevGate();
-                        }}
-                        onClick={currentGate.onClick}
-                        className={`group relative p-3.5 sm:p-4.5 landscape:p-3 rounded-2xl sm:rounded-3xl bg-gradient-to-b ${currentGate.themeGradient} border ${currentGate.borderClass} shadow-xl backdrop-blur-xl cursor-pointer flex flex-col justify-between transition-all overflow-hidden min-h-[175px] sm:min-h-[195px] landscape:min-h-[160px] w-full select-none text-left`}
-                      >
-                        <div
-                          className={`absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full ${currentGate.blobColor} blur-2xl group-hover:scale-125 transition-all pointer-events-none`}
-                        />
-
-                        <div>
-                          {/* 最上面頂部欄 (英文副標與序號標籤) */}
-                          <div className="flex items-center justify-between mb-1.5 sm:mb-2">
-                            <span
-                              className={`text-[10px] sm:text-[11px] ${currentGate.accentColor} opacity-75 tracking-widest uppercase font-mono`}
-                            >
-                              {currentGate.english}
-                            </span>
-                            <div className="flex items-center gap-1.5">
-                              {currentGate.badge && (
-                                <span className="text-[9.5px] text-teal-300 font-mono px-1.5 py-0.5 rounded bg-teal-400/20 border border-teal-300/30">
-                                  {currentGate.badge}
-                                </span>
-                              )}
-                              <span className="text-[10px] text-white/40 font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10">
-                                {currentGate.tabNumber} / 06
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* 主標題 (手機單行排版，大小適中且比憶起小) */}
-                          <h2 className="text-base sm:text-lg md:text-xl font-light text-white mb-1.5 sm:mb-2 tracking-wide truncate sm:overflow-visible">
-                            {currentGate.title}
-                          </h2>
-
-                          {/* 說明文字 (舒適行距與字級) */}
-                          <p className="text-xs sm:text-[13px] text-white/85 leading-relaxed font-light min-h-[44px] sm:min-h-[50px]">
-                            {currentGate.description}
-                          </p>
-                        </div>
-
-                        {/* 框內最右下邊：進入➔ */}
-                        <div className="mt-2 sm:mt-3 flex justify-end items-center">
-                          <span
-                            className={`inline-flex items-center gap-1 text-sm sm:text-base font-medium ${currentGate.accentColor} group-hover:translate-x-1.5 transition-transform`}
-                          >
-                            <span>進入</span>
-                            <span className="text-base sm:text-lg font-bold">➔</span>
-                          </span>
-                        </div>
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-
-                  {/* 右切換箭頭 */}
-                  <button
-                    onClick={handleNextGate}
-                    title="下一個門"
-                    className="p-1.5 sm:p-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white/70 hover:text-amber-200 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)]"
-                  >
-                    <ChevronRight className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-                  </button>
-                </div>
-
-                {/* 6門位置指示點 */}
-                <div className="flex items-center justify-center gap-1.5 mt-1.5 sm:mt-2">
-                  {gates.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => changeGate(idx)}
-                      className={`transition-all rounded-full cursor-pointer ${
-                        activeGateIndex === idx
-                          ? 'w-5 h-1 bg-amber-300 shadow-[0_0_8px_rgba(251,191,36,0.6)]'
-                          : 'w-1 h-1 bg-white/20 hover:bg-white/40'
-                      }`}
-                      aria-label={`切換至門戶 ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-
-                {/* 底部靈性低語引導 (手機確保單行) */}
-                <div className="mt-1 text-[9.5px] sm:text-[10.5px] text-amber-200/40 font-light tracking-wider whitespace-nowrap overflow-hidden text-ellipsis">
-                  ✦ 宇宙正溫柔地傾聽你的宣告，允許一切美好自然發生 ✦
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </main>
-        </div>
-      )}
-
-      {/* ================= 3. 各門戶聖殿頁面 (Release, Inquire, Manifest) ================= */}
-      {currentView !== 'home' && (
-        <div className="flex-1 flex flex-col w-full max-w-5xl mx-auto overflow-hidden px-2 sm:px-4 py-1">
-          <header className="w-full flex items-center justify-between py-1.5 shrink-0 border-b border-white/10 mb-1">
-            <button
-              onClick={() => setCurrentView('home')}
-              className="flex items-center gap-1.5 text-amber-200 hover:text-white transition-colors cursor-pointer group text-xs sm:text-sm"
-            >
-              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>返回首頁靈魂殿堂</span>
-            </button>
-            <span className="text-[10px] sm:text-xs text-amber-300/80 font-mono">✦ RECALLING ✦</span>
-          </header>
-          <main className="flex-1 w-full overflow-hidden">
-            <AnimatePresence mode="wait">
-              {/* 視圖：釋放之門流程頁 */}
-              {currentView === 'release' && (
-                <div className="w-full h-full overflow-y-auto">
-                  <ReleaseSanctuary
-                    onBack={() => setCurrentView('home')}
-                    onOpenArchive={() => setIsArchiveOpen(true)}
-                  />
-                </div>
-              )}
-
-              {/* 視圖：提問之門流程頁 */}
-              {currentView === 'inquire' && (
-                <div className="w-full h-full overflow-y-auto">
-                  <InquireSanctuary
-                    onBack={() => setCurrentView('home')}
-                    onOpenArchive={() => setIsArchiveOpen(true)}
-                  />
-                </div>
-              )}
-
-              {/* 視圖：顯化之門流程頁 */}
-              {currentView === 'manifest' && (
-                <div className="w-full h-full overflow-y-auto">
-                  <ManifestSanctuaryV5
-                    onBack={() => setCurrentView('home')}
-                    onOpenArchive={() => setIsArchiveOpen(true)}
-                    initialSubView={manifestInitialSubView}
-                  />
-                </div>
-              )}
-            </AnimatePresence>
-          </main>
-        </div>
-      )}
+          )}
+        </AnimatePresence>
+      </main>
 
       {/* ================= 4. 底部資訊 (Footer：文字清晰且在手機上剛好一行) ================= */}
-      <footer className="w-full max-w-xl landscape:max-w-5xl mx-auto px-2 py-1 sm:py-1.5 text-center text-amber-100/85 text-[10px] sm:text-xs font-light tracking-tight sm:tracking-normal z-20 shrink-0 whitespace-nowrap overflow-hidden text-ellipsis">
+      <footer className="w-full max-w-xl mx-auto px-2 py-1.5 sm:py-2 text-center text-amber-100/85 text-[10px] sm:text-xs font-light tracking-tight sm:tracking-normal z-20 shrink-0 whitespace-nowrap overflow-hidden text-ellipsis">
         <p>宇宙永遠在傾聽，你所渴望的美好正以超越想像的方式走向你 ✨</p>
       </footer>
 
