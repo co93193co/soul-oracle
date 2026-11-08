@@ -102,13 +102,13 @@ export default function V5Page() {
   return (
     <div className="min-h-screen flex flex-col justify-between selection:bg-amber-400/20 bg-[#070919] text-amber-50">
       {/* ================= 頂部區域：左上角 (憶起 Logo + 微笑圓臉光球 + 引導小字) ＆ 右上角 (垂直排列之四連結) ================= */}
-      <header className="w-full max-w-5xl mx-auto px-3.5 sm:px-6 pt-3 sm:pt-4 pb-1 sm:pb-2 flex items-start justify-between gap-3 z-20">
-        {/* 左上角：憶起 Logo + 微笑光球 + 引導小字 */}
+      <header className="w-full max-w-5xl mx-auto px-3.5 sm:px-6 pt-3 sm:pt-4 pb-1 sm:pb-2 flex items-stretch justify-between gap-3 sm:gap-4 z-20 h-[170px] sm:h-[184px]">
+        {/* 左上角：憶起 Logo + 微笑光球 + 引導小字 (高度與右側完全對齊) */}
         <div
           onClick={() => {
             if (currentView !== 'home') setCurrentView('home');
           }}
-          className={`flex flex-col items-start text-left max-w-[calc(100%-66px)] sm:max-w-md ${
+          className={`flex-1 h-full min-w-0 max-w-[calc(100%-68px)] sm:max-w-md ${
             currentView !== 'home' ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''
           }`}
           title={currentView !== 'home' ? '點擊返回首頁' : '憶起'}
@@ -134,71 +134,77 @@ export default function V5Page() {
           />
         </div>
 
-        {/* 右上角：四個按鈕由上而下垂直排列 (星光點數 聲音 記錄 登入) */}
-        <div className="flex flex-col items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* 1. 星光點數 */}
-          <button
-            onClick={() => {
-              sound.playSparkle();
-              setIsArchiveOpen(true);
-            }}
-            title="星光點數"
-            className="w-[50px] sm:w-[56px] h-[46px] sm:h-[50px] rounded-2xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-300/30 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
-          >
-            <div className="flex items-center gap-1">
-              <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300 animate-pulse" />
-              <span className="font-mono text-[11px] font-semibold text-amber-100">{points}</span>
-            </div>
-            <span className="text-[9px] text-amber-300/80 tracking-wider">星光點數</span>
-          </button>
-
-          {/* 2. 聲音 */}
-          <button
-            onClick={toggleSound}
-            title={isMuted ? '開啟聲音' : '關閉聲音'}
-            className="w-[50px] sm:w-[56px] h-[46px] sm:h-[50px] rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
-          >
-            {isMuted ? (
-              <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300/60 group-hover:text-amber-200 transition-colors" />
-            ) : (
-              <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 group-hover:scale-110 transition-transform" />
-            )}
-            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider">聲音</span>
-          </button>
-
-          {/* 3. 記錄 */}
-          <button
-            onClick={() => {
-              sound.playSparkle();
-              setIsArchiveOpen(true);
-            }}
-            title="靈魂記錄與檔案庫"
-            className="w-[50px] sm:w-[56px] h-[46px] sm:h-[50px] rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
-          >
-            <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 group-hover:scale-110 transition-transform" />
-            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider">記錄</span>
-          </button>
-
-          {/* 4. 登入 */}
+        {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數)，高度大小兩邊依樣 */}
+        <div className="flex flex-col justify-between items-center shrink-0 h-full w-[54px] sm:w-[60px] py-0.5">
+          {/* 1. 👤 登入 */}
           <button
             onClick={() => {
               sound.playSparkle();
               setIsAuthOpen(true);
             }}
             title={currentUser.isLoggedIn ? currentUser.nickname : '會員登入'}
-            className="w-[50px] sm:w-[56px] h-[46px] sm:h-[50px] rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+            className="w-full h-[36px] sm:h-[39px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
           >
             {currentUser.isLoggedIn ? (
               <img
                 src={currentUser.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.email}`}
                 alt={currentUser.nickname}
-                className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border border-amber-300/60"
+                className="w-3.5 h-3.5 rounded-full border border-amber-300/60"
               />
             ) : (
-              <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 group-hover:scale-110 transition-transform" />
+              <User className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
             )}
-            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider max-w-[44px] truncate">
+            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider max-w-[46px] truncate leading-none">
               {currentUser.isLoggedIn ? currentUser.nickname : '登入'}
+            </span>
+          </button>
+
+          {/* 2. 🔊 聲音 */}
+          <button
+            onClick={toggleSound}
+            title={isMuted ? '開啟聲音' : '關閉聲音'}
+            className="w-full h-[36px] sm:h-[39px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+          >
+            {isMuted ? (
+              <VolumeX className="w-3.5 h-3.5 text-amber-300/60 group-hover:text-amber-200 transition-colors" />
+            ) : (
+              <Volume2 className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
+            )}
+            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider leading-none">
+              聲音
+            </span>
+          </button>
+
+          {/* 3. 📖 記錄 */}
+          <button
+            onClick={() => {
+              sound.playSparkle();
+              setIsArchiveOpen(true);
+            }}
+            title="靈魂記錄與檔案庫"
+            className="w-full h-[36px] sm:h-[39px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
+            <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider leading-none">
+              記錄
+            </span>
+          </button>
+
+          {/* 4. ⭐ 星光點數 */}
+          <button
+            onClick={() => {
+              sound.playSparkle();
+              setIsArchiveOpen(true);
+            }}
+            title="星光點數"
+            className="w-full h-[36px] sm:h-[39px] rounded-xl sm:rounded-2xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-300/30 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
+          >
+            <div className="flex items-center gap-0.5 leading-none">
+              <Star className="w-3 h-3 fill-amber-300 text-amber-300 animate-pulse" />
+              <span className="font-mono text-[10.5px] font-semibold text-amber-100 leading-none">{points}</span>
+            </div>
+            <span className="text-[8.5px] text-amber-300/80 tracking-wider leading-none">
+              星光點數
             </span>
           </button>
         </div>

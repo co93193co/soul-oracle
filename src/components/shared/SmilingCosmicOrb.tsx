@@ -16,6 +16,7 @@ interface SmilingCosmicOrbProps {
   logoPosition?: 'left' | 'right';
   align?: 'left' | 'center';
   onLogoClick?: () => void;
+  className?: string;
 }
 
 export default function SmilingCosmicOrb({
@@ -28,6 +29,7 @@ export default function SmilingCosmicOrb({
   logoPosition = 'left',
   align = 'center',
   onLogoClick,
+  className = '',
 }: SmilingCosmicOrbProps) {
   const handleClick = () => {
     sound.playHeartbeat();
@@ -40,7 +42,7 @@ export default function SmilingCosmicOrb({
 
   const sizeClasses = {
     xs: 'w-10 h-10 sm:w-12 sm:h-12',
-    sm: 'w-14 h-14 sm:w-16 sm:h-16',
+    sm: 'w-[70px] h-[70px] sm:w-[82px] sm:h-[82px]',
     md: 'w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44',
     lg: 'w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56',
   }[size];
@@ -90,8 +92,10 @@ export default function SmilingCosmicOrb({
   return (
     <div
       className={`flex flex-col select-none ${
-        align === 'left' ? 'items-start text-left' : 'items-center justify-center text-center'
-      }`}
+        align === 'left'
+          ? 'items-start text-left justify-between h-full'
+          : 'items-center justify-center text-center'
+      } ${className}`}
     >
       {/* 圓臉圖案與旁邊的 Logo 文字組合 */}
       <div
