@@ -93,8 +93,8 @@ export default function SmilingCosmicOrb({
     <div
       className={`flex flex-col select-none ${
         align === 'left'
-          ? 'items-start text-left justify-between h-full'
-          : 'items-center justify-center text-center'
+          ? 'items-start text-left justify-between'
+          : 'items-center justify-between text-center'
       } ${className}`}
     >
       {/* 圓臉圖案與旁邊的 Logo 文字組合 */}
@@ -242,14 +242,10 @@ export default function SmilingCosmicOrb({
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.6 }}
           className={`mt-1 sm:mt-1.5 ${
-            align === 'left' ? 'text-left max-w-[240px] sm:max-w-xs' : 'text-center max-w-sm px-2'
+            align === 'left' ? 'text-left max-w-[240px] sm:max-w-xs' : 'text-center max-w-[220px] sm:max-w-sm px-1'
           }`}
         >
-          <p
-            className={`text-amber-100/90 text-[10px] sm:text-xs md:text-sm font-light tracking-wide leading-snug ${
-              align === 'left' ? '' : 'whitespace-nowrap'
-            }`}
-          >
+          <p className="text-amber-100/90 text-[10px] sm:text-xs md:text-sm font-light tracking-wide leading-snug">
             {guideText ||
               (mode === 'breathing'
                 ? '深呼吸... 感受宇宙的心跳與接納'

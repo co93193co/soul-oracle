@@ -101,14 +101,14 @@ export default function V5Page() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between selection:bg-amber-400/20 bg-[#070919] text-amber-50">
-      {/* ================= 頂部區域：左上角 (憶起 Logo + 微笑圓臉光球 + 引導小字) ＆ 右上角 (垂直排列之四連結) ================= */}
-      <header className="w-full max-w-5xl mx-auto px-3.5 sm:px-6 pt-3 sm:pt-4 pb-1 sm:pb-2 flex items-stretch justify-between gap-3 sm:gap-4 z-20 h-[170px] sm:h-[184px]">
-        {/* 左上角：憶起 Logo + 微笑光球 + 引導小字 (高度與右側完全對齊) */}
+      {/* ================= 頂部區域：中央 (憶起 Logo + 微笑圓臉光球 + 引導小字 全部置中) ＆ 右上角 (垂直排列之四連結 維持不變) ================= */}
+      <header className="relative w-full max-w-5xl mx-auto px-3.5 sm:px-6 pt-3 sm:pt-4 pb-1 sm:pb-2 flex items-center justify-center z-20 h-[170px] sm:h-[184px]">
+        {/* 中央：憶起 Logo + 微笑光球 + 引導小字 (位置全部修正置中，高度大小與右側一致) */}
         <div
           onClick={() => {
             if (currentView !== 'home') setCurrentView('home');
           }}
-          className={`flex-1 h-full min-w-0 max-w-[calc(100%-68px)] sm:max-w-md ${
+          className={`h-full flex flex-col items-center justify-between text-center max-w-[calc(100%-116px)] sm:max-w-md ${
             currentView !== 'home' ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''
           }`}
           title={currentView !== 'home' ? '點擊返回首頁' : '憶起'}
@@ -118,7 +118,8 @@ export default function V5Page() {
             themeColor="amber"
             logoText="憶起"
             logoPosition="left"
-            align="left"
+            align="center"
+            className="h-full"
             onLogoClick={() => {
               if (currentView !== 'home') setCurrentView('home');
             }}
@@ -134,8 +135,8 @@ export default function V5Page() {
           />
         </div>
 
-        {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數)，高度大小兩邊依樣 */}
-        <div className="flex flex-col justify-between items-center shrink-0 h-full w-[54px] sm:w-[60px] py-0.5">
+        {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數)，右邊垂直鏈結維持不變 */}
+        <div className="absolute right-3.5 sm:right-6 top-3 sm:top-4 bottom-1 sm:bottom-2 flex flex-col justify-between items-center w-[54px] sm:w-[60px] py-0.5">
           {/* 1. 👤 登入 */}
           <button
             onClick={() => {
