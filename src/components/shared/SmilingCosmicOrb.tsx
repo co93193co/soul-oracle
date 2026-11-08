@@ -11,9 +11,11 @@ interface SmilingCosmicOrbProps {
   guideText?: string;
   themeColor?: 'amber' | 'indigo' | 'rose' | 'purple' | 'teal';
   onOrbClick?: () => void;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   logoText?: string;
   logoPosition?: 'left' | 'right';
+  align?: 'left' | 'center';
+  onLogoClick?: () => void;
 }
 
 export default function SmilingCosmicOrb({
@@ -24,14 +26,21 @@ export default function SmilingCosmicOrb({
   size = 'md',
   logoText,
   logoPosition = 'left',
+  align = 'center',
+  onLogoClick,
 }: SmilingCosmicOrbProps) {
   const handleClick = () => {
     sound.playHeartbeat();
     if (onOrbClick) onOrbClick();
   };
 
+  const handleLogoClick = () => {
+    if (onLogoClick) onLogoClick();
+  };
+
   const sizeClasses = {
-    sm: 'w-20 h-20 sm:w-24 sm:h-24',
+    xs: 'w-10 h-10 sm:w-12 sm:h-12',
+    sm: 'w-14 h-14 sm:w-16 sm:h-16',
     md: 'w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44',
     lg: 'w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56',
   }[size];
@@ -79,16 +88,29 @@ export default function SmilingCosmicOrb({
   }[themeColor];
 
   return (
-    <div className="flex flex-col items-center justify-center select-none">
+    <div
+      className={`flex flex-col select-none ${
+        align === 'left' ? 'items-start text-left' : 'items-center justify-center text-center'
+      }`}
+    >
       {/* 圓臉圖案與旁邊的 Logo 文字組合 */}
-      <div className="flex items-center justify-center gap-3 sm:gap-4">
+      <div
+        className={`flex items-center gap-2.5 sm:gap-3.5 ${
+          align === 'left' ? 'justify-start' : 'justify-center'
+        }`}
+      >
         {/* 旁邊的 Logo 主要名稱 (如：憶起) - 位於左側 */}
         {logoText && logoPosition === 'left' && (
-          <div className="flex flex-col items-end text-right select-none">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_20px_rgba(251,191,36,0.35)] leading-tight">
+          <div
+            onClick={handleLogoClick}
+            className={`flex flex-col select-none ${
+              align === 'left' ? 'items-start text-left' : 'items-end text-right'
+            } ${onLogoClick ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}
+          >
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_20px_rgba(251,191,36,0.35)] leading-tight">
               {logoText}
             </h1>
-            <span className="text-[10px] sm:text-xs text-amber-300/70 font-mono tracking-widest mt-0.5">
+            <span className="text-[9.5px] sm:text-[11px] text-amber-300/70 font-mono tracking-widest mt-0.5">
               ✦ RECALL ✦
             </span>
           </div>
@@ -215,9 +237,15 @@ export default function SmilingCosmicOrb({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.6 }}
-          className="mt-1 sm:mt-3 text-center max-w-sm px-2"
+          className={`mt-1 sm:mt-1.5 ${
+            align === 'left' ? 'text-left max-w-[240px] sm:max-w-xs' : 'text-center max-w-sm px-2'
+          }`}
         >
-          <p className="text-amber-100/90 text-[10.5px] sm:text-xs md:text-sm font-light tracking-wide whitespace-nowrap leading-tight">
+          <p
+            className={`text-amber-100/90 text-[10px] sm:text-xs md:text-sm font-light tracking-wide leading-snug ${
+              align === 'left' ? '' : 'whitespace-nowrap'
+            }`}
+          >
             {guideText ||
               (mode === 'breathing'
                 ? '深呼吸... 感受宇宙的心跳與接納'
@@ -225,7 +253,7 @@ export default function SmilingCosmicOrb({
                 ? '在心中默念這份肯定，對齊豐盛頻率'
                 : '宇宙正溫柔地微笑著看著你')}
           </p>
-          <span className="text-[9px] sm:text-[10px] text-amber-200/50 block mt-0.5 tracking-wider">
+          <span className="text-[8.5px] sm:text-[9.5px] text-amber-200/50 block mt-0.5 tracking-wider">
             (點擊光球可感受平靜心跳)
           </span>
         </motion.div>
