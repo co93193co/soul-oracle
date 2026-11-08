@@ -1,10 +1,17 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import CosmicBackground from '@/components/shared/CosmicBackground';
 
 export const metadata: Metadata = {
   title: '靈魂之境 ‧ 宇宙迴響 (Soul Oracle)',
   description: '融合心靈傾訴釋放與願望豐盛顯化的雙軌心靈科技殿堂',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#070919',
 };
 
 export default function RootLayout({

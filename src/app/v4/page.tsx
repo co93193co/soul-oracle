@@ -257,42 +257,42 @@ export default function V4Page() {
                   sound.playSingingBowl432();
                   setIsMeditationOpen(true);
                 }}
-                className="w-full max-w-xl my-3 py-3 px-4 rounded-2xl bg-gradient-to-r from-indigo-950/70 via-purple-950/60 to-amber-950/50 border border-amber-300/40 hover:border-amber-300/70 flex items-center justify-between cursor-pointer transition-all shadow-xl group"
+                className="w-full max-w-xl my-3 py-3 px-3.5 sm:px-4 rounded-2xl bg-gradient-to-r from-indigo-950/70 via-purple-950/60 to-amber-950/50 border border-amber-300/40 hover:border-amber-300/70 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 cursor-pointer transition-all shadow-xl group"
               >
-                <div className="flex items-center gap-3 text-left">
-                  <div className="w-9 h-9 rounded-xl bg-amber-400/20 border border-amber-300/30 flex items-center justify-center text-amber-300 group-hover:scale-105 transition-transform">
-                    <Flame className="w-5 h-5 text-orange-400" />
+                <div className="flex items-center gap-2.5 sm:gap-3 text-left">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-400/20 border border-amber-300/30 flex items-center justify-center text-amber-300 group-hover:scale-105 transition-transform shrink-0">
+                    <Flame className="w-4 h-4 sm:w-5 sm:h-5 text-orange-400" />
                   </div>
-                  <div>
-                    <h3 className="text-xs sm:text-sm font-medium text-amber-100 flex flex-wrap items-center gap-1.5">
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-sm font-medium text-amber-100 flex flex-wrap items-center gap-1.5 leading-snug">
                       <span>每天留一點時間給自己，冥想累積心靈星光</span>
                       <span className="text-[10px] text-amber-300 px-1.5 py-0.2 rounded bg-amber-400/20 font-bold border border-amber-300/25">
-                        1分=1點 / 3分=3點 / 5分=5點
+                        1分=1點 ~ 5分=5點
                       </span>
                     </h3>
-                    <p className="text-[11px] text-amber-200/70 flex flex-wrap items-center gap-2 mt-0.5">
+                    <p className="text-[10px] sm:text-[11px] text-amber-200/70 flex flex-wrap items-center gap-1.5 sm:gap-2 mt-0.5">
                       <span className="text-amber-300 font-semibold">連續 {meditationStats.streakDays} 天</span>
                       <span>•</span>
                       <span className="text-purple-300 flex items-center gap-0.5">
-                        <InfinityIcon className="w-3 h-3 inline" /> 時間不限單次最高 10 點
+                        <InfinityIcon className="w-3 h-3 inline" /> 每日上限10點
                       </span>
                       <span>•</span>
                       {has7DaysBadge ? (
-                        <span className="text-emerald-400">✓ 7天金句卡</span>
+                        <span className="text-emerald-400">✓ 7天金句</span>
                       ) : (
                         <span>7天金句 ({meditationStats.streakDays}/7)</span>
                       )}
                       <span>•</span>
                       {has21DaysBadge ? (
-                        <span className="text-amber-300">✓ 21天願望牆</span>
+                        <span className="text-amber-300">✓ 21天願望</span>
                       ) : (
-                        <span>21天願望牆 ({meditationStats.streakDays}/21)</span>
+                        <span>21天願望 ({meditationStats.streakDays}/21)</span>
                       )}
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className="py-1.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-bold text-xs tracking-wider group-hover:scale-105 transition-all inline-block shadow-sm">
+                <div className="text-right sm:text-right shrink-0 flex justify-end">
+                  <span className="w-full sm:w-auto text-center py-1.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-bold text-xs tracking-wider group-hover:scale-105 transition-all inline-block shadow-sm">
                     開始 ➔
                   </span>
                 </div>

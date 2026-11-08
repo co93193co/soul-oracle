@@ -71,9 +71,9 @@ export default function BoxBreathingSmilingOrb({
   }, [phase, secondsInCycle, onPhaseChange, soundEnabled]);
 
   const sizeClasses = {
-    sm: 'w-28 h-28',
-    md: 'w-44 h-44 sm:w-52 sm:h-52',
-    lg: 'w-56 h-56 sm:w-64 sm:h-64',
+    sm: 'w-24 h-24 sm:w-28 sm:h-28',
+    md: 'w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52',
+    lg: 'w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64',
   }[size];
 
   // 依據四個階段動態計算視覺色彩與陰影
