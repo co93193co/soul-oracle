@@ -135,9 +135,9 @@ export default function V5Page() {
       tabLabel: '01 釋放之門',
       icon: Moon,
       english: 'RELEASE & SURRENDER',
-      title: '🌙 釋放之門 ‧ 心靈傾訴',
+      title: '🌙 釋放之門 ‧ 放手清理',
       description:
-        '倒出心底積壓的疲憊與心事，看著文字如星光輕輕散去。在 4-4 深呼吸中放鬆下來，接收來自宇宙的溫暖回應，找回內在的輕鬆與平靜。',
+        '倒出心底積壓的疲憊與心事，看著文字如星光輕輕散去。跟著我深呼吸，放手清理，找回內在的輕鬆與平靜。',
       actionText: '推開釋放之門 ➔',
       themeGradient: 'from-[#111636]/90 via-[#0d1028]/90 to-[#070919]/95',
       borderClass: 'border-indigo-400/40 hover:border-indigo-400/80',
@@ -157,7 +157,7 @@ export default function V5Page() {
       english: 'INQUIRE & CLARIFY',
       title: '🔮 提問之門 ‧ 靈魂探問',
       description:
-        '帶著你心裡最在意的疑問，向浩瀚宇宙真誠聊聊。撥開紛亂的想法，看清內在真正的需要，在溫柔的視角裡看見答案與前行方向。',
+        '帶著你心裡的疑問，向浩瀚宇宙真誠聊聊。撥開紛亂的想法，靜下來，聽聽內心聲音，知曉內在真正的需要，看見答案與前行方向。',
       actionText: '推開提問之門 ➔',
       themeGradient: 'from-[#1d1135]/90 via-[#130a24]/90 to-[#090513]/95',
       borderClass: 'border-purple-400/40 hover:border-purple-400/80',
