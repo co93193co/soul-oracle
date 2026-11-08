@@ -384,12 +384,12 @@ export default function V6Page() {
                       </p>
                     </div>
 
-                    {/* 第二行：推開進入與箭頭圖示 */}
+                    {/* 第二行：推門進入與箭頭符號 */}
                     <div className="pt-3 flex items-center justify-center">
                       <span
                         className={`inline-flex items-center gap-2 py-2 px-6 sm:px-7 rounded-full bg-white/10 group-hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-medium ${currentGate.accentText} group-hover:text-white transition-all shadow-md group-hover:scale-105`}
                       >
-                        <span>推開進入</span>
+                        <span>推門進入</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </span>
                     </div>
