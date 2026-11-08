@@ -232,15 +232,29 @@ export default function SmilingCosmicOrb({
             {sparkleStyle === 'star' && (
               <motion.div
                 animate={{
-                  scale: [0.85, 1.25, 0.85],
-                  opacity: [0.7, 1, 0.7],
+                  scale: [0.95, 1.25, 1.1, 1.3, 0.95],
+                  opacity: [0.85, 1, 0.9, 1, 0.85],
                   rotate: [0, 90, 180, 270, 360],
                 }}
                 transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute top-2.5 right-4 pointer-events-none drop-shadow-[0_0_10px_rgba(254,240,138,0.95)]"
+                className="absolute top-1.5 right-3 sm:top-2 sm:right-3.5 pointer-events-none drop-shadow-[0_0_12px_rgba(251,191,36,0.95)] drop-shadow-[0_0_24px_rgba(254,240,138,0.85)]"
               >
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-amber-100 fill-amber-100">
-                  <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" />
+                <svg viewBox="0 0 24 24" className="w-5 h-5 sm:w-6 sm:h-6 overflow-visible">
+                  <path
+                    d="M12 1 C12 7.5 7.5 12 1 12 C7.5 12 12 16.5 12 23 C12 16.5 16.5 12 23 12 C16.5 12 12 7.5 12 1 Z"
+                    fill="url(#starGradientV5)"
+                    stroke="rgba(255, 255, 255, 0.8)"
+                    strokeWidth="0.6"
+                  />
+                  {/* 中央高頻微型鑽石核心 */}
+                  <circle cx="12" cy="12" r="2.2" fill="#FFFFFF" />
+                  <defs>
+                    <linearGradient id="starGradientV5" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#FFFFFF" />
+                      <stop offset="50%" stopColor="#FEF08A" />
+                      <stop offset="100%" stopColor="#F59E0B" />
+                    </linearGradient>
+                  </defs>
                 </svg>
               </motion.div>
             )}
