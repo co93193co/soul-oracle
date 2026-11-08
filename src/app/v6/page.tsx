@@ -602,10 +602,12 @@ export default function V6Page() {
       />
 
       {/* ================= 接收之門：V4 冥想殿堂全螢幕彈窗 ================= */}
+      {/* ================= 接收之門：V4 冥想殿堂全螢幕彈窗 (含心靈音樂) ================= */}
       <DailyMeditationModalV4
         isOpen={isMeditationOpen}
         onClose={() => setIsMeditationOpen(false)}
         onPointsUpdated={(newPts) => setPoints(newPts)}
+        onOpenMusic={() => setIsMusicOpen(true)}
       />
 
       {/* ================= 快速抽卡彈窗 ================= */}

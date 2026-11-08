@@ -12,6 +12,7 @@ import {
   Gift,
   ArrowLeft,
   Infinity as InfinityIcon,
+  Music,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import BoxBreathingSmilingOrb, { BoxPhase } from '@/components/shared/BoxBreathingSmilingOrb';
@@ -23,6 +24,7 @@ interface DailyMeditationModalV4Props {
   onClose: () => void;
   onPointsUpdated: (newPoints: number) => void;
   onOpenWishWall?: () => void;
+  onOpenMusic?: () => void;
 }
 
 // V4 冥想選項：1分=1點、3分=3點、5分=5點，另提供 10分封頂 與 自由不限時模式 (最高10點)
@@ -38,6 +40,7 @@ export default function DailyMeditationModalV4({
   onClose,
   onPointsUpdated,
   onOpenWishWall,
+  onOpenMusic,
 }: DailyMeditationModalV4Props) {
   const [mode, setMode] = useState<'preset' | 'open'>('preset'); // preset: 倒數計時, open: 自由不限時正向計時
   const [selectedPreset, setSelectedPreset] = useState(PRESET_OPTIONS[0]);
@@ -181,14 +184,29 @@ export default function DailyMeditationModalV4({
               </span>
             </div>
 
-            {/* 右側：X 關閉回到前頁 */}
-            <button
-              onClick={onClose}
-              title="回到前頁"
-              className="p-1.5 sm:p-2 rounded-full hover:bg-white/15 text-amber-200/70 hover:text-white transition-colors border border-white/10 bg-white/5 shrink-0 active:scale-95"
-            >
-              <X className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
+            {/* 右側：心靈音樂 + X 關閉回到前頁 */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {onOpenMusic && (
+                <button
+                  onClick={() => {
+                    sound.playSparkle();
+                    onOpenMusic();
+                  }}
+                  title="開啟心靈音樂播放器"
+                  className="flex items-center gap-1.5 py-1 sm:py-1.5 px-2.5 sm:px-3 rounded-full bg-purple-500/20 hover:bg-purple-500/35 border border-purple-400/40 text-[11px] sm:text-xs text-purple-200 hover:text-white transition-all shadow-sm active:scale-95 group"
+                >
+                  <Music className="w-3.5 h-3.5 text-purple-300 group-hover:scale-110 transition-transform" />
+                  <span>心靈音樂</span>
+                </button>
+              )}
+              <button
+                onClick={onClose}
+                title="回到前頁"
+                className="p-1.5 sm:p-2 rounded-full hover:bg-white/15 text-amber-200/70 hover:text-white transition-colors border border-white/10 bg-white/5 shrink-0 active:scale-95"
+              >
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
           </div>
 
           {/* ================= 神聖主標題與能量方框引言 ================= */}
@@ -210,30 +228,45 @@ export default function DailyMeditationModalV4({
 
           {/* ================= 中央區域：16秒箱型呼吸笑臉與計時大字 ================= */}
           <div className="flex flex-col items-center justify-center my-1 sm:my-2 shrink-0">
-            {/* 模式切換：指定時長 vs 自由不限時 */}
+            {/* 模式切換：指定時長 vs 自由不限時 ＋ 心靈音樂 */}
             {!isActive && !isCompleted && (
-              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl bg-black/40 border border-white/10 text-xs">
-                <button
-                  onClick={() => setMode('preset')}
-                  className={`py-1 sm:py-1.5 px-3 sm:px-4 rounded-xl text-xs transition-all ${
-                    mode === 'preset'
-                      ? 'bg-amber-400 text-slate-950 font-bold shadow-sm'
-                      : 'text-amber-100/60 hover:text-white'
-                  }`}
-                >
-                  固定時長 (1/3/5/10分)
-                </button>
-                <button
-                  onClick={() => setMode('open')}
-                  className={`py-1 sm:py-1.5 px-3 sm:px-4 rounded-xl text-xs transition-all flex items-center gap-1.5 ${
-                    mode === 'open'
-                      ? 'bg-purple-500 text-white font-bold shadow-sm'
-                      : 'text-amber-100/60 hover:text-white'
-                  }`}
-                >
-                  <InfinityIcon className="w-3.5 h-3.5" />
-                  <span>自由不限時 (最高10點)</span>
-                </button>
+              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                <div className="flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl bg-black/40 border border-white/10 text-xs">
+                  <button
+                    onClick={() => setMode('preset')}
+                    className={`py-1 sm:py-1.5 px-3 sm:px-4 rounded-xl text-xs transition-all ${
+                      mode === 'preset'
+                        ? 'bg-amber-400 text-slate-950 font-bold shadow-sm'
+                        : 'text-amber-100/60 hover:text-white'
+                    }`}
+                  >
+                    固定時長 (1/3/5/10分)
+                  </button>
+                  <button
+                    onClick={() => setMode('open')}
+                    className={`py-1 sm:py-1.5 px-3 sm:px-4 rounded-xl text-xs transition-all flex items-center gap-1.5 ${
+                      mode === 'open'
+                        ? 'bg-purple-500 text-white font-bold shadow-sm'
+                        : 'text-amber-100/60 hover:text-white'
+                    }`}
+                  >
+                    <InfinityIcon className="w-3.5 h-3.5" />
+                    <span>自由不限時 (最高10點)</span>
+                  </button>
+                </div>
+
+                {onOpenMusic && (
+                  <button
+                    onClick={() => {
+                      sound.playSparkle();
+                      onOpenMusic();
+                    }}
+                    className="flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-purple-500/15 hover:bg-purple-500/30 border border-purple-400/30 text-purple-200 text-xs transition-all shadow-sm active:scale-95 group"
+                  >
+                    <Music className="w-3.5 h-3.5 text-purple-300 group-hover:scale-110 transition-transform" />
+                    <span>心靈音樂</span>
+                  </button>
+                )}
               </div>
             )}
 

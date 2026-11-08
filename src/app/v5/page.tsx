@@ -101,90 +101,73 @@ export default function V5Page() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between selection:bg-amber-400/20 bg-[#070919] text-amber-50">
-      {/* ================= 頂部極簡導覽列 (如同 V1 乾淨無壓迫) ================= */}
-      <header className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between z-20">
-        <div
-          onClick={() => setCurrentView('home')}
-          className="flex items-center gap-2.5 cursor-pointer group"
+      {/* ================= 頂部操作區 (星光點數 聲音 記錄 登入) ================= */}
+      <header className="w-full max-w-5xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-end gap-2 sm:gap-2.5 z-20">
+        {/* 星光點數 (保留圖示與點數，下方增加「星光點數」文字) */}
+        <button
+          onClick={() => {
+            sound.playSparkle();
+            setIsArchiveOpen(true);
+          }}
+          title="星光點數"
+          className="h-[52px] sm:h-[56px] px-3 sm:px-3.5 rounded-2xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-300/30 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-400 to-indigo-500 flex items-center justify-center text-slate-950 font-bold text-xs shadow-[0_0_15px_rgba(251,191,36,0.35)] group-hover:scale-105 transition-transform">
-            <Sparkles className="w-4 h-4 text-slate-950" />
-          </div>
-          <div>
-            <h1 className="text-base sm:text-lg font-light tracking-widest text-amber-100 flex items-center gap-1.5">
-              <span>憶起</span>
-              <span className="text-[10px] text-amber-300 uppercase tracking-widest font-mono bg-amber-400/15 px-1.5 py-0.2 rounded border border-amber-300/30">
-                V5
-              </span>
-            </h1>
-          </div>
-        </div>
-
-        {/* 頂部操作區 */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* 星光能量指示器 */}
-          <div
-            onClick={() => setIsArchiveOpen(true)}
-            className="flex items-center gap-1 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-300/25 text-amber-200 text-xs tracking-wider cursor-pointer hover:bg-amber-400/20 transition-colors shadow-sm"
-          >
+          <div className="flex items-center gap-1">
             <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300 animate-pulse" />
-            <span className="font-mono">{points} 點</span>
+            <span className="font-mono text-xs font-semibold text-amber-100">{points} 點</span>
           </div>
+          <span className="text-[10px] text-amber-300/80 tracking-wider">星光點數</span>
+        </button>
 
-          {/* 心靈音樂 */}
-          <button
-            onClick={() => {
-              sound.playSparkle();
-              setIsMusicOpen(true);
-            }}
-            title="心靈音樂播放器"
-            className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 text-purple-300/80 hover:text-white transition-colors"
-          >
-            <Music className="w-4 h-4" />
-          </button>
+        {/* 聲音 (大小框與記錄、登入一致，下方增加「聲音」文字) */}
+        <button
+          onClick={toggleSound}
+          title={isMuted ? '開啟聲音' : '關閉聲音'}
+          className="w-[52px] sm:w-[58px] h-[52px] sm:h-[56px] rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+        >
+          {isMuted ? (
+            <VolumeX className="w-4 h-4 text-amber-300/60 group-hover:text-amber-200 transition-colors" />
+          ) : (
+            <Volume2 className="w-4 h-4 text-amber-300 group-hover:scale-110 transition-transform" />
+          )}
+          <span className="text-[10px] text-amber-200/70 group-hover:text-amber-100 tracking-wider">聲音</span>
+        </button>
 
-          {/* 音效開關 */}
-          <button
-            onClick={toggleSound}
-            aria-label="切換音效"
-            className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 text-amber-200/70 hover:text-white transition-colors"
-          >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </button>
+        {/* 記錄 (大小框與聲音、登入一致，下方增加「記錄」文字) */}
+        <button
+          onClick={() => {
+            sound.playSparkle();
+            setIsArchiveOpen(true);
+          }}
+          title="靈魂記錄與檔案庫"
+          className="w-[52px] sm:w-[58px] h-[52px] sm:h-[56px] rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+        >
+          <BookOpen className="w-4 h-4 text-amber-300 group-hover:scale-110 transition-transform" />
+          <span className="text-[10px] text-amber-200/70 group-hover:text-amber-100 tracking-wider">記錄</span>
+        </button>
 
-          {/* 星空檔案庫 */}
-          <button
-            onClick={() => setIsArchiveOpen(true)}
-            className="flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-xs text-amber-100 tracking-wider transition-all"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-amber-300" />
-            <span className="hidden sm:inline">檔案庫</span>
-          </button>
-
-          {/* Google 會員登入 */}
-          <button
-            onClick={() => setIsAuthOpen(true)}
-            className="flex items-center gap-1.5 py-1.5 px-2.5 sm:px-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-xs text-amber-100 transition-all"
-          >
-            {currentUser.isLoggedIn ? (
-              <>
-                <img
-                  src={currentUser.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.email}`}
-                  alt={currentUser.nickname}
-                  className="w-4 h-4 rounded-full border border-amber-300/60"
-                />
-                <span className="max-w-[60px] truncate hidden sm:inline text-[11px]">
-                  {currentUser.nickname}
-                </span>
-              </>
-            ) : (
-              <>
-                <User className="w-3.5 h-3.5 text-amber-300" />
-                <span className="hidden sm:inline text-[11px]">登入</span>
-              </>
-            )}
-          </button>
-        </div>
+        {/* 登入 (大小框與聲音、記錄一致，下方增加「登入」文字) */}
+        <button
+          onClick={() => {
+            sound.playSparkle();
+            setIsAuthOpen(true);
+          }}
+          title={currentUser.isLoggedIn ? currentUser.nickname : '會員登入'}
+          className="w-[52px] sm:w-[58px] h-[52px] sm:h-[56px] rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+        >
+          {currentUser.isLoggedIn ? (
+            <img
+              src={currentUser.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.email}`}
+              alt={currentUser.nickname}
+              className="w-4 h-4 rounded-full border border-amber-300/60"
+            />
+          ) : (
+            <User className="w-4 h-4 text-amber-300 group-hover:scale-110 transition-transform" />
+          )}
+          <span className="text-[10px] text-amber-200/70 group-hover:text-amber-100 tracking-wider max-w-[48px] truncate">
+            {currentUser.isLoggedIn ? currentUser.nickname : '登入'}
+          </span>
+        </button>
       </header>
 
       {/* ================= 主體內容區 ================= */}
@@ -199,12 +182,13 @@ export default function V5Page() {
               exit={{ opacity: 0, scale: 0.96 }}
               className="w-full flex flex-col items-center text-center"
             >
-              {/* 中央微笑光球 (圓臉圖案) ＋ 憶起 Logo 主要名稱 */}
+              {/* 中央微笑光球 (圓臉圖案) ＋ 憶起 Logo 主要名稱 (位於左側) */}
               <div className="my-2 sm:my-3">
                 <SmilingCosmicOrb
                   size="sm"
                   themeColor="amber"
                   logoText="憶起"
+                  logoPosition="left"
                   guideText="宇宙正溫柔地微笑著看著你，放鬆下來..."
                 />
               </div>
@@ -317,12 +301,12 @@ export default function V5Page() {
                         </span>
                       </h2>
                       <p className="text-xs sm:text-sm text-teal-200/70 leading-relaxed font-light min-h-[66px] sm:min-h-[72px]">
-                        放下掌控與內在緊繃，將心輪完全敞開如同一只純淨空杯。透過四方神聖箱型呼吸冥想，盛接宇宙的高頻靈感與恩典卡。
+                        放下掌控與內在緊繃，將心輪完全敞開如同一只純淨空杯。透過四方神聖箱型呼吸冥想與心靈音樂，盛接宇宙的高頻靈感與恩典卡。
                       </p>
                     </div>
 
                     <div className="mt-6 flex items-center gap-1.5 text-xs text-teal-300 font-medium group-hover:translate-x-1 transition-transform">
-                      <span>推開接收之門 (進入冥想) ➔</span>
+                      <span>推開接收之門 (進入冥想與音樂) ➔</span>
                     </div>
                   </motion.div>
 
@@ -418,11 +402,12 @@ export default function V5Page() {
         <p>宇宙永遠在傾聽，你所渴望的美好正以超越想像的方式走向你 ✨</p>
       </footer>
 
-      {/* ================= 接收之門：V4 冥想殿堂全螢幕彈窗 ================= */}
+      {/* ================= 接收之門：V4 冥想殿堂全螢幕彈窗 (含心靈音樂) ================= */}
       <DailyMeditationModalV4
         isOpen={isMeditationOpen}
         onClose={() => setIsMeditationOpen(false)}
         onPointsUpdated={(newPts) => setPoints(newPts)}
+        onOpenMusic={() => setIsMusicOpen(true)}
       />
 
       {/* ================= 快速抽卡彈窗 ================= */}

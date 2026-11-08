@@ -13,6 +13,7 @@ interface SmilingCosmicOrbProps {
   onOrbClick?: () => void;
   size?: 'sm' | 'md' | 'lg';
   logoText?: string;
+  logoPosition?: 'left' | 'right';
 }
 
 export default function SmilingCosmicOrb({
@@ -22,6 +23,7 @@ export default function SmilingCosmicOrb({
   onOrbClick,
   size = 'md',
   logoText,
+  logoPosition = 'left',
 }: SmilingCosmicOrbProps) {
   const handleClick = () => {
     sound.playHeartbeat();
@@ -80,6 +82,18 @@ export default function SmilingCosmicOrb({
     <div className="flex flex-col items-center justify-center select-none">
       {/* 圓臉圖案與旁邊的 Logo 文字組合 */}
       <div className="flex items-center justify-center gap-3 sm:gap-4">
+        {/* 旁邊的 Logo 主要名稱 (如：憶起) - 位於左側 */}
+        {logoText && logoPosition === 'left' && (
+          <div className="flex flex-col items-end text-right select-none">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_20px_rgba(251,191,36,0.35)] leading-tight">
+              {logoText}
+            </h1>
+            <span className="text-[10px] sm:text-xs text-amber-300/70 font-mono tracking-widest mt-0.5">
+              ✦ RECALL ✦
+            </span>
+          </div>
+        )}
+
         <div className="relative flex items-center justify-center">
           {/* 光暈外層波紋 (心跳共鳴時向外擴散) */}
           <motion.div
@@ -180,8 +194,8 @@ export default function SmilingCosmicOrb({
           </motion.div>
         </div>
 
-        {/* 旁邊的 Logo 主要名稱 (如：憶起) */}
-        {logoText && (
+        {/* 旁邊的 Logo 主要名稱 (如：憶起) - 位於右側 */}
+        {logoText && logoPosition === 'right' && (
           <div className="flex flex-col items-start text-left select-none">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-amber-200 to-yellow-300 drop-shadow-[0_0_20px_rgba(251,191,36,0.35)] leading-tight">
               {logoText}
