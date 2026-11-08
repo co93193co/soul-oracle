@@ -196,7 +196,7 @@ export default function V5Page() {
       tabLabel: '04 宣告之門',
       icon: Globe,
       english: 'PROCLAIM & ALIGN',
-      title: '💫 宣告之門 ‧ 宇宙發願',
+      title: '💫 宣告之門 ‧ 宇宙允許',
       description:
         '把你心底最真誠的心願與期待，化作星光向廣闊宇宙大聲說出來。在此寫下匿名願望注入大家的心願星河，彼此溫柔祝福「允許發生」，宇宙正認真聽著你的聲音。',
       actionText: '推開宣告之門 (寫下願望星願) ➔',
@@ -238,8 +238,8 @@ export default function V5Page() {
       english: 'SYNCHRONICITY & ORACLES',
       title: '✨ 共時之門 ‧ 靈魂指引',
       description:
-        '每一次直覺的相遇，都是宇宙為你準備的心靈默契。靜心做個深呼吸，跟隨直覺抽取今日金句卡、陪伴天使卡、獨角獸卡……等卡，感受奇蹟密碼。',
-      actionText: '推開共時之門 (今日金句‧天使‧獨角獸…等卡) ➔',
+        '每一次直覺的相遇，都是宇宙為你準備的心靈默契。靜心做個深呼吸，跟隨直覺抽取今日金句卡、陪伴天使卡、獨角獸卡，感受奇蹟密碼。',
+      actionText: '推開共時之門 (今日金句‧天使‧獨角獸) ➔',
       themeGradient: 'from-[#22102f]/90 via-[#160a22]/90 to-[#0a0412]/95',
       borderClass: 'border-fuchsia-400/40 hover:border-amber-300/80',
       accentColor: 'text-amber-200',
@@ -283,7 +283,7 @@ export default function V5Page() {
           </div>
         </div>
         <div className="shrink-0 pl-2 text-[10px] text-teal-300/60 font-mono hidden sm:block">
-          ✦ 向天發願 ✦
+          ✦ 宇宙允許 ✦
         </div>
       </div>
 
