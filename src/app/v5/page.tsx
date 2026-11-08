@@ -318,15 +318,14 @@ export default function V5Page() {
                 />
               </div>
 
-              {/* 4. 允許自己成為自己 (純白加粗，依呼吸頻率由遠至近縮小到放大動畫) */}
+              {/* 4. 允許自己成為自己 (方案 B：純白加粗・字體安穩固定・純白聖光微光暈呼吸) */}
               <motion.p
                 animate={{
-                  scale: [0.93, 1.07, 0.93],
-                  opacity: [0.85, 1, 0.85],
+                  opacity: [0.92, 1, 0.92],
                   filter: [
-                    'drop-shadow(0 0 6px rgba(255,255,255,0.4))',
-                    'drop-shadow(0 0 16px rgba(255,255,255,0.85)) drop-shadow(0 0 28px rgba(255,255,255,0.45))',
-                    'drop-shadow(0 0 6px rgba(255,255,255,0.4))',
+                    'drop-shadow(0 0 5px rgba(255,255,255,0.35)) drop-shadow(0 0 12px rgba(255,255,255,0.2))',
+                    'drop-shadow(0 0 14px rgba(255,255,255,0.85)) drop-shadow(0 0 26px rgba(255,255,255,0.5)) drop-shadow(0 0 40px rgba(251,191,36,0.25))',
+                    'drop-shadow(0 0 5px rgba(255,255,255,0.35)) drop-shadow(0 0 12px rgba(255,255,255,0.2))',
                   ],
                 }}
                 transition={{
