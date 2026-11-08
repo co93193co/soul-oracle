@@ -285,25 +285,36 @@ export default function V5Page() {
 
       {currentView === 'home' ? (
         <>
-          {/* ================= 2. 頂部區域：中央 (憶起 Logo + ✦ RECALLING ✦ + 允許自己成為自己 垂直置中) ＆ 右上角 (垂直排列之四連結) ================= */}
-          <header className="relative w-full max-w-xl mx-auto px-3 sm:px-4 pt-2 sm:pt-2.5 pb-1 flex items-center justify-center z-20 h-auto min-h-[145px] sm:min-h-[160px] shrink-0">
-            {/* 中央：憶起 Logo + 微笑光球 (LOGO文字直列排版：憶起 -> RECALLING -> 允許自己成為自己) */}
-            <div
-              className="h-full flex flex-col items-center justify-between text-center w-full max-w-[calc(100%-110px)] sm:max-w-md"
-              title="憶起"
-            >
-              <SmilingCosmicOrb
-                size="sm"
-                themeColor="amber"
-                logoText="憶起"
-                logoPosition="left"
-                align="center"
-                className="h-full"
-                onOrbClick={() => {
-                  sound.playHeartbeat();
-                }}
-                guideText="允許自己成為自己"
-              />
+          {/* ================= 2. 頂部區域：方案 B (神聖中軸垂直排列：憶起 ➔ RECALLING ➔ 加大微笑光球 ➔ 允許自己成為自己) ================= */}
+          <header className="relative w-full max-w-xl mx-auto px-3 sm:px-4 pt-1 sm:pt-2 pb-1 flex flex-col items-center justify-center z-20 h-auto shrink-0">
+            {/* 中央神聖中軸容器 (方案 B：全部垂直置中依序排版) */}
+            <div className="flex flex-col items-center justify-center text-center select-none w-full max-w-xs sm:max-w-md">
+              {/* 1. 憶起 (最大金光字，置中) */}
+              <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-light tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-200 to-amber-100 drop-shadow-[0_0_25px_rgba(251,191,36,0.5)] leading-tight text-center">
+                憶起
+              </h1>
+
+              {/* 2. ✦ RECALLING ✦ (精緻香檳金，置中) */}
+              <span className="text-[10px] sm:text-xs text-amber-200/90 font-mono tracking-[0.2em] mt-0.5 text-center">
+                ✦ RECALLING ✦
+              </span>
+
+              {/* 3. 微笑圓臉動畫加大置中 */}
+              <div className="my-1.5 sm:my-2 relative flex items-center justify-center">
+                <SmilingCosmicOrb
+                  size="md"
+                  themeColor="amber"
+                  align="center"
+                  onOrbClick={() => {
+                    sound.playHeartbeat();
+                  }}
+                />
+              </div>
+
+              {/* 4. 允許自己成為自己 (暖象牙白微光，置中) */}
+              <p className="text-[12.5px] sm:text-[14px] md:text-base text-amber-50/95 font-light tracking-wide text-center drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+                允許自己成為自己
+              </p>
             </div>
 
             {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數：星星在上方，下方365點) */}

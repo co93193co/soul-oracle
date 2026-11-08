@@ -44,9 +44,9 @@ export default function SmilingCosmicOrb({
 
   const sizeClasses = {
     xs: 'w-10 h-10 sm:w-12 sm:h-12',
-    sm: 'w-[70px] h-[70px] sm:w-[82px] sm:h-[82px]',
-    md: 'w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44',
-    lg: 'w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56',
+    sm: 'w-[68px] h-[68px] sm:w-[78px] sm:h-[78px]',
+    md: 'w-[82px] h-[82px] sm:w-[94px] sm:h-[94px]',
+    lg: 'w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48',
   }[size];
 
   // 顏色與漸變配置

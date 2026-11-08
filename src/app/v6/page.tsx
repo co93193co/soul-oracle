@@ -214,20 +214,22 @@ export default function V6Page() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between selection:bg-amber-400/20 bg-[#060814] text-amber-50">
-      {/* ================= 第一行：靈魂之境改為 (憶起) ＋ 其餘鏈接不變 ================= */}
-      <header className="w-full max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex items-center justify-between z-20">
-        {/* 左側：改為「憶起」(可點擊返回V5) */}
+      {/* ================= 第一行：原本LOGO圖示完整保留在 V6 (左右水平並列模式) ＋ 其餘鏈接不變 ================= */}
+      <header className="w-full max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between z-20">
+        {/* 左側：原本 Logo (憶起 ＋ ✦ RECALLING ✦ ＋ 允許自己成為自己 ＋ 微笑光球 左右排列) */}
         <Link
           href="/v5"
-          className="flex items-center gap-2 group cursor-pointer"
-          title="憶起"
+          className="group cursor-pointer select-none"
+          title="點擊返回 V5 (方案B)"
         >
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-400 to-amber-400 flex items-center justify-center text-slate-950 font-bold text-xs shadow-md group-hover:scale-105 transition-transform">
-            ✦
-          </div>
-          <span className="text-base sm:text-lg font-light tracking-widest text-amber-100 group-hover:text-amber-300 transition-colors">
-            憶起
-          </span>
+          <SmilingCosmicOrb
+            size="xs"
+            themeColor="amber"
+            logoText="憶起"
+            logoPosition="left"
+            align="left"
+            guideText="允許自己成為自己"
+          />
         </Link>
 
         {/* 右側：其餘鏈接完全保留 (點數、音樂、音效、檔案庫、登入) */}
