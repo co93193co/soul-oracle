@@ -151,19 +151,19 @@ export default function DailyMeditationModalV4({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-2xl flex items-center justify-center p-2 sm:p-4 md:p-6 selection:bg-amber-400/20">
+      <div className="fixed inset-0 z-50 overflow-hidden bg-black/90 backdrop-blur-2xl flex items-center justify-center p-0 sm:p-4 md:p-6 selection:bg-amber-400/20">
         <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.96 }}
-          className="w-full max-w-5xl min-h-[92vh] max-h-[95vh] overflow-y-auto rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#111636]/95 via-[#0d1028]/95 to-[#070919]/95 border border-amber-300/35 p-3.5 sm:p-6 md:p-8 flex flex-col justify-between shadow-2xl relative text-amber-50"
+          exit={{ opacity: 0, scale: 0.98 }}
+          className="w-full sm:max-w-5xl h-full sm:h-auto sm:min-h-[88vh] sm:max-h-[92vh] overflow-y-auto rounded-none sm:rounded-3xl bg-gradient-to-b from-[#111636]/95 via-[#0d1028]/95 to-[#070919]/95 border-0 sm:border sm:border-amber-300/35 p-3.5 sm:p-6 md:p-8 flex flex-col justify-between shadow-2xl relative text-amber-50 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] sm:pb-8"
         >
           {/* ================= 頂部導覽列：返回按鈕、連續天數、關閉按鈕 ================= */}
-          <div className="w-full flex items-center justify-between pb-3 sm:pb-4 border-b border-white/10 gap-2">
+          <div className="w-full flex items-center justify-between pb-2.5 sm:pb-4 border-b border-white/10 gap-2 shrink-0">
             {/* 左側：回到前頁按鈕選項 */}
             <button
               onClick={onClose}
-              className="flex items-center gap-1 sm:gap-1.5 py-1 sm:py-1.5 px-2.5 sm:px-3.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] sm:text-xs text-amber-200 hover:text-white transition-all shadow-sm group shrink-0"
+              className="flex items-center gap-1 sm:gap-1.5 py-1 sm:py-1.5 px-2.5 sm:px-3.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] sm:text-xs text-amber-200 hover:text-white transition-all shadow-sm group shrink-0 active:scale-95"
             >
               <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
               <span>回到前頁</span>
@@ -171,7 +171,7 @@ export default function DailyMeditationModalV4({
 
             {/* 中央：連續天數與打卡狀態 */}
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full bg-amber-400/10 border border-amber-300/30 text-amber-200 flex items-center gap-1 shadow-sm">
+              <span className="text-[10px] sm:text-xs px-2.5 sm:px-3 py-1 rounded-full bg-amber-400/10 border border-amber-300/30 text-amber-200 flex items-center gap-1 shadow-sm">
                 <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-orange-400" />
                 連續 <strong>{stats.streakDays}</strong> 天
               </span>
@@ -185,34 +185,34 @@ export default function DailyMeditationModalV4({
             <button
               onClick={onClose}
               title="回到前頁"
-              className="p-1.5 sm:p-2 rounded-full hover:bg-white/15 text-amber-200/70 hover:text-white transition-colors border border-white/10 bg-white/5 shrink-0"
+              className="p-1.5 sm:p-2 rounded-full hover:bg-white/15 text-amber-200/70 hover:text-white transition-colors border border-white/10 bg-white/5 shrink-0 active:scale-95"
             >
               <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
 
           {/* ================= 神聖主標題與能量方框引言 ================= */}
-          <div className="text-center my-2.5 sm:my-4 space-y-1.5 sm:space-y-2">
+          <div className="text-center my-2 sm:my-3 space-y-1 sm:space-y-1.5 shrink-0">
             <span className="text-[10px] sm:text-[11px] text-amber-300 tracking-widest uppercase block font-mono">
               ✦ SACRED FOUR-FOLD BOX BREATHING ✦
             </span>
 
             {/* 用戶指定的四方能量神聖標題 */}
-            <h2 className="text-[11px] sm:text-xs md:text-sm font-light text-amber-100/95 tracking-wide max-w-3xl mx-auto leading-relaxed text-center px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-white/5 border border-amber-300/25 shadow-inner">
+            <h2 className="text-[11px] sm:text-xs md:text-sm font-light text-amber-100/95 tracking-wide max-w-3xl mx-auto leading-relaxed text-center px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl bg-white/5 border border-amber-300/25 shadow-inner">
               「如同四方穩固的能量方框，每一個停留都是對當下的完全臨在。吸氣聚集光芒、閉氣凝聚力量、吐氣釋放緊繃、閉氣回歸空白。」
             </h2>
 
             {/* 點數規則清晰標示 */}
-            <div className="text-[10px] sm:text-xs px-3 py-0.5 sm:py-1 rounded-full bg-amber-400/15 border border-amber-300/30 text-amber-200 inline-block font-medium">
+            <div className="text-[10px] sm:text-xs px-2.5 py-0.5 sm:py-1 rounded-full bg-amber-400/15 border border-amber-300/30 text-amber-200 inline-block font-medium">
               ✨ 1分=1點 ‧ 3分=3點 ‧ 5分=5點 ‧ 10分=10點 (每日冥想上限 10 點)
             </div>
           </div>
 
           {/* ================= 中央區域：16秒箱型呼吸笑臉與計時大字 ================= */}
-          <div className="flex flex-col items-center justify-center my-1.5 sm:my-2">
+          <div className="flex flex-col items-center justify-center my-1 sm:my-2 shrink-0">
             {/* 模式切換：指定時長 vs 自由不限時 */}
             {!isActive && !isCompleted && (
-              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-3 sm:mb-4 p-1 sm:p-1.5 rounded-2xl bg-black/40 border border-white/10 text-xs">
+              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl bg-black/40 border border-white/10 text-xs">
                 <button
                   onClick={() => setMode('preset')}
                   className={`py-1 sm:py-1.5 px-3 sm:px-4 rounded-xl text-xs transition-all ${
@@ -246,7 +246,7 @@ export default function DailyMeditationModalV4({
             />
 
             {/* 計時器時間大字 */}
-            <div className="mt-2 sm:mt-3 text-3xl sm:text-5xl font-mono tracking-widest text-amber-200 drop-shadow">
+            <div className="mt-1.5 sm:mt-3 text-3xl sm:text-5xl font-mono tracking-widest text-amber-200 drop-shadow">
               {mode === 'preset' ? formatTime(timeLeft) : formatTime(elapsedSeconds)}
             </div>
             {mode === 'open' && isActive && (
@@ -258,11 +258,11 @@ export default function DailyMeditationModalV4({
           </div>
 
           {/* ================= 四階段引導說明卡片群 (響應式：手機2x2，桌機1列4欄) ================= */}
-          <div className="w-full max-w-4xl mx-auto my-2 sm:my-3">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 text-left">
+          <div className="w-full max-w-4xl mx-auto my-1.5 sm:my-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-3 text-left">
               {/* 1. 吸氣（4秒） */}
               <div
-                className={`p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl border transition-all duration-500 ${
+                className={`p-2 sm:p-3.5 rounded-xl sm:rounded-2xl border transition-all duration-500 flex flex-col justify-between ${
                   currentBoxPhase === 'inhale'
                     ? 'bg-amber-400/20 border-amber-300 shadow-[0_0_20px_rgba(251,191,36,0.3)] ring-1 ring-amber-300'
                     : 'bg-white/5 border-white/10 opacity-70'
