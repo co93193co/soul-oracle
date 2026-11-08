@@ -235,10 +235,10 @@ export default function MultiDeckDrawModal({
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-light text-white tracking-wider flex items-center gap-1.5">
-                <span>05 抽卡專區 ‧ 靈魂牌卡館</span>
+                <span>06 共時之門 ‧ 靈魂指引</span>
               </h2>
               <p className="text-[10px] sm:text-xs text-amber-200/60 font-mono tracking-widest">
-                SACRED ORACLE SANCTUARY
+                SYNCHRONICITY & SACRED ORACLES
               </p>
             </div>
           </div>

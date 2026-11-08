@@ -35,7 +35,7 @@ import { sound } from '@/lib/sound';
 import { localStore, SoulUser, MeditationStats } from '@/lib/storage';
 import { getRandomCard, OracleCardData } from '@/lib/presets/cardsData';
 
-// 首頁底部慢速流動的匿名願望星河數據
+// 天際線跑馬燈：宇宙匿名願望之河宣告文字
 const TICKER_WISHES = [
   '願家人健康平安，身心無病無憂 ‧ ✦ 允許發生 ✦',
   '放下過去的執念，擁抱全新的光與可能 ‧ ✦ 允許發生 ✦',
@@ -55,7 +55,7 @@ export default function V5Page() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isMultiDeckModalOpen, setIsMultiDeckModalOpen] = useState(false);
 
-  // 5大門戶滑動選取狀態
+  // 6大門戶左右滑動選取狀態 (01~06)
   const [activeGateIndex, setActiveGateIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
 
@@ -100,7 +100,7 @@ export default function V5Page() {
     setQuickCard(card);
   };
 
-  // 開啟願望牆
+  // 開啟願望牆 (04 宣告之門)
   const handleOpenWishWall = () => {
     sound.playSparkle();
     setManifestInitialSubView('wall');
@@ -117,17 +117,17 @@ export default function V5Page() {
 
   const handlePrevGate = () => {
     setSlideDirection(-1);
-    setActiveGateIndex((prev) => (prev === 0 ? 4 : prev - 1));
+    setActiveGateIndex((prev) => (prev === 0 ? 5 : prev - 1));
     sound.playSparkle();
   };
 
   const handleNextGate = () => {
     setSlideDirection(1);
-    setActiveGateIndex((prev) => (prev === 4 ? 0 : prev + 1));
+    setActiveGateIndex((prev) => (prev === 5 ? 0 : prev + 1));
     sound.playSparkle();
   };
 
-  // 5大門戶定義 (包含 01 釋放之門 ~ 05 抽卡專區，方框大小依樣，文字不變)
+  // 6大門戶定義 (01釋放 ➔ 02提問 ➔ 03接收 ➔ 04宣告 ➔ 05顯化 ➔ 06共時)
   const gates = [
     {
       id: 'release',
@@ -191,15 +191,34 @@ export default function V5Page() {
       },
     },
     {
-      id: 'manifest',
+      id: 'proclaim',
       tabNumber: '04',
-      tabLabel: '04 顯化之門',
-      icon: Sun,
-      english: 'MANIFEST & ALIGN',
-      title: '☀️ 顯化之門 ‧ 願望播種',
+      tabLabel: '04 宣告之門',
+      icon: Globe,
+      english: 'PROCLAIM & ALIGN TO COSMOS',
+      title: '💫 宣告之門 ‧ 宇宙發願',
       description:
-        '在宇宙中心種下你的渴望，金種入球，透過高頻肯定句冥想對齊心輪，接收宇宙盟友的豐盛祝福、心態盲點提醒與豐盛卡。',
-      actionText: '推開顯化之門 ➔',
+        '將深藏心底的真摯祈願，化作純淨星塵向浩瀚宇宙大聲宣告。在此寫下匿名心願注入集體星河，彼此加持「允許發生」，信任宇宙必有回響。',
+      actionText: '推開宣告之門 (寫下願望星願) ➔',
+      themeGradient: 'from-[#0b252c]/90 via-[#06191f]/90 to-[#020e12]/95',
+      borderClass: 'border-teal-400/40 hover:border-teal-300/80',
+      accentColor: 'text-teal-300',
+      blobColor: 'bg-teal-500/15',
+      iconBg: 'bg-teal-500/20 text-teal-300 border-teal-400/30',
+      onClick: () => {
+        handleOpenWishWall();
+      },
+    },
+    {
+      id: 'manifest',
+      tabNumber: '05',
+      tabLabel: '05 顯化之門',
+      icon: Sun,
+      english: 'MANIFEST & ACTUALIZE',
+      title: '☀️ 顯化之門 ‧ 願景成真',
+      description:
+        '當真摯心願已向天宣告，此門為你築起實相顯影的基石。深植信念種子，藉由肯定句頻率洗滌潛意識盲點，信任宇宙安排，體驗『早已圓滿』，靜待一切美好自然成真。',
+      actionText: '推開顯化之門 (金種播種‧肯定句) ➔',
       themeGradient: 'from-[#251910]/90 via-[#18110b]/90 to-[#0c0805]/95',
       borderClass: 'border-amber-400/40 hover:border-amber-400/80',
       accentColor: 'text-amber-300',
@@ -212,15 +231,15 @@ export default function V5Page() {
       },
     },
     {
-      id: 'oracle',
-      tabNumber: '05',
-      tabLabel: '05 抽卡專區',
+      id: 'synchronicity',
+      tabNumber: '06',
+      tabLabel: '06 共時之門',
       icon: Sparkles,
-      english: 'SACRED ORACLE SANCTUARY',
-      title: '✨ 抽卡專區 ‧ 靈魂牌卡館',
+      english: 'SYNCHRONICITY & ORACLES',
+      title: '✨ 共時之門 ‧ 靈魂指引',
       description:
         '匯聚浩瀚宇宙的高頻神聖牌卡。靜心深呼吸，傾聽直覺呼喚，接收今日宇宙金句、守護天使與魔法獨角獸帶來的即時恩典與能量指引。',
-      actionText: '進入抽卡專區 (今日金句‧天使‧獨角獸) ➔',
+      actionText: '推開共時之門 (今日金句‧天使‧獨角獸) ➔',
       themeGradient: 'from-[#22102f]/90 via-[#160a22]/90 to-[#0a0412]/95',
       borderClass: 'border-fuchsia-400/40 hover:border-amber-300/80',
       accentColor: 'text-amber-200',
@@ -238,8 +257,38 @@ export default function V5Page() {
 
   return (
     <div className="h-screen max-h-screen overflow-hidden flex flex-col justify-between selection:bg-amber-400/20 bg-[#070919] text-amber-50">
-      {/* ================= 頂部區域：中央 (憶起 Logo + 微笑圓臉光球 + 引導小字 全部置中) ＆ 右上角 (垂直排列之四連結 維持不變) ================= */}
-      <header className="relative w-full max-w-5xl mx-auto px-3.5 sm:px-6 pt-3 sm:pt-4 pb-1 sm:pb-2 flex items-center justify-center z-20 h-[170px] sm:h-[184px] shrink-0">
+      {/* ================= 1. 最頂端天際線：宇宙匿名願望之河 (平行向天際跑動宣告) ================= */}
+      <div
+        onClick={() => {
+          sound.playSparkle();
+          changeGate(3); // 切換至 04 宣告之門
+        }}
+        className="w-full bg-gradient-to-r from-[#060818] via-[#0b132a] to-[#060818] border-b border-teal-400/25 px-2.5 sm:px-4 py-1 flex items-center justify-between text-[10.5px] sm:text-[11px] text-teal-200/90 z-30 shrink-0 cursor-pointer hover:bg-white/5 transition-colors group select-none"
+        title="點擊跳轉至 04 宣告之門（寫下匿名願望注入星河）"
+      >
+        <div className="flex items-center gap-1.5 shrink-0 pr-2 border-r border-teal-400/30 text-teal-300 font-mono text-[10px] sm:text-xs">
+          <Globe className="w-3 h-3 text-teal-300 animate-pulse" />
+          <span className="font-medium whitespace-nowrap">宇宙宣告之河</span>
+          <span className="text-[9px] text-teal-400/50 hidden md:inline">‧ 點擊跳轉宣告之門</span>
+        </div>
+        <div className="flex-1 overflow-hidden whitespace-nowrap px-2">
+          <div className="inline-block animate-marquee font-light text-teal-100/80 space-x-6">
+            {TICKER_WISHES.map((wish, idx) => (
+              <span key={idx} className="inline-flex items-center gap-1.5">
+                <Heart className="w-2.5 h-2.5 text-pink-400/90 inline" />
+                <span>{wish}</span>
+                <span className="text-teal-400/40">✦</span>
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="shrink-0 pl-2 text-[10px] text-teal-300/60 font-mono hidden sm:block">
+          ✦ 向天發願 ✦
+        </div>
+      </div>
+
+      {/* ================= 2. 頂部區域：中央 (憶起 Logo + 微笑圓臉光球 + 引導小字 全部置中) ＆ 右上角 (垂直排列之四連結) ================= */}
+      <header className="relative w-full max-w-5xl mx-auto px-3.5 sm:px-6 pt-2 sm:pt-3 pb-1 sm:pb-2 flex items-center justify-center z-20 h-[160px] sm:h-[174px] shrink-0">
         {/* 中央：憶起 Logo + 微笑光球 + 引導小字 (位置全部修正置中，高度大小與右側一致) */}
         <div
           onClick={() => {
@@ -272,8 +321,8 @@ export default function V5Page() {
           />
         </div>
 
-        {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數)，右邊垂直鏈結維持不變 */}
-        <div className="absolute right-3.5 sm:right-6 top-3 sm:top-4 bottom-1 sm:bottom-2 flex flex-col justify-between items-center w-[54px] sm:w-[60px] py-0.5">
+        {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數) */}
+        <div className="absolute right-3.5 sm:right-6 top-2 sm:top-3 bottom-1 sm:bottom-2 flex flex-col justify-between items-center w-[54px] sm:w-[60px] py-0.5">
           {/* 1. 👤 登入 */}
           <button
             onClick={() => {
@@ -281,7 +330,7 @@ export default function V5Page() {
               setIsAuthOpen(true);
             }}
             title={currentUser.isLoggedIn ? currentUser.nickname : '會員登入'}
-            className="w-full h-[36px] sm:h-[39px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+            className="w-full h-[35px] sm:h-[38px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
           >
             {currentUser.isLoggedIn ? (
               <img
@@ -301,7 +350,7 @@ export default function V5Page() {
           <button
             onClick={toggleSound}
             title={isMuted ? '開啟聲音' : '關閉聲音'}
-            className="w-full h-[36px] sm:h-[39px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+            className="w-full h-[35px] sm:h-[38px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
           >
             {isMuted ? (
               <VolumeX className="w-3.5 h-3.5 text-amber-300/60 group-hover:text-amber-200 transition-colors" />
@@ -320,7 +369,7 @@ export default function V5Page() {
               setIsArchiveOpen(true);
             }}
             title="靈魂記錄與檔案庫"
-            className="w-full h-[36px] sm:h-[39px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
+            className="w-full h-[35px] sm:h-[38px] rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center justify-center gap-0.5 text-amber-200/80 hover:text-white transition-all shadow-sm active:scale-95 group cursor-pointer"
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
             <span className="text-[9px] text-amber-200/70 group-hover:text-amber-100 tracking-wider leading-none">
@@ -335,7 +384,7 @@ export default function V5Page() {
               setIsArchiveOpen(true);
             }}
             title="星光點數"
-            className="w-full h-[36px] sm:h-[39px] rounded-xl sm:rounded-2xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-300/30 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
+            className="w-full h-[35px] sm:h-[38px] rounded-xl sm:rounded-2xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-300/30 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
           >
             <div className="flex items-center gap-0.5 leading-none">
               <Star className="w-3 h-3 fill-amber-300 text-amber-300 animate-pulse" />
@@ -348,10 +397,10 @@ export default function V5Page() {
         </div>
       </header>
 
-      {/* ================= 主體內容區 (響應式零垂直滾動，僅左右滑動切換) ================= */}
+      {/* ================= 3. 主體內容區 (響應式零垂直滾動，僅左右滑動切換) ================= */}
       <main className="flex-1 flex flex-col items-center justify-center px-3 sm:px-6 py-1 sm:py-2 z-10 w-full max-w-5xl mx-auto overflow-hidden">
         <AnimatePresence mode="wait">
-          {/* ================= 視圖：首頁五大門戶左右滑動選取 ================= */}
+          {/* ================= 視圖：首頁六大門戶左右滑動選取 ================= */}
           {currentView === 'home' && (
             <motion.div
               key="home"
@@ -360,21 +409,30 @@ export default function V5Page() {
               exit={{ opacity: 0, scale: 0.96 }}
               className="w-full max-w-4xl flex flex-col items-center text-center my-auto"
             >
-              {/* 5個門左右滑動選取標籤列 (01 釋放之門 ~ 05 抽卡專區) */}
-              <div className="w-full flex items-center justify-center gap-1.5 sm:gap-2.5 px-1 mb-2 sm:mb-3 overflow-x-auto scrollbar-none py-1">
+              {/* 左右滑動引導提示微光文字 */}
+              <div className="flex items-center justify-center gap-2 mb-1.5 text-[11px] sm:text-xs text-amber-200/80 font-mono tracking-wider animate-pulse select-none">
+                <span className="text-amber-300 font-bold">←</span>
+                <span>左右滑動探索 01～06 聖門 ‧ 點擊推開進入</span>
+                <span className="text-amber-300 font-bold">→</span>
+              </div>
+
+              {/* 6個門左右滑動選取標籤列 (01 釋放之門 ~ 06 共時之門) */}
+              <div className="w-full flex items-center justify-center gap-1 sm:gap-2 px-1 mb-2 sm:mb-2.5 overflow-x-auto scrollbar-none py-1">
                 {gates.map((g, idx) => {
                   const isActive = activeGateIndex === idx;
                   return (
                     <button
                       key={g.id}
                       onClick={() => changeGate(idx)}
-                      className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl text-[11px] sm:text-xs font-medium whitespace-nowrap transition-all shrink-0 active:scale-95 cursor-pointer ${
+                      className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl sm:rounded-2xl text-[10.5px] sm:text-xs font-medium whitespace-nowrap transition-all shrink-0 active:scale-95 cursor-pointer ${
                         isActive
                           ? 'bg-amber-400/20 border border-amber-300/70 text-amber-200 shadow-[0_0_15px_rgba(251,191,36,0.3)] font-semibold scale-105'
                           : 'bg-white/5 border border-white/10 text-white/60 hover:text-white/90 hover:bg-white/10'
                       }`}
                     >
-                      <span className={isActive ? 'text-amber-300' : 'text-white/40'}>{g.tabNumber}</span>
+                      <span className={isActive ? 'text-amber-300 font-bold' : 'text-white/40'}>
+                        {g.tabNumber}
+                      </span>
                       <span>{g.tabLabel.replace(/^\d+\s*/, '')}</span>
                     </button>
                   );
@@ -383,11 +441,11 @@ export default function V5Page() {
 
               {/* 左右滑動選取之門戶卡片區 (大小與釋放之門一致，RWD 自適應零上下滾動) */}
               <div className="w-full flex items-center justify-center gap-1.5 sm:gap-4 relative px-1">
-                {/* 左切換箭頭 */}
+                {/* 左切換箭頭 (呼吸微光) */}
                 <button
                   onClick={handlePrevGate}
                   title="上一個門"
-                  className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-white/70 hover:text-white transition-all active:scale-90 shrink-0 cursor-pointer"
+                  className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white/70 hover:text-amber-200 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)] hover:shadow-[0_0_15px_rgba(251,191,36,0.35)]"
                 >
                   <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
@@ -417,7 +475,7 @@ export default function V5Page() {
                       />
 
                       <div>
-                        <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center justify-between mb-3.5">
                           <div
                             className={`w-10 h-10 rounded-2xl ${currentGate.iconBg} flex items-center justify-center group-hover:scale-110 transition-transform`}
                           >
@@ -430,7 +488,7 @@ export default function V5Page() {
                               </span>
                             )}
                             <span className="text-xs text-white/40 font-mono px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10">
-                              {currentGate.tabNumber} / 05
+                              {currentGate.tabNumber} / 06
                             </span>
                           </div>
                         </div>
@@ -449,7 +507,7 @@ export default function V5Page() {
                       </div>
 
                       <div
-                        className={`mt-6 flex items-center gap-1.5 text-xs ${currentGate.accentColor} font-medium group-hover:translate-x-1.5 transition-transform`}
+                        className={`mt-5 flex items-center gap-1.5 text-xs ${currentGate.accentColor} font-medium group-hover:translate-x-1.5 transition-transform`}
                       >
                         <span>{currentGate.actionText}</span>
                       </div>
@@ -457,18 +515,18 @@ export default function V5Page() {
                   </AnimatePresence>
                 </div>
 
-                {/* 右切換箭頭 */}
+                {/* 右切換箭頭 (呼吸微光) */}
                 <button
                   onClick={handleNextGate}
                   title="下一個門"
-                  className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-white/70 hover:text-white transition-all active:scale-90 shrink-0 cursor-pointer"
+                  className="p-2 sm:p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white/70 hover:text-amber-200 transition-all active:scale-90 shrink-0 cursor-pointer shadow-[0_0_10px_rgba(251,191,36,0.15)] hover:shadow-[0_0_15px_rgba(251,191,36,0.35)]"
                 >
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
 
-              {/* 5門位置指示點與滑動提示 */}
-              <div className="flex items-center justify-center gap-1.5 mt-2 sm:mt-2.5">
+              {/* 6門位置指示點 */}
+              <div className="flex items-center justify-center gap-1.5 mt-2.5 sm:mt-3">
                 {gates.map((_, idx) => (
                   <button
                     key={idx}
@@ -483,27 +541,9 @@ export default function V5Page() {
                 ))}
               </div>
 
-              {/* ================= 底部：慢速流動的匿名願望星河光帶 ================= */}
-              <div
-                onClick={handleOpenWishWall}
-                className="w-full max-w-xl mt-3 sm:mt-3.5 p-2.5 sm:p-3 rounded-2xl bg-black/40 border border-teal-400/25 hover:border-teal-400/50 cursor-pointer transition-all shadow-md overflow-hidden relative group shrink-0"
-                title="點擊展開宇宙集體願望星河"
-              >
-                <div className="flex items-center gap-2 text-[11px] sm:text-xs text-teal-300 mb-1 px-1 font-mono">
-                  <Globe className="w-3.5 h-3.5 animate-pulse" />
-                  <span>✦ 宇宙匿名願望之河 ‧ 點擊展開彼此加持「允許發生」✦</span>
-                </div>
-                <div className="w-full overflow-hidden whitespace-nowrap text-left">
-                  <div className="inline-block animate-marquee text-[10.5px] sm:text-[11px] text-teal-100/80 font-light space-x-6">
-                    {TICKER_WISHES.map((wish, idx) => (
-                      <span key={idx} className="inline-flex items-center gap-1.5">
-                        <Heart className="w-3 h-3 text-pink-400 inline" />
-                        <span>{wish}</span>
-                        <span className="text-teal-400/40">✦</span>
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              {/* 底部靈性低語引導 */}
+              <div className="mt-2 text-[10.5px] sm:text-[11px] text-amber-200/40 font-light tracking-wider">
+                ✦ 宇宙正溫柔地傾聽你的宣告，允許一切美好自然發生 ✦
               </div>
             </motion.div>
           )}
@@ -541,8 +581,8 @@ export default function V5Page() {
         </AnimatePresence>
       </main>
 
-      {/* ================= 底部資訊 (Footer) ================= */}
-      <footer className="w-full max-w-5xl mx-auto px-4 py-2 sm:py-3 text-center text-amber-200/40 text-[11px] tracking-wider z-20 shrink-0">
+      {/* ================= 4. 底部資訊 (Footer) ================= */}
+      <footer className="w-full max-w-5xl mx-auto px-4 py-2 sm:py-2.5 text-center text-amber-200/40 text-[11px] tracking-wider z-20 shrink-0">
         <p>宇宙永遠在傾聽，你所渴望的美好正以超越想像的方式走向你 ✨</p>
       </footer>
 
@@ -554,7 +594,7 @@ export default function V5Page() {
         onOpenMusic={() => setIsMusicOpen(true)}
       />
 
-      {/* ================= 05 抽卡專區：神聖多牌組抽取全螢幕彈窗 (含今日宇宙金句卡、陪伴天使卡、獨角獸卡、Google試算表後台) ================= */}
+      {/* ================= 06 共時之門：神聖多牌組抽取全螢幕彈窗 (含今日宇宙金句卡、陪伴天使卡、獨角獸卡、Google試算表後台) ================= */}
       <MultiDeckDrawModal
         isOpen={isMultiDeckModalOpen}
         onClose={() => setIsMultiDeckModalOpen(false)}
