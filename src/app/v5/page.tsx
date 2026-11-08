@@ -283,123 +283,104 @@ export default function V5Page() {
         </div>
       </div>
 
-      {/* ================= 2. 頂部區域：中央 (憶起 Logo + 微笑圓臉光球 + 引導小字 全部置中) ＆ 右上角 (垂直排列之四連結) ================= */}
-      <header className="relative w-full max-w-xl mx-auto px-3 sm:px-4 pt-2 sm:pt-2.5 pb-1 flex items-center justify-center z-20 h-auto min-h-[145px] sm:min-h-[160px] shrink-0">
-        {/* 中央：憶起 Logo + 微笑光球 + 引導小字 (字體放大、清晰溫潤，憶起LOGO全頁最大) */}
-        <div
-          onClick={() => {
-            if (currentView !== 'home') setCurrentView('home');
-          }}
-          className={`h-full flex flex-col items-center justify-between text-center w-full max-w-[calc(100%-110px)] sm:max-w-md ${
-            currentView !== 'home' ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''
-          }`}
-          title={currentView !== 'home' ? '點擊返回首頁' : '憶起'}
-        >
-          <SmilingCosmicOrb
-            size="sm"
-            themeColor="amber"
-            logoText="憶起"
-            logoPosition="left"
-            align="center"
-            className="h-full"
-            onLogoClick={() => {
-              if (currentView !== 'home') setCurrentView('home');
-            }}
-            onOrbClick={() => {
-              sound.playHeartbeat();
-              if (currentView !== 'home') setCurrentView('home');
-            }}
-            guideText={
-              currentView === 'home'
-                ? '允許自己成為自己'
-                : '✦ 點擊返回首頁靈魂殿堂 ✦'
-            }
-            subGuideText={
-              currentView === 'home'
-                ? '✦ 點擊或滑動下方 01～06 探索聖門 ✦'
-                : '✦ 點擊返回首頁 ✦'
-            }
-          />
-        </div>
-
-        {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數：星星在上方，下方365點) */}
-        <div className="absolute right-2 sm:right-3 top-2 sm:top-2.5 bottom-1 flex flex-col justify-between items-center w-[52px] sm:w-[56px] py-0.5">
-          {/* 1. 👤 登入 */}
-          <button
-            onClick={() => {
-              sound.playSparkle();
-              setIsAuthOpen(true);
-            }}
-            title={currentUser.isLoggedIn ? currentUser.nickname : '會員登入'}
-            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/[0.07] hover:bg-amber-400/15 border border-white/15 hover:border-amber-300/40 flex flex-col items-center justify-center gap-0.5 text-amber-100/90 hover:text-amber-50 transition-all shadow-sm active:scale-95 group cursor-pointer"
-          >
-            {currentUser.isLoggedIn ? (
-              <img
-                src={currentUser.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.email}`}
-                alt={currentUser.nickname}
-                className="w-3.5 h-3.5 rounded-full border border-amber-300/60"
+      {currentView === 'home' ? (
+        <>
+          {/* ================= 2. 頂部區域：中央 (憶起 Logo + ✦ RECALLING ✦ + 允許自己成為自己 垂直置中) ＆ 右上角 (垂直排列之四連結) ================= */}
+          <header className="relative w-full max-w-xl mx-auto px-3 sm:px-4 pt-2 sm:pt-2.5 pb-1 flex items-center justify-center z-20 h-auto min-h-[145px] sm:min-h-[160px] shrink-0">
+            {/* 中央：憶起 Logo + 微笑光球 (LOGO文字直列排版：憶起 -> RECALLING -> 允許自己成為自己) */}
+            <div
+              className="h-full flex flex-col items-center justify-between text-center w-full max-w-[calc(100%-110px)] sm:max-w-md"
+              title="憶起"
+            >
+              <SmilingCosmicOrb
+                size="sm"
+                themeColor="amber"
+                logoText="憶起"
+                logoPosition="left"
+                align="center"
+                className="h-full"
+                onOrbClick={() => {
+                  sound.playHeartbeat();
+                }}
+                guideText="允許自己成為自己"
               />
-            ) : (
-              <User className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
-            )}
-            <span className="text-[9px] text-amber-100/90 group-hover:text-amber-50 tracking-wider max-w-[46px] truncate leading-none">
-              {currentUser.isLoggedIn ? currentUser.nickname : '登入'}
-            </span>
-          </button>
+            </div>
 
-          {/* 2. 🔊 聲音 */}
-          <button
-            onClick={toggleSound}
-            title={isMuted ? '開啟聲音' : '關閉聲音'}
-            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/[0.07] hover:bg-amber-400/15 border border-white/15 hover:border-amber-300/40 flex flex-col items-center justify-center gap-0.5 text-amber-100/90 hover:text-amber-50 transition-all shadow-sm active:scale-95 group cursor-pointer"
-          >
-            {isMuted ? (
-              <VolumeX className="w-3.5 h-3.5 text-amber-300/60 group-hover:text-amber-200 transition-colors" />
-            ) : (
-              <Volume2 className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
-            )}
-            <span className="text-[9px] text-amber-100/90 group-hover:text-amber-50 tracking-wider leading-none">
-              聲音
-            </span>
-          </button>
+            {/* 右上角：四個按鈕由上而下垂直排列 (1.登入 2.聲音 3.記錄 4.星光點數：星星在上方，下方365點) */}
+            <div className="absolute right-2 sm:right-3 top-2 sm:top-2.5 bottom-1 flex flex-col justify-between items-center w-[52px] sm:w-[56px] py-0.5">
+              {/* 1. 👤 登入 */}
+              <button
+                onClick={() => {
+                  sound.playSparkle();
+                  setIsAuthOpen(true);
+                }}
+                title={currentUser.isLoggedIn ? currentUser.nickname : '會員登入'}
+                className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/[0.07] hover:bg-amber-400/15 border border-white/15 hover:border-amber-300/40 flex flex-col items-center justify-center gap-0.5 text-amber-100/90 hover:text-amber-50 transition-all shadow-sm active:scale-95 group cursor-pointer"
+              >
+                {currentUser.isLoggedIn ? (
+                  <img
+                    src={currentUser.avatarUrl || `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.email}`}
+                    alt={currentUser.nickname}
+                    className="w-3.5 h-3.5 rounded-full border border-amber-300/60"
+                  />
+                ) : (
+                  <User className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
+                )}
+                <span className="text-[9px] text-amber-100/90 group-hover:text-amber-50 tracking-wider max-w-[46px] truncate leading-none">
+                  {currentUser.isLoggedIn ? currentUser.nickname : '登入'}
+                </span>
+              </button>
 
-          {/* 3. 📖 記錄 */}
-          <button
-            onClick={() => {
-              sound.playSparkle();
-              setIsArchiveOpen(true);
-            }}
-            title="靈魂記錄與檔案庫"
-            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/[0.07] hover:bg-amber-400/15 border border-white/15 hover:border-amber-300/40 flex flex-col items-center justify-center gap-0.5 text-amber-100/90 hover:text-amber-50 transition-all shadow-sm active:scale-95 group cursor-pointer"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
-            <span className="text-[9px] text-amber-100/90 group-hover:text-amber-50 tracking-wider leading-none">
-              記錄
-            </span>
-          </button>
+              {/* 2. 🔊 聲音 */}
+              <button
+                onClick={toggleSound}
+                title={isMuted ? '開啟聲音' : '關閉聲音'}
+                className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/[0.07] hover:bg-amber-400/15 border border-white/15 hover:border-amber-300/40 flex flex-col items-center justify-center gap-0.5 text-amber-100/90 hover:text-amber-50 transition-all shadow-sm active:scale-95 group cursor-pointer"
+              >
+                {isMuted ? (
+                  <VolumeX className="w-3.5 h-3.5 text-amber-300/60 group-hover:text-amber-200 transition-colors" />
+                ) : (
+                  <Volume2 className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
+                )}
+                <span className="text-[9px] text-amber-100/90 group-hover:text-amber-50 tracking-wider leading-none">
+                  聲音
+                </span>
+              </button>
 
-          {/* 4. ⭐ 星光點數 (星星符號在上方，下方365點) */}
-          <button
-            onClick={() => {
-              sound.playSparkle();
-              setIsArchiveOpen(true);
-            }}
-            title={`星光點數：${points}點`}
-            className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-amber-400/15 hover:bg-amber-400/25 border border-amber-300/40 hover:border-amber-300/70 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
-          >
-            <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300 animate-pulse group-hover:scale-110 transition-transform" />
-            <span className="text-[9.5px] font-mono text-amber-100 font-semibold tracking-wider leading-none">
-              {points}點
-            </span>
-          </button>
-        </div>
-      </header>
+              {/* 3. 📖 記錄 */}
+              <button
+                onClick={() => {
+                  sound.playSparkle();
+                  setIsArchiveOpen(true);
+                }}
+                title="靈魂記錄與檔案庫"
+                className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-white/[0.07] hover:bg-amber-400/15 border border-white/15 hover:border-amber-300/40 flex flex-col items-center justify-center gap-0.5 text-amber-100/90 hover:text-amber-50 transition-all shadow-sm active:scale-95 group cursor-pointer"
+              >
+                <BookOpen className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
+                <span className="text-[9px] text-amber-100/90 group-hover:text-amber-50 tracking-wider leading-none">
+                  記錄
+                </span>
+              </button>
 
-      {/* ================= 3. 主體內容區 (中間01-06小鏈接為分水嶺居中，上下大框大小調整一致) ================= */}
-      <main className="flex-1 flex flex-col items-center justify-center px-2.5 sm:px-6 py-1 z-10 w-full max-w-xl mx-auto">
-        <AnimatePresence mode="wait">
-          {/* ================= 視圖：首頁六大門戶左右滑動選取 ================= */}
-          {currentView === 'home' && (
+              {/* 4. ⭐ 星光點數 (星星符號在上方，下方365點) */}
+              <button
+                onClick={() => {
+                  sound.playSparkle();
+                  setIsArchiveOpen(true);
+                }}
+                title={`星光點數：${points}點`}
+                className="w-full h-[35px] sm:h-[37px] rounded-xl sm:rounded-2xl bg-amber-400/15 hover:bg-amber-400/25 border border-amber-300/40 hover:border-amber-300/70 flex flex-col items-center justify-center gap-0.5 text-amber-200 transition-all shadow-sm active:scale-95 group cursor-pointer"
+              >
+                <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300 animate-pulse group-hover:scale-110 transition-transform" />
+                <span className="text-[9.5px] font-mono text-amber-100 font-semibold tracking-wider leading-none">
+                  {points}點
+                </span>
+              </button>
+            </div>
+          </header>
+
+          {/* ================= 3. 主體內容區 (首頁六大門戶選取) ================= */}
+          <main className="flex-1 flex flex-col items-center justify-center px-2.5 sm:px-6 py-1 z-10 w-full max-w-xl mx-auto">
             <motion.div
               key="home"
               initial={{ opacity: 0, y: 8 }}
@@ -407,6 +388,11 @@ export default function V5Page() {
               exit={{ opacity: 0, scale: 0.96 }}
               className="w-full flex flex-col items-center text-center my-auto"
             >
+              {/* 貼緊在下方01-06小圖示之上方 */}
+              <div className="flex items-center justify-center mb-1 text-[11px] sm:text-xs text-amber-300 font-medium tracking-wide drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] select-none whitespace-nowrap">
+                ✦ 點擊或滑動下方 01～06 探索聖門 ✦
+              </div>
+
               {/* 中間01-06小鏈接分水嶺居中 (字體排版留意手機為一行字，色彩明晰溫暖) */}
               <div className="w-full flex items-center justify-between gap-1 sm:gap-1.5 px-0.5 mb-2 sm:mb-2.5 overflow-x-auto scrollbar-none py-1">
                 {gates.map((g, idx) => {
@@ -542,45 +528,68 @@ export default function V5Page() {
                 ✦ 感恩一切發生都是最好的安排 ✦
               </div>
             </motion.div>
-          )}
+          </main>
 
-          {/* ================= 視圖：釋放之門流程頁 ================= */}
-          {currentView === 'release' && (
-            <div className="w-full h-full overflow-y-auto">
-              <ReleaseSanctuary
-                onBack={() => setCurrentView('home')}
-                onOpenArchive={() => setIsArchiveOpen(true)}
-              />
-            </div>
-          )}
+          {/* ================= 4. 底部資訊 (Footer：只在首頁顯示) ================= */}
+          <footer className="w-full max-w-xl mx-auto px-2 py-1.5 sm:py-2 text-center text-amber-100 font-light text-[10.5px] sm:text-xs tracking-tight sm:tracking-normal z-20 shrink-0 whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-sm">
+            <p>宇宙永遠在傾聽，你所渴望的美好正以超越想像的方式走向你 ✨</p>
+          </footer>
+        </>
+      ) : (
+        /* ================= 獨立殿堂流程頁面 (無首頁雙重圓臉Logo，獨立全螢幕體驗) ================= */
+        <main className="flex-1 w-full max-w-2xl mx-auto px-3 sm:px-6 py-2 sm:py-4 overflow-y-auto z-20">
+          <AnimatePresence mode="wait">
+            {/* ================= 視圖：釋放之門流程頁 ================= */}
+            {currentView === 'release' && (
+              <motion.div
+                key="release"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                className="w-full h-full"
+              >
+                <ReleaseSanctuary
+                  onBack={() => setCurrentView('home')}
+                  onOpenArchive={() => setIsArchiveOpen(true)}
+                />
+              </motion.div>
+            )}
 
-          {/* ================= 視圖：提問之門流程頁 ================= */}
-          {currentView === 'inquire' && (
-            <div className="w-full h-full overflow-y-auto">
-              <InquireSanctuary
-                onBack={() => setCurrentView('home')}
-                onOpenArchive={() => setIsArchiveOpen(true)}
-              />
-            </div>
-          )}
+            {/* ================= 視圖：提問之門流程頁 ================= */}
+            {currentView === 'inquire' && (
+              <motion.div
+                key="inquire"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                className="w-full h-full"
+              >
+                <InquireSanctuary
+                  onBack={() => setCurrentView('home')}
+                  onOpenArchive={() => setIsArchiveOpen(true)}
+                />
+              </motion.div>
+            )}
 
-          {/* ================= 視圖：顯化之門流程頁 (含肯定句音檔與匿名願望星河) ================= */}
-          {currentView === 'manifest' && (
-            <div className="w-full h-full overflow-y-auto">
-              <ManifestSanctuaryV5
-                onBack={() => setCurrentView('home')}
-                onOpenArchive={() => setIsArchiveOpen(true)}
-                initialSubView={manifestInitialSubView}
-              />
-            </div>
-          )}
-        </AnimatePresence>
-      </main>
-
-      {/* ================= 4. 底部資訊 (Footer：文字清晰且在手機上剛好一行) ================= */}
-      <footer className="w-full max-w-xl mx-auto px-2 py-1.5 sm:py-2 text-center text-amber-100 font-light text-[10.5px] sm:text-xs tracking-tight sm:tracking-normal z-20 shrink-0 whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-sm">
-        <p>宇宙永遠在傾聽，你所渴望的美好正以超越想像的方式走向你 ✨</p>
-      </footer>
+            {/* ================= 視圖：顯化之門流程頁 (含肯定句音檔與匿名願望星河) ================= */}
+            {currentView === 'manifest' && (
+              <motion.div
+                key="manifest"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                className="w-full h-full"
+              >
+                <ManifestSanctuaryV5
+                  onBack={() => setCurrentView('home')}
+                  onOpenArchive={() => setIsArchiveOpen(true)}
+                  initialSubView={manifestInitialSubView}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </main>
+      )}
 
       {/* ================= 接收之門：V4 冥想殿堂全螢幕彈窗 (含心靈音樂) ================= */}
       <DailyMeditationModalV4

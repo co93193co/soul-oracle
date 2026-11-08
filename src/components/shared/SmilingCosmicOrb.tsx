@@ -119,6 +119,11 @@ export default function SmilingCosmicOrb({
             <span className="text-[10px] sm:text-xs text-amber-200/90 font-mono tracking-[0.2em] mt-0.5 text-center">
               ✦ RECALLING ✦
             </span>
+            {guideText && (
+              <p className="text-[12px] sm:text-[13.5px] md:text-sm text-amber-50/95 font-light tracking-wide mt-1 text-center whitespace-nowrap drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+                {guideText}
+              </p>
+            )}
           </div>
         )}
 
@@ -231,35 +236,44 @@ export default function SmilingCosmicOrb({
             <span className="text-[10px] sm:text-xs text-amber-200/90 font-mono tracking-[0.2em] mt-0.5 text-center">
               ✦ RECALLING ✦
             </span>
+            {guideText && (
+              <p className="text-[12px] sm:text-[13.5px] md:text-sm text-amber-50/95 font-light tracking-wide mt-1 text-center whitespace-nowrap drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+                {guideText}
+              </p>
+            )}
           </div>
         )}
       </div>
 
-      {/* 呼吸或肯定句引導小字 (字體調大，副標題提醒點擊或滑動01-06鏈接) */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={guideText || mode}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.6 }}
-          className={`mt-1.5 sm:mt-2 ${
-            align === 'left' ? 'text-left max-w-[280px] sm:max-w-md' : 'text-center max-w-[280px] sm:max-w-md px-1'
-          }`}
-        >
-          <p className="text-amber-50/95 text-[13px] sm:text-[15px] md:text-base font-light tracking-wide leading-relaxed whitespace-pre-line drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
-            {guideText ||
-              (mode === 'breathing'
-                ? '深呼吸... 感受宇宙的心跳與接納'
-                : mode === 'affirming'
-                ? '在心中默念這份肯定，對齊豐盛頻率'
-                : '允許自己成為自己')}
-          </p>
-          <span className="text-[10px] sm:text-[11.5px] text-amber-300 font-medium block mt-1 tracking-wider whitespace-nowrap drop-shadow-[0_0_8px_rgba(251,191,36,0.3)]">
-            {subGuideText || (mode === 'breathing' ? '✦ 跟隨光球呼吸節奏，沉澱思緒 ✦' : '✦ 點擊或滑動下方 01～06 探索聖門 ✦')}
-          </span>
-        </motion.div>
-      </AnimatePresence>
+      {/* 呼吸或肯定句引導小字 (無 logoText 時於光球下方顯示) */}
+      {!logoText && (guideText || mode !== 'idle') && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={guideText || mode}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.6 }}
+            className={`mt-1.5 sm:mt-2 ${
+              align === 'left' ? 'text-left max-w-[280px] sm:max-w-md' : 'text-center max-w-[280px] sm:max-w-md px-1'
+            }`}
+          >
+            <p className="text-amber-50/95 text-[13px] sm:text-[15px] md:text-base font-light tracking-wide leading-relaxed whitespace-pre-line drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+              {guideText ||
+                (mode === 'breathing'
+                  ? '深呼吸... 感受宇宙的心跳與接納'
+                  : mode === 'affirming'
+                  ? '在心中默念這份肯定，對齊豐盛頻率'
+                  : '允許自己成為自己')}
+            </p>
+            {subGuideText && (
+              <span className="text-[10px] sm:text-[11.5px] text-amber-300 font-medium block mt-1 tracking-wider whitespace-nowrap drop-shadow-[0_0_8px_rgba(251,191,36,0.3)]">
+                {subGuideText}
+              </span>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      )}
     </div>
   );
 }
