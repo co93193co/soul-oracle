@@ -408,7 +408,7 @@ export default function V5Page() {
             >
               {/* 探索指引標題 (與上方「允許自己成為自己」保持明顯空隙區隔，貼緊下方01-06標籤) */}
               <div className="flex items-center justify-center mt-0.5 sm:mt-1 mb-1.5 sm:mb-2 text-[11px] sm:text-xs text-amber-300 font-medium tracking-wide drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] select-none whitespace-nowrap">
-                ✦ 點擊或滑動下方 01～06 探索聖門 ✦
+                ✦ 點擊或滑動下方 01～06 探索之門 ✦
               </div>
 
               {/* 中間01-06小鏈接分水嶺居中 (字體排版留意手機為一行字，色彩明晰溫暖) */}
@@ -491,12 +491,12 @@ export default function V5Page() {
                           </div>
                         </div>
 
-                        {/* 主標題 (調小以確保手機上一行字，不換行成兩行) */}
-                        <h2 className="text-[15.5px] xs:text-[17px] sm:text-lg md:text-xl font-normal text-white mb-1 sm:mb-1.5 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)]">
+                        {/* 主標題 (空隙加大，確保手機上一行字不換行) */}
+                        <h2 className="text-[15.5px] xs:text-[17px] sm:text-lg md:text-xl font-normal text-white mb-2.5 sm:mb-3.5 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)]">
                           {currentGate.title}
                         </h2>
 
-                        {/* 說明文字 (行距舒適，精巧呈現) */}
+                        {/* 說明文字 (與上方主標題空隙加大，行距舒適美觀) */}
                         <p className="text-xs sm:text-[13px] md:text-sm text-stone-100/95 leading-relaxed font-light min-h-[40px] sm:min-h-[48px] drop-shadow-sm">
                           {currentGate.description}
                         </p>
