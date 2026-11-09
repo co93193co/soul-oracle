@@ -12,7 +12,6 @@ import {
   RotateCcw,
   CheckCircle2,
   Heart,
-  Clock,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import SmilingCosmicOrb from '@/components/shared/SmilingCosmicOrb';
@@ -24,42 +23,6 @@ interface HooponoponoCleansingModalProps {
   onClose: () => void;
   onPointsUpdated?: (newPoints: number) => void;
 }
-
-// 4 種時長設定（夏威夷零極限 ‧ 全程免費體驗）
-const DURATION_OPTIONS = [
-  {
-    minutes: 1,
-    seconds: 60,
-    cost: 0,
-    label: '1 分鐘',
-    tag: '快速調頻 ‧ 隨時釋放',
-    description: '輕柔撫平當下浮動思緒，快速回歸平靜中心',
-  },
-  {
-    minutes: 3,
-    seconds: 180,
-    cost: 0,
-    label: '3 分鐘',
-    tag: '深度放手 ‧ 融化執著',
-    description: '深入潛意識底層，融化日常糾結與緊繃執著',
-  },
-  {
-    minutes: 5,
-    seconds: 300,
-    cost: 0,
-    label: '5 分鐘',
-    tag: '靈魂洗滌 ‧ 喚醒神性',
-    description: '全面清理生生世世的重播記憶，喚醒內在神聖光芒',
-  },
-  {
-    minutes: 10,
-    seconds: 600,
-    cost: 0,
-    label: '10 分鐘',
-    tag: '極限歸零 ‧ 和解圓滿',
-    description: '極致深度和解，與人事物全然和好，體驗無上和平',
-  },
-];
 
 // 夏威夷四句真言設定（柔和溫暖流動、專屬神聖頻率與心靈引導）
 const MANTRAS = [
@@ -116,11 +79,10 @@ export default function HooponoponoCleansingModal({
   onClose,
 }: HooponoponoCleansingModalProps) {
   const [step, setStep] = useState<'intro' | 'cleansing' | 'completed'>('intro');
-  const [selectedDuration, setSelectedDuration] = useState(DURATION_OPTIONS[0]);
   const [cleansingTarget, setCleansingTarget] = useState('');
 
-  // 清理計時與真言輪播
-  const [timeLeft, setTimeLeft] = useState(selectedDuration.seconds);
+  // 清理計時（累計靜心秒數）與真言輪播
+  const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
   const [currentMantraIndex, setCurrentMantraIndex] = useState(0);
@@ -132,8 +94,7 @@ export default function HooponoponoCleansingModal({
   useEffect(() => {
     if (isOpen) {
       setStep('intro');
-      setSelectedDuration(DURATION_OPTIONS[0]);
-      setTimeLeft(DURATION_OPTIONS[0].seconds);
+      setSecondsElapsed(0);
       setIsPaused(false);
       setCurrentMantraIndex(0);
       setIsAudioMuted(sound.isMuted);
@@ -143,18 +104,11 @@ export default function HooponoponoCleansingModal({
     }
   }, [isOpen]);
 
-  // 切換時長選項
-  const handleSelectOption = (opt: typeof DURATION_OPTIONS[number]) => {
-    sound.playSparkle();
-    setSelectedDuration(opt);
-    setTimeLeft(opt.seconds);
-  };
-
   // 開始清理體驗（100% 免費體驗，直接開啟）
   const handleStartCleansing = () => {
     sound.playSparkle();
     setStep('cleansing');
-    setTimeLeft(selectedDuration.seconds);
+    setSecondsElapsed(0);
     setIsPaused(false);
     setCurrentMantraIndex(0);
 
@@ -162,17 +116,11 @@ export default function HooponoponoCleansingModal({
     sound.playCleansingChime(MANTRAS[0].freq, 3.8);
   };
 
-  // 計時器邏輯
+  // 計時器邏輯（記錄靜心秒數）
   useEffect(() => {
     if (step === 'cleansing' && !isPaused) {
       timerRef.current = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            handleCompleteCleansing();
-            return 0;
-          }
-          return prev - 1;
-        });
+        setSecondsElapsed((prev) => prev + 1);
       }, 1000);
     } else {
       if (timerRef.current) clearInterval(timerRef.current);
@@ -241,9 +189,9 @@ export default function HooponoponoCleansingModal({
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  // 當前真言
+  // 當前真言與進度
   const currentMantra = MANTRAS[currentMantraIndex];
-  const progressRatio = (selectedDuration.seconds - timeLeft) / selectedDuration.seconds;
+  const progressRatio = (currentMantraIndex + 1) / MANTRAS.length;
 
   if (!isOpen) return null;
 
@@ -382,47 +330,8 @@ export default function HooponoponoCleansingModal({
                 onChange={(e) => setCleansingTarget(e.target.value)}
                 placeholder="例如：內在苛責的自己、父親、伴侶、主管、某次挫折遺憾..."
                 maxLength={40}
-                className="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-amber-500/30 text-amber-50 placeholder-amber-300/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-amber-500/30 text-amber-50 placeholder-amber-300/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
               />
-            </div>
-
-            {/* 清理時長選擇（全程免費） */}
-            <div className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between">
-                <label className="text-xs text-amber-200 font-medium flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-amber-300" />
-                  <span>選擇和解清理時長：</span>
-                </label>
-                <span className="text-[10.5px] text-emerald-300 font-mono">
-                  ✦ 100% 免費 ‧ 隨時隨地清理 ✦
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {DURATION_OPTIONS.map((opt) => {
-                  const isSelected = selectedDuration.minutes === opt.minutes;
-                  return (
-                    <button
-                      key={opt.minutes}
-                      type="button"
-                      onClick={() => handleSelectOption(opt)}
-                      className={`p-2.5 rounded-2xl border text-center transition-all relative flex flex-col items-center justify-between cursor-pointer ${
-                        isSelected
-                          ? 'bg-gradient-to-br from-amber-500/25 via-rose-500/20 to-amber-900/40 border-amber-300 shadow-[0_0_15px_rgba(251,191,36,0.35)] scale-[1.02]'
-                          : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-amber-500/30 text-amber-100/80'
-                      }`}
-                    >
-                      <span className="text-xs sm:text-sm font-semibold text-white">{opt.label}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full font-mono font-medium mt-1 bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                        免費
-                      </span>
-                      <p className="text-[9.5px] text-amber-200/70 font-light mt-1 line-clamp-1">
-                        {opt.tag}
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
             </div>
 
             {/* 最底下鏈接按鈕：準備開啟清理之門 */}
@@ -431,7 +340,7 @@ export default function HooponoponoCleansingModal({
               whileTap={{ scale: 0.98 }}
               type="button"
               onClick={handleStartCleansing}
-              className="w-full py-3 sm:py-3.5 rounded-2xl flex items-center justify-center gap-2 font-medium tracking-wider text-xs sm:text-sm text-white bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 hover:from-amber-400 hover:via-rose-400 hover:to-amber-500 shadow-[0_0_22px_rgba(251,191,36,0.38)] border border-amber-300/45 cursor-pointer transition-all mt-1"
+              className="w-full py-3.5 sm:py-4 rounded-2xl flex items-center justify-center gap-2 font-medium tracking-wider text-xs sm:text-sm text-white bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 hover:from-amber-400 hover:via-rose-400 hover:to-amber-500 shadow-[0_0_24px_rgba(251,191,36,0.4)] border border-amber-300/50 cursor-pointer transition-all mt-1"
             >
               <Sparkles className="w-4 h-4 text-amber-100 animate-pulse" />
               <span className="font-semibold text-sm sm:text-base">準備開啟清理之門 ➔</span>
@@ -474,7 +383,7 @@ export default function HooponoponoCleansingModal({
                 </span>
               </motion.div>
               <div className="text-[11px] text-amber-200/70 font-mono mt-1 flex items-center gap-2">
-                <span>剩餘時間：{formatTime(timeLeft)}</span>
+                <span>已和解靜心：{formatTime(secondsElapsed)}</span>
               </div>
             </div>
 
@@ -597,10 +506,10 @@ export default function HooponoponoCleansingModal({
               <button
                 type="button"
                 onClick={handleCompleteCleansing}
-                className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-xs text-amber-200 border border-amber-400/40 transition-all cursor-pointer shadow-[0_0_12px_rgba(251,191,36,0.3)]"
+                className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500/25 via-rose-500/25 to-amber-500/25 hover:from-amber-500/35 hover:via-rose-500/35 hover:to-amber-500/35 text-xs text-amber-100 border border-amber-300/50 transition-all cursor-pointer shadow-[0_0_15px_rgba(251,191,36,0.3)] hover:scale-[1.02]"
               >
                 <CheckCircle2 className="w-3.5 h-3.5 text-amber-300" />
-                <span>提早完成清理</span>
+                <span>圓滿完成和解</span>
               </button>
             </div>
           </div>
