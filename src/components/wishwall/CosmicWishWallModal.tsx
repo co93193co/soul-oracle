@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles, Heart, Lock, CheckCircle2, Send, Flame, Globe } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import VoiceInputButton from '@/components/shared/VoiceInputButton';
 import { localStore, WishWallItem, MeditationStats } from '@/lib/storage';
 import { sound } from '@/lib/sound';
 
@@ -116,6 +117,19 @@ export default function CosmicWishWallModal({
               <div className="flex items-center gap-2 text-xs text-amber-300 font-medium mb-3">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 <span>🌟 恭喜已達成連續 21 天冥想！你已獲得宇宙願望牆的許願特權</span>
+              </div>
+
+              <div className="flex items-center justify-between mb-1.5 px-0.5">
+                <span className="text-xs text-amber-200/90 font-light">
+                  21天神聖心願（直接書寫或語音烙下）：
+                </span>
+                <VoiceInputButton
+                  value={newWishContent}
+                  onChange={setNewWishContent}
+                  themeColor="amber"
+                  size="sm"
+                  label="語音輸入"
+                />
               </div>
 
               <textarea

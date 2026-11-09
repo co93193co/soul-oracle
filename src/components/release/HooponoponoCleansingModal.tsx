@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import SmilingCosmicOrb from '@/components/shared/SmilingCosmicOrb';
+import VoiceInputButton from '@/components/shared/VoiceInputButton';
 import { sound } from '@/lib/sound';
 
 interface HooponoponoCleansingModalProps {
@@ -340,10 +341,18 @@ export default function HooponoponoCleansingModal({
 
             {/* 和解對象設定（選填） */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs text-amber-200 font-medium flex items-center justify-between">
-                <span>想著和解的那個人、那件事（選填）：</span>
-                <span className="text-[10.5px] text-amber-300/70 font-light">集中意念效果更佳</span>
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="text-xs text-amber-200 font-medium">
+                  想著和解的那個人、那件事（選填）：
+                </label>
+                <VoiceInputButton
+                  value={cleansingTarget}
+                  onChange={setCleansingTarget}
+                  themeColor="amber"
+                  size="sm"
+                  label="語音輸入"
+                />
+              </div>
 
               {/* 快捷點選 */}
               <div className="flex flex-wrap gap-1.5">

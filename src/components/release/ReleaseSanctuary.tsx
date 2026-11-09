@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowLeft, Wind, CheckCircle2 } from 'lucide-react';
 import SmilingCosmicOrb from '@/components/shared/SmilingCosmicOrb';
 import OracleCard from '@/components/shared/OracleCard';
+import VoiceInputButton from '@/components/shared/VoiceInputButton';
 import HooponoponoCleansingModal from './HooponoponoCleansingModal';
 import { getRandomCard, OracleCardData } from '@/lib/presets/cardsData';
 import { sound } from '@/lib/sound';
@@ -167,8 +168,20 @@ export default function ReleaseSanctuary({ onBack, onOpenArchive, onPointsUpdate
               </div>
             </div>
 
-            {/* 中間書寫文字框：右側自訂紫色光感上下滾輪，方便寫長文滾動 */}
+            {/* 中間書寫文字框：上方語音輸入按鈕、右側自訂紫色光感上下滾輪，方便寫長文滾動 */}
             <div className="w-full relative mb-2.5 sm:mb-3">
+              <div className="flex items-center justify-between mb-1.5 px-0.5">
+                <span className="text-[11px] sm:text-xs text-indigo-200/80 font-light">
+                  心事書寫（選填）：
+                </span>
+                <VoiceInputButton
+                  value={inputText}
+                  onChange={setInputText}
+                  themeColor="indigo"
+                  size="sm"
+                  label="語音輸入"
+                />
+              </div>
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}

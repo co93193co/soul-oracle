@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowLeft, Compass, CheckCircle2, HelpCircle } from 'lucide-react';
 import SmilingCosmicOrb from '@/components/shared/SmilingCosmicOrb';
 import OracleCard from '@/components/shared/OracleCard';
+import VoiceInputButton from '@/components/shared/VoiceInputButton';
 import { getRandomCard, OracleCardData } from '@/lib/presets/cardsData';
 import { sound } from '@/lib/sound';
 import { localStore } from '@/lib/storage';
@@ -145,6 +146,18 @@ export default function InquireSanctuary({ onBack, onOpenArchive }: InquireSanct
 
             {/* 書寫文字框 */}
             <div className="w-full relative mb-6">
+              <div className="flex items-center justify-between mb-1.5 px-1">
+                <span className="text-xs text-purple-200/80 font-light">
+                  問題探問（直接輸入或語音發問）：
+                </span>
+                <VoiceInputButton
+                  value={inputText}
+                  onChange={setInputText}
+                  themeColor="purple"
+                  size="sm"
+                  label="語音輸入"
+                />
+              </div>
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}

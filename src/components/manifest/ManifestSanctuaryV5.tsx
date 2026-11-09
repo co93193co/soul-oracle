@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import SmilingCosmicOrb from '@/components/shared/SmilingCosmicOrb';
 import OracleCard from '@/components/shared/OracleCard';
+import VoiceInputButton from '@/components/shared/VoiceInputButton';
 import { getRandomCard, OracleCardData } from '@/lib/presets/cardsData';
 import { getRandomAffirmation } from '@/lib/presets/affirmations';
 import { sound } from '@/lib/sound';
@@ -442,6 +443,18 @@ export default function ManifestSanctuaryV5({
 
                 {/* 願望書寫框 */}
                 <div className="w-full relative mb-6">
+                  <div className="flex items-center justify-between mb-1.5 px-1">
+                    <span className="text-xs text-amber-200/80 font-light">
+                      顯化願望（直接輸入或語音許願）：
+                    </span>
+                    <VoiceInputButton
+                      value={seedText}
+                      onChange={setSeedText}
+                      themeColor="amber"
+                      size="sm"
+                      label="語音輸入"
+                    />
+                  </div>
                   <textarea
                     value={seedText}
                     onChange={(e) => setSeedText(e.target.value)}
@@ -714,19 +727,28 @@ export default function ManifestSanctuaryV5({
                   onChange={(e) => setMyAnonWish(e.target.value)}
                   placeholder="寫下你的不具名心願...（例如：願家人健康、允許自己豐盛富足）"
                   maxLength={60}
-                  className="w-full py-2.5 px-3.5 pr-12 rounded-xl bg-black/50 border border-teal-400/30 text-xs text-teal-100 placeholder:text-teal-300/30 outline-none focus:border-teal-400/80 transition-all"
+                  className="w-full py-2.5 px-3.5 pr-20 rounded-xl bg-black/50 border border-teal-400/30 text-xs text-teal-100 placeholder:text-teal-300/30 outline-none focus:border-teal-400/80 transition-all"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handlePostAnonWish();
                   }}
                 />
-                <button
-                  onClick={handlePostAnonWish}
-                  disabled={!myAnonWish.trim()}
-                  className="absolute right-1.5 top-1.5 p-1.5 rounded-lg bg-teal-500 hover:bg-teal-400 disabled:opacity-40 text-slate-950 font-bold transition-all active:scale-95"
-                  title="投遞"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                </button>
+                <div className="absolute right-1.5 top-1.5 flex items-center gap-1">
+                  <VoiceInputButton
+                    value={myAnonWish}
+                    onChange={setMyAnonWish}
+                    variant="icon"
+                    themeColor="teal"
+                    size="sm"
+                  />
+                  <button
+                    onClick={handlePostAnonWish}
+                    disabled={!myAnonWish.trim()}
+                    className="p-1.5 rounded-lg bg-teal-500 hover:bg-teal-400 disabled:opacity-40 text-slate-950 font-bold transition-all active:scale-95 cursor-pointer"
+                    title="投遞"
+                  >
+                    <Send className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
 
               {hasPostedSuccess && (

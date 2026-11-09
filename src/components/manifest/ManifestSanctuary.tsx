@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowLeft, Sun, CheckCircle2 } from 'lucide-react';
 import SmilingCosmicOrb from '@/components/shared/SmilingCosmicOrb';
 import OracleCard from '@/components/shared/OracleCard';
+import VoiceInputButton from '@/components/shared/VoiceInputButton';
 import { getRandomCard, OracleCardData } from '@/lib/presets/cardsData';
 import { getRandomAffirmation } from '@/lib/presets/affirmations';
 import { sound } from '@/lib/sound';
@@ -131,6 +132,18 @@ export default function ManifestSanctuary({ onBack, onOpenArchive }: ManifestSan
 
             {/* 願望文字框 */}
             <div className="w-full relative mb-6">
+              <div className="flex items-center justify-between mb-1.5 px-0.5">
+                <span className="text-xs text-amber-200/90 font-light">
+                  願望文字（直接書寫或語音顯化）：
+                </span>
+                <VoiceInputButton
+                  value={wishText}
+                  onChange={setWishText}
+                  themeColor="amber"
+                  size="sm"
+                  label="語音輸入"
+                />
+              </div>
               <textarea
                 value={wishText}
                 onChange={(e) => setWishText(e.target.value)}
