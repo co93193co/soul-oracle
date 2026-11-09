@@ -67,39 +67,43 @@ const DURATION_OPTIONS = [
   },
 ];
 
-// 夏威夷四句真言設定（單獨放大跳出、專屬神聖頻率與修復導引）
+// 夏威夷四句真言設定（柔和溫暖流動、專屬神聖頻率與心靈引導）
 const MANTRAS = [
   {
     phrase: '對不起',
     hawaiian: 'E kala mai iaʻu',
-    freq: 396, // 396 Hz 解放內疚、恐懼與自責
-    meaning: '承認並看見自己內在有這份傷痛記憶在重播，向神性全然坦承',
-    guide: '請跟著出聲朗讀，或在心裡溫柔默念',
-    glowColor: 'rgba(56, 189, 248, 0.65)',
+    freq: 396, // 396 Hz 釋放自責與恐懼
+    meaning: '看見並承認內在重播的記憶與傷痛，向神性全然坦承',
+    guide: '溫和地看見自己，放下心中的對抗與防備',
+    glowColor: 'rgba(251, 191, 36, 0.45)', // 溫暖晨曦暖金
+    glowRadial: 'radial-gradient(circle, rgba(251,191,36,0.35) 0%, rgba(245,158,11,0.12) 50%, transparent 75%)',
   },
   {
     phrase: '請原諒我',
     hawaiian: 'E kala mai',
-    freq: 417, // 417 Hz 化解過去創傷、促進情感轉化
-    meaning: '祈求神性與內在自我的寬恕，放下苛責與掌控的執念',
+    freq: 417, // 417 Hz 化解過去傷痛、促進情感轉化
+    meaning: '祈求神性原諒自己的執念與苛責，讓內心重新回到柔軟寬恕',
     guide: '允許寬恕如甘霖般流過心田，融化一切心結',
-    glowColor: 'rgba(168, 85, 247, 0.65)',
+    glowColor: 'rgba(244, 114, 182, 0.45)', // 柔和粉晶玫瑰
+    glowRadial: 'radial-gradient(circle, rgba(244,114,182,0.35) 0%, rgba(251,113,133,0.12) 50%, transparent 75%)',
   },
   {
     phrase: '謝謝你',
     hawaiian: 'Mahalo',
-    freq: 528, // 528 Hz 愛的奇蹟、DNA修復與細胞和諧
-    meaning: '感謝這份經歷帶來的覺察與靈魂功課，感恩所有的照見',
-    guide: '心懷純粹的感激，感謝這段相遇讓愛得以圓滿',
-    glowColor: 'rgba(251, 191, 36, 0.7)',
+    freq: 528, // 528 Hz 愛的奇蹟與和諧
+    meaning: '感謝這段相遇與經歷帶來的照見，感謝生命給予的成長功課',
+    guide: '心懷純粹的感激，感謝所有相遇讓愛得以圓滿',
+    glowColor: 'rgba(251, 146, 60, 0.45)', // 溫暖夕陽琥珀
+    glowRadial: 'radial-gradient(circle, rgba(251,146,60,0.35) 0%, rgba(234,88,12,0.12) 50%, transparent 75%)',
   },
   {
     phrase: '我愛你',
     hawaiian: 'Aloha wau iā ʻoe',
-    freq: 639, // 639 Hz 心輪連結、人際和諧與無條件之愛
-    meaning: '以神性無條件的純粹大愛，包容融化一切，回歸零的原點',
+    freq: 639, // 639 Hz 心輪連結、人際和諧與無條件大愛
+    meaning: '以神性無條件的純粹大愛融化沉重記憶，回歸零的純淨與和平',
     guide: '送出無條件的光與愛，擁抱對方，也深愛自己',
-    glowColor: 'rgba(244, 114, 182, 0.7)',
+    glowColor: 'rgba(244, 63, 94, 0.5)', // 神聖愛心金紅玫瑰
+    glowRadial: 'radial-gradient(circle, rgba(244,63,94,0.35) 0%, rgba(236,72,153,0.12) 50%, transparent 75%)',
   },
 ];
 
@@ -213,7 +217,7 @@ export default function HooponoponoCleansingModal({
     };
   }, [step, isPaused]);
 
-  // 真言輪播邏輯 (每 4.5 秒放大跳出下一句真言並發出神聖音頻)
+  // 真言輪播邏輯 (每 5.5 秒如平靜深呼吸般順暢流轉，伴隨和解磬音)
   useEffect(() => {
     if (step === 'cleansing' && !isPaused) {
       mantraTimerRef.current = setInterval(() => {
@@ -223,7 +227,7 @@ export default function HooponoponoCleansingModal({
           sound.playCleansingChime(MANTRAS[nextIndex].freq, 3.8);
           return nextIndex;
         });
-      }, 4500);
+      }, 5500);
     } else {
       if (mantraTimerRef.current) clearInterval(mantraTimerRef.current);
     }
@@ -283,17 +287,17 @@ export default function HooponoponoCleansingModal({
         initial={{ opacity: 0, scale: 0.94, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.94, y: 15 }}
-        className="w-full max-w-xl max-h-[92vh] overflow-y-auto rounded-3xl bg-gradient-to-b from-[#0c142b]/95 via-[#080d1e]/98 to-[#030611] border border-teal-400/30 shadow-[0_0_50px_rgba(20,184,166,0.25)] p-5 sm:p-7 relative flex flex-col text-amber-50"
+        className="w-full max-w-xl max-h-[92vh] overflow-y-auto rounded-3xl bg-gradient-to-b from-[#16122c]/98 via-[#0e0b1d]/98 to-[#070510] border border-amber-400/35 shadow-[0_0_60px_rgba(251,191,36,0.2)] p-4 sm:p-6 relative flex flex-col text-amber-50"
       >
         {/* ================= 頂部狀態列 ================= */}
-        <div className="flex items-center justify-between pb-4 border-b border-teal-400/20 mb-5 shrink-0">
+        <div className="flex items-center justify-between pb-3.5 border-b border-amber-400/20 mb-4 shrink-0">
           <div className="flex items-center gap-2">
             <span className="text-xl">🌊</span>
             <div>
-              <h2 className="text-sm sm:text-base font-medium text-white tracking-wider flex items-center gap-1.5">
+              <h2 className="text-sm sm:text-base font-medium text-amber-100 tracking-wider flex items-center gap-1.5">
                 夏威夷零極限 ‧ 清理之門
               </h2>
-              <p className="text-[11px] text-teal-300/80 font-light tracking-wide">
+              <p className="text-[11px] text-amber-200/80 font-light tracking-wide">
                 Hoʻoponopono 和解與清空潛意識殿堂
               </p>
             </div>
@@ -301,7 +305,7 @@ export default function HooponoponoCleansingModal({
 
           <div className="flex items-center gap-2">
             {/* 點數徽章 */}
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-xs font-mono">
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-300 text-xs font-mono">
               <Coins className="w-3.5 h-3.5 text-amber-400" />
               <span>{currentPoints} 點</span>
             </div>
@@ -310,13 +314,13 @@ export default function HooponoponoCleansingModal({
             <button
               type="button"
               onClick={handleToggleAudio}
-              className="p-1.5 rounded-full bg-white/5 hover:bg-white/10 text-teal-200 transition-colors cursor-pointer"
+              className="p-1.5 rounded-full bg-white/5 hover:bg-white/10 text-amber-200 transition-colors cursor-pointer"
               aria-label={isAudioMuted ? '開啟聲音' : '靜音'}
             >
               {isAudioMuted ? (
-                <VolumeX className="w-4 h-4 text-red-300" />
+                <VolumeX className="w-4 h-4 text-rose-300" />
               ) : (
-                <Volume2 className="w-4 h-4 text-teal-300" />
+                <Volume2 className="w-4 h-4 text-amber-300" />
               )}
             </button>
 
@@ -324,7 +328,7 @@ export default function HooponoponoCleansingModal({
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 rounded-full bg-white/5 hover:bg-white/10 text-teal-200 hover:text-white transition-colors cursor-pointer"
+              className="p-1.5 rounded-full bg-white/5 hover:bg-white/10 text-amber-200 hover:text-white transition-colors cursor-pointer"
               aria-label="關閉清理之門"
             >
               <X className="w-4 h-4" />
@@ -455,104 +459,153 @@ export default function HooponoponoCleansingModal({
           </div>
         )}
 
-        {/* ================= 階段二：清理進行中 (cleansing) ================= */}
+        {/* ================= 階段二：清理進行中 (cleansing - 溫暖舒心、絲滑呼吸流動) ================= */}
         {step === 'cleansing' && (
-          <div className="flex flex-col items-center justify-between min-h-[420px] sm:min-h-[460px] py-4 relative">
-            {/* 頂部和解對象與時間倒數 */}
-            <div className="w-full flex items-center justify-between text-xs text-teal-200/80 mb-2">
-              <div className="flex items-center gap-1.5 bg-teal-950/50 px-3 py-1.5 rounded-full border border-teal-500/20">
-                <Heart className="w-3.5 h-3.5 text-pink-400 fill-pink-400/30" />
-                <span>
+          <div className="flex flex-col items-center justify-between min-h-[440px] sm:min-h-[470px] py-2 sm:py-3 relative">
+            {/* 背景溫暖心光柔和光暈 (如溫暖心跳與朝陽微風般緩緩呼吸) */}
+            <motion.div
+              animate={{
+                scale: [1, 1.15, 1],
+                opacity: [0.35, 0.6, 0.35],
+              }}
+              transition={{
+                duration: 5.5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+              className="absolute inset-0 pointer-events-none rounded-3xl blur-3xl transition-all duration-1000"
+              style={{
+                background: currentMantra.glowRadial,
+              }}
+            />
+
+            {/* 頂部和解對象與時間倒數 (溫暖玫瑰金與暖光) */}
+            <div className="w-full flex items-center justify-between text-xs mb-2 z-10">
+              <div className="flex items-center gap-1.5 bg-rose-950/40 px-3.5 py-1.5 rounded-full border border-rose-400/30 text-rose-200">
+                <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400/40 animate-pulse" />
+                <span className="font-light">
                   {cleansingTarget.trim()
                     ? `此刻專注和解：${cleansingTarget}`
                     : '此刻專注和解：內在重播的一切記憶'}
                 </span>
               </div>
 
-              <div className="text-base font-mono font-medium text-white tracking-widest bg-black/40 px-3 py-1 rounded-full border border-teal-400/30">
+              <div className="text-sm font-mono font-medium text-amber-100 tracking-widest bg-black/50 px-3.5 py-1 rounded-full border border-amber-400/30 shadow-inner">
                 {formatTime(timeLeft)}
               </div>
             </div>
 
-            {/* 進度條 */}
-            <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mb-6">
+            {/* 溫暖金粉進度條 */}
+            <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mb-3 z-10">
               <motion.div
-                className="h-full bg-gradient-to-r from-teal-400 via-cyan-300 to-pink-400"
+                className="h-full bg-gradient-to-r from-amber-400 via-rose-300 to-amber-200"
                 style={{ width: `${progressRatio * 100}%` }}
                 transition={{ duration: 0.3 }}
               />
             </div>
 
-            {/* ================= 中央四句神聖真言（單獨放大跳出動畫） ================= */}
-            <div className="w-full flex-1 flex flex-col items-center justify-center text-center my-6 relative min-h-[200px]">
-              {/* 背景神聖光暈擴散動畫 */}
+            {/* 四句箴言心靈引導流動條 (點亮當前句，安心溫暖) */}
+            <div className="w-full flex items-center justify-center gap-1.5 sm:gap-2 my-1 z-10">
+              {MANTRAS.map((m, idx) => {
+                const isCurrent = idx === currentMantraIndex;
+                return (
+                  <div
+                    key={m.phrase}
+                    className={`px-2.5 sm:px-3 py-1 rounded-full transition-all duration-700 flex items-center gap-1 text-[11px] sm:text-xs select-none ${
+                      isCurrent
+                        ? 'bg-amber-400/25 border border-amber-300/80 text-white font-semibold shadow-[0_0_12px_rgba(251,191,36,0.45)] scale-105'
+                        : 'bg-white/5 border border-white/10 text-amber-100/40 font-light'
+                    }`}
+                  >
+                    {isCurrent && <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse" />}
+                    <span>{m.phrase}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* ================= 中央四句神聖箴言（極致絲滑・如呼吸般溫暖起伏） ================= */}
+            <div className="w-full flex-1 flex flex-col items-center justify-center text-center my-4 relative min-h-[220px] z-10">
+              {/* 核心柔和暖陽光暈 */}
               <motion.div
-                key={`halo-${currentMantraIndex}`}
-                initial={{ scale: 0.5, opacity: 0.8 }}
-                animate={{ scale: 2.2, opacity: 0 }}
-                transition={{ duration: 4.5, ease: 'easeOut' }}
-                className="absolute w-44 h-44 rounded-full pointer-events-none"
+                animate={{
+                  scale: [1, 1.08, 1],
+                  opacity: [0.55, 0.85, 0.55],
+                }}
+                transition={{
+                  duration: 5.5,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+                className="absolute w-52 h-52 sm:w-64 sm:h-64 rounded-full pointer-events-none blur-2xl"
                 style={{
-                  background: `radial-gradient(circle, ${currentMantra.glowColor} 0%, rgba(0,0,0,0) 70%)`,
+                  background: currentMantra.glowRadial,
                 }}
               />
 
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentMantra.phrase}
-                  initial={{ scale: 0.65, opacity: 0, y: 15 }}
-                  animate={{ scale: [0.65, 1.15, 1], opacity: 1, y: 0 }}
-                  exit={{ scale: 1.25, opacity: 0, filter: 'blur(8px)' }}
+                  initial={{ opacity: 0, y: 10, filter: 'blur(6px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -10, filter: 'blur(6px)' }}
                   transition={{
-                    duration: 0.85,
-                    times: [0, 0.45, 1],
-                    ease: [0.16, 1, 0.3, 1],
+                    duration: 1.2,
+                    ease: [0.25, 0.1, 0.25, 1],
                   }}
-                  className="flex flex-col items-center justify-center z-10"
+                  className="flex flex-col items-center justify-center z-10 max-w-md px-3"
                 >
                   {/* 夏威夷聖名 */}
-                  <span className="text-xs sm:text-sm text-teal-300/80 font-mono tracking-[0.25em] uppercase mb-2">
+                  <span className="text-[11.5px] sm:text-xs text-amber-200/90 font-mono tracking-[0.25em] uppercase mb-1 drop-shadow-sm select-none">
                     ✦ {currentMantra.hawaiian} ✦
                   </span>
 
-                  {/* 核心真言：單獨放大跳出，極具神聖張力 */}
-                  <h1
-                    className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-extralight text-white tracking-[0.2em] sm:tracking-[0.25em] whitespace-nowrap select-none my-2"
-                    style={{
-                      filter: `drop-shadow(0 0 16px ${currentMantra.glowColor}) drop-shadow(0 0 35px rgba(255,255,255,0.7))`,
+                  {/* 核心箴言：超大溫暖字體，隨呼吸微幅緩慢起伏，零跳動零刺激 */}
+                  <motion.h1
+                    animate={{
+                      scale: [1, 1.025, 1],
                     }}
+                    transition={{
+                      duration: 5.5,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                    className="text-5xl xs:text-6xl sm:text-7xl font-light text-amber-50 tracking-[0.2em] sm:tracking-[0.25em] whitespace-nowrap select-none my-2.5 drop-shadow-[0_0_25px_rgba(251,191,36,0.45)]"
                   >
                     {currentMantra.phrase}
-                  </h1>
+                  </motion.h1>
 
-                  {/* 心法釋義 */}
-                  <p className="text-xs sm:text-sm text-teal-100/90 font-light max-w-sm mt-3 px-4 leading-relaxed">
+                  {/* 心法釋義導引語 */}
+                  <p className="text-xs sm:text-[13.5px] text-amber-100 font-normal leading-relaxed max-w-sm mt-2 px-2 drop-shadow-sm">
                     {currentMantra.meaning}
                   </p>
+                  <span className="text-[11px] sm:text-xs text-amber-300 font-medium mt-1.5 tracking-wide">
+                    {currentMantra.guide}
+                  </span>
                 </motion.div>
               </AnimatePresence>
             </div>
 
             {/* 下方靈性低語引導 */}
-            <div className="w-full text-center mb-6">
+            <div className="w-full text-center mb-4 z-10">
               <motion.p
-                animate={{ opacity: [0.75, 1, 0.75] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="text-xs text-amber-200/90 font-light tracking-wider"
+                animate={{ opacity: [0.8, 1, 0.8] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                className="text-xs sm:text-[12.5px] text-amber-200/95 font-light tracking-wider"
               >
-                ✦ 請跟著出聲朗讀，或在心裡溫柔默念，將神聖之愛送給這段緣分 ✦
+                ✦ 請在心中溫柔默念，將這份純淨之光送給需要和解的人事物 ✦
               </motion.p>
-              <p className="text-[10.5px] text-teal-300/60 font-mono mt-1">
-                432Hz ~ 639Hz Solfeggio 和解音頻同步調頻中
+              <p className="text-[10px] sm:text-[11px] text-amber-200/60 font-mono mt-1">
+                Solfeggio 聖音和解頻率溫潤調頻中
               </p>
             </div>
 
             {/* 底部控制欄 */}
-            <div className="w-full flex items-center justify-center gap-3">
+            <div className="w-full flex items-center justify-center gap-3 z-10">
               <button
                 type="button"
                 onClick={() => setIsPaused(!isPaused)}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-xs text-teal-100 border border-white/10 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-xs text-amber-100 border border-white/15 transition-all cursor-pointer shadow-sm"
               >
                 {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
                 <span>{isPaused ? '繼續清理' : '暫停'}</span>
@@ -561,9 +614,9 @@ export default function HooponoponoCleansingModal({
               <button
                 type="button"
                 onClick={handleCompleteCleansing}
-                className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-teal-500/20 hover:bg-teal-500/30 text-xs text-teal-200 border border-teal-400/40 transition-all cursor-pointer shadow-[0_0_12px_rgba(20,184,166,0.3)]"
+                className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-xs text-amber-200 border border-amber-400/40 transition-all cursor-pointer shadow-[0_0_12px_rgba(251,191,36,0.3)]"
               >
-                <CheckCircle2 className="w-3.5 h-3.5 text-teal-300" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-amber-300" />
                 <span>提早完成清理</span>
               </button>
             </div>
