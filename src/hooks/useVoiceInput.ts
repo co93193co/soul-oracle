@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { sound } from '@/lib/sound';
 
 export interface UseVoiceInputOptions {
   /**
@@ -27,12 +26,21 @@ export function useVoiceInput(
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showUnsupportedModal, setShowUnsupportedModal] = useState(false);
 
+  const isListeningRef = useRef(false);
   const recognitionRef = useRef<any>(null);
   const baseTextRef = useRef<string>('');
   const sessionFinalsRef = useRef<string>('');
 
-  // 偵測瀏覽器支援度
+  const getCurrentTextRef = useRef(getCurrentText);
+  getCurrentTextRef.current = getCurrentText;
+  const onTextChangeRef = useRef(onTextChange);
+  onTextChangeRef.current = onTextChange;
+  const onSegmentRef = useRef(onSegment);
+  onSegmentRef.current = onSegment;
+
+  // 偵測環境支援度
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const hasSupport = !!(
@@ -44,23 +52,20 @@ export function useVoiceInput(
 
   // 停止辨識
   const stopListening = useCallback(() => {
+    isListeningRef.current = false;
+    setIsListening(false);
+
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
       } catch {
-        // 忽略已停止的錯誤
+        // 容錯
       }
       recognitionRef.current = null;
     }
-    setIsListening(false);
-    try {
-      sound.playSparkle();
-    } catch {
-      // 容錯防禦
-    }
   }, []);
 
-  // 開始辨識
+  // 開始辨識（同步啟動，避免 Safari 使用者手勢超時失效）
   const startListening = useCallback(() => {
     setErrorMessage(null);
 
@@ -71,33 +76,44 @@ export function useVoiceInput(
 
     if (!SpeechRecognitionClass) {
       setIsSupported(false);
-      setErrorMessage('您的瀏覽器目前未開啟語音辨識功能，建議使用 Google Chrome 或 Safari 瀏覽器。');
+      setShowUnsupportedModal(true);
       return;
     }
 
-    // 記錄開始聆聽前原本已有的文字
-    const current = getCurrentText();
+    // 判斷是否為 iOS Safari / WebKit 環境
+    const isIOS =
+      typeof navigator !== 'undefined' &&
+      /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    // 取得開始前的文字
+    const current = getCurrentTextRef.current ? getCurrentTextRef.current() : '';
     baseTextRef.current = current ? current.trim() : '';
     sessionFinalsRef.current = '';
 
+    // 立即更新狀態，給使用者最迅速的介面響應
+    isListeningRef.current = true;
+    setIsListening(true);
+
     try {
       if (recognitionRef.current) {
-        recognitionRef.current.abort();
+        try {
+          recognitionRef.current.abort();
+        } catch {
+          // 容錯
+        }
+        recognitionRef.current = null;
       }
 
       const recognition = new SpeechRecognitionClass();
-      recognition.continuous = true;
+      // 在 iOS Safari 上，continuous 設為 true 會導致 WebKit 引擎中斷或報錯，因此採單句自動循環重啟
+      recognition.continuous = !isIOS;
       recognition.interimResults = true;
       recognition.lang = lang;
       recognition.maxAlternatives = 1;
 
       recognition.onstart = () => {
+        isListeningRef.current = true;
         setIsListening(true);
-        try {
-          sound.playSparkle();
-        } catch {
-          // 容錯
-        }
       };
 
       recognition.onresult = (event: any) => {
@@ -116,8 +132,8 @@ export function useVoiceInput(
 
         if (currentFinals) {
           sessionFinalsRef.current += (sessionFinalsRef.current ? ' ' : '') + currentFinals.trim();
-          if (onSegment) {
-            onSegment(currentFinals.trim());
+          if (onSegmentRef.current) {
+            onSegmentRef.current(currentFinals.trim());
           }
         }
 
@@ -126,7 +142,7 @@ export function useVoiceInput(
           (interimTranscript ? (sessionFinalsRef.current ? ' ' : '') + interimTranscript.trim() : '')
         ).trim();
 
-        if (activeVoiceText && onTextChange) {
+        if (activeVoiceText && onTextChangeRef.current) {
           const base = baseTextRef.current;
           let combined = '';
           if (base) {
@@ -136,50 +152,65 @@ export function useVoiceInput(
           } else {
             combined = activeVoiceText;
           }
-          onTextChange(combined);
+          onTextChangeRef.current(combined);
         }
       };
 
       recognition.onerror = (event: any) => {
-        console.warn('Speech recognition event:', event.error);
+        console.warn('SpeechRecognition error:', event.error);
         if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-          setErrorMessage('請點擊網址列麥克風圖示「允許麥克風權限」以使用語音打字。');
-          stopListening();
+          isListeningRef.current = false;
+          setIsListening(false);
+          setErrorMessage('請點擊網址列麥克風圖示「允許麥克風權限」；若使用 iPhone，請至手機「設定 > 一般 > 鍵盤」開啟「聽寫功能」。');
         } else if (event.error === 'no-speech') {
-          // 靜音無語音，保持繼續聆聽
+          // 靜音無語音，不中斷，等待使用者開口
         } else if (event.error === 'network') {
-          setErrorMessage('語音辨識網路訊號不穩，請稍候再試。');
+          setErrorMessage('語音辨識網路訊號不穩，請確認網路連線後再試。');
           stopListening();
-        } else {
-          // 其他錯誤平穩處理
+        } else if (event.error === 'audio-capture') {
+          setErrorMessage('未偵測到可用麥克風設備，請確認裝置麥克風已連接。');
+          stopListening();
         }
       };
 
       recognition.onend = () => {
-        setIsListening(false);
+        // 如果使用者尚未手動點擊停止（例如在 iOS 單句結束或短暫停頓），自動無縫重啟以支援連續說話
+        if (isListeningRef.current) {
+          try {
+            recognition.start();
+          } catch {
+            // 若瀏覽器安全限制停止重啟，則平順結束
+            isListeningRef.current = false;
+            setIsListening(false);
+          }
+        } else {
+          setIsListening(false);
+        }
       };
 
       recognitionRef.current = recognition;
       recognition.start();
     } catch (err: any) {
       console.warn('Failed to start speech recognition:', err);
-      setErrorMessage('無法啟動麥克風，請確認瀏覽器支援與權限設定。');
+      isListeningRef.current = false;
       setIsListening(false);
+      setErrorMessage('無法啟動麥克風，請確認瀏覽器支援與麥克風權限設定。');
     }
-  }, [getCurrentText, lang, onSegment, onTextChange, stopListening]);
+  }, [lang, stopListening]);
 
   // 切換開關
   const toggleListening = useCallback(() => {
-    if (isListening) {
+    if (isListeningRef.current) {
       stopListening();
     } else {
       startListening();
     }
-  }, [isListening, startListening, stopListening]);
+  }, [startListening, stopListening]);
 
   // 清除資源
   useEffect(() => {
     return () => {
+      isListeningRef.current = false;
       if (recognitionRef.current) {
         try {
           recognitionRef.current.abort();
@@ -194,6 +225,8 @@ export function useVoiceInput(
     isListening,
     isSupported,
     errorMessage,
+    showUnsupportedModal,
+    setShowUnsupportedModal,
     startListening,
     stopListening,
     toggleListening,
