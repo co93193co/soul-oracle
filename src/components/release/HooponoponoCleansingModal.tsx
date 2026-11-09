@@ -12,18 +12,11 @@ import {
   RotateCcw,
   CheckCircle2,
   Heart,
-  ShieldCheck,
   Clock,
-  Coins,
-  AlertCircle,
-  HelpCircle,
-  ChevronDown,
-  ChevronUp,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import SmilingCosmicOrb from '@/components/shared/SmilingCosmicOrb';
 import { sound } from '@/lib/sound';
-import { localStore } from '@/lib/storage';
 
 interface HooponoponoCleansingModalProps {
   isOpen: boolean;
@@ -31,38 +24,38 @@ interface HooponoponoCleansingModalProps {
   onPointsUpdated?: (newPoints: number) => void;
 }
 
-// 4 種時長與點數設定 (依照規定：1分免費、3分扣1點、5分扣3點、10分扣5點)
+// 4 種時長設定（夏威夷零極限 ‧ 全程免費體驗）
 const DURATION_OPTIONS = [
   {
     minutes: 1,
     seconds: 60,
     cost: 0,
     label: '1 分鐘',
-    tag: '快速調頻 ‧ 免費體驗',
+    tag: '快速調頻 ‧ 隨時釋放',
     description: '輕柔撫平當下浮動思緒，快速回歸平靜中心',
   },
   {
     minutes: 3,
     seconds: 180,
-    cost: 1,
+    cost: 0,
     label: '3 分鐘',
-    tag: '深度放手 ‧ 扣 1 點',
+    tag: '深度放手 ‧ 融化執著',
     description: '深入潛意識底層，融化日常糾結與緊繃執著',
   },
   {
     minutes: 5,
     seconds: 300,
-    cost: 3,
+    cost: 0,
     label: '5 分鐘',
-    tag: '靈魂洗滌 ‧ 扣 3 點',
+    tag: '靈魂洗滌 ‧ 喚醒神性',
     description: '全面清理生生世世的重播記憶，喚醒內在神聖光芒',
   },
   {
     minutes: 10,
     seconds: 600,
-    cost: 5,
+    cost: 0,
     label: '10 分鐘',
-    tag: '極限歸零 ‧ 扣 5 點',
+    tag: '極限歸零 ‧ 和解圓滿',
     description: '極致深度和解，與人事物全然和好，體驗無上和平',
   },
 ];
@@ -120,16 +113,10 @@ const QUICK_TARGETS = [
 export default function HooponoponoCleansingModal({
   isOpen,
   onClose,
-  onPointsUpdated,
 }: HooponoponoCleansingModalProps) {
   const [step, setStep] = useState<'intro' | 'cleansing' | 'completed'>('intro');
   const [selectedDuration, setSelectedDuration] = useState(DURATION_OPTIONS[0]);
   const [cleansingTarget, setCleansingTarget] = useState('');
-  const [showMethodDetails, setShowMethodDetails] = useState(false);
-
-  // 點數與狀態
-  const [currentPoints, setCurrentPoints] = useState(365);
-  const [insufficientPointsNotice, setInsufficientPointsNotice] = useState(false);
 
   // 清理計時與真言輪播
   const [timeLeft, setTimeLeft] = useState(selectedDuration.seconds);
@@ -140,17 +127,14 @@ export default function HooponoponoCleansingModal({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const mantraTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 初始化點數與重設
+  // 初始化重設
   useEffect(() => {
     if (isOpen) {
-      const p = localStore.getPoints();
-      setCurrentPoints(p);
       setStep('intro');
       setSelectedDuration(DURATION_OPTIONS[0]);
       setTimeLeft(DURATION_OPTIONS[0].seconds);
       setIsPaused(false);
       setCurrentMantraIndex(0);
-      setInsufficientPointsNotice(false);
       setIsAudioMuted(sound.isMuted);
     } else {
       if (timerRef.current) clearInterval(timerRef.current);
@@ -163,30 +147,11 @@ export default function HooponoponoCleansingModal({
     sound.playSparkle();
     setSelectedDuration(opt);
     setTimeLeft(opt.seconds);
-    setInsufficientPointsNotice(false);
   };
 
-  // 開始清理體驗
+  // 開始清理體驗（100% 免費體驗，直接開啟）
   const handleStartCleansing = () => {
-    const cost = selectedDuration.cost;
-
-    // 檢查點數
-    if (cost > 0) {
-      const hasEnough = localStore.getPoints() >= cost;
-      if (!hasEnough) {
-        setInsufficientPointsNotice(true);
-        sound.playSparkle();
-        return;
-      }
-      // 扣除點數
-      const success = localStore.deductPoints(cost);
-      if (success) {
-        const remaining = localStore.getPoints();
-        setCurrentPoints(remaining);
-        if (onPointsUpdated) onPointsUpdated(remaining);
-      }
-    }
-
+    sound.playSparkle();
     setStep('cleansing');
     setTimeLeft(selectedDuration.seconds);
     setIsPaused(false);
@@ -304,10 +269,10 @@ export default function HooponoponoCleansingModal({
           </div>
 
           <div className="flex items-center gap-2">
-            {/* 點數徽章 */}
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-300 text-xs font-mono">
-              <Coins className="w-3.5 h-3.5 text-amber-400" />
-              <span>{currentPoints} 點</span>
+            {/* 全程免費徽章 */}
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/35 text-emerald-300 text-xs font-medium">
+              <Heart className="w-3.5 h-3.5 text-emerald-300 fill-emerald-300/30" />
+              <span>全程免費</span>
             </div>
 
             {/* 靜音切換 */}
@@ -336,14 +301,48 @@ export default function HooponoponoCleansingModal({
           </div>
         </div>
 
-        {/* ================= 階段一：介紹與時長設定 (intro - 精簡單頁，免滾動) ================= */}
+        {/* ================= 階段一：介紹與時長設定 (intro - 完整夏威夷心法與和解準備) ================= */}
         {step === 'intro' && (
           <div className="flex flex-col gap-3.5 sm:gap-4">
+            {/* 夏威夷零極限和解智慧說明卡片（點入才看的到的智慧說明） */}
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-teal-900/20 to-purple-950/25 border border-amber-400/30 shadow-md text-left">
+              <div className="flex items-center gap-2 text-amber-300 font-semibold text-xs sm:text-[13px] mb-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+                <span>夏威夷零極限和解智慧（Hoʻoponopono）</span>
+                <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 font-normal">
+                  純粹奉獻 ‧ 全程免費
+                </span>
+              </div>
+              <p className="text-[11.5px] sm:text-xs text-amber-100/90 leading-relaxed font-light mb-2.5">
+                外在所感知的一切紛擾、糾結與人事，本質皆是潛意識深處的「重播記憶」。
+                當我們由內在為自己所體驗的一切負起 <span className="text-amber-300 font-semibold">100% 全然責任</span>，
+                在心中默念四句神聖真言，以無條件純粹之愛將重播記憶徹底洗滌歸零，回歸神聖的平靜：
+              </p>
+              <div className="grid grid-cols-4 gap-1.5 sm:gap-2 text-center">
+                <div className="py-1.5 px-1 rounded-xl bg-amber-500/15 border border-amber-400/30 text-amber-200">
+                  <div className="text-xs sm:text-[13px] font-bold text-amber-100">對不起</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-amber-300/80 mt-0.5 font-light">承擔記憶</div>
+                </div>
+                <div className="py-1.5 px-1 rounded-xl bg-rose-500/15 border border-rose-400/30 text-rose-200">
+                  <div className="text-xs sm:text-[13px] font-bold text-rose-100">請原諒我</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-rose-300/80 mt-0.5 font-light">祈求寬恕</div>
+                </div>
+                <div className="py-1.5 px-1 rounded-xl bg-orange-500/15 border border-orange-400/30 text-orange-200">
+                  <div className="text-xs sm:text-[13px] font-bold text-orange-100">謝謝你</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-orange-300/80 mt-0.5 font-light">感恩照見</div>
+                </div>
+                <div className="py-1.5 px-1 rounded-xl bg-pink-500/15 border border-pink-400/30 text-pink-200">
+                  <div className="text-xs sm:text-[13px] font-bold text-pink-100">我愛你</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-pink-300/80 mt-0.5 font-light">大愛歸零</div>
+                </div>
+              </div>
+            </div>
+
             {/* 和解對象設定（選填） */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs text-teal-200 font-medium flex items-center justify-between">
-                <span>此刻想與誰、或哪件事和解清理？（選填）</span>
-                <span className="text-[10.5px] text-teal-400/80 font-light">集中意念效果更佳</span>
+              <label className="text-xs text-amber-200 font-medium flex items-center justify-between">
+                <span>想著和解的那個人、那件事（選填）：</span>
+                <span className="text-[10.5px] text-amber-300/70 font-light">集中意念效果更佳</span>
               </label>
 
               {/* 快捷點選 */}
@@ -358,8 +357,8 @@ export default function HooponoponoCleansingModal({
                     }}
                     className={`text-[11px] py-1 px-2.5 rounded-full border transition-all cursor-pointer ${
                       cleansingTarget === t
-                        ? 'bg-teal-500/30 border-teal-300 text-white font-medium shadow-[0_0_10px_rgba(45,212,191,0.4)]'
-                        : 'bg-white/5 border-white/10 text-teal-200/80 hover:bg-white/10 hover:text-white'
+                        ? 'bg-amber-500/30 border-amber-300 text-white font-medium shadow-[0_0_10px_rgba(251,191,36,0.35)]'
+                        : 'bg-white/5 border-white/10 text-amber-200/80 hover:bg-white/10 hover:text-white'
                     }`}
                   >
                     {t}
@@ -372,25 +371,25 @@ export default function HooponoponoCleansingModal({
                 type="text"
                 value={cleansingTarget}
                 onChange={(e) => setCleansingTarget(e.target.value)}
-                placeholder="例如：內在苛責的自己、父親、前任、工作專案的無力感..."
+                placeholder="例如：內在苛責的自己、父親、伴侶、主管、某次挫折遺憾..."
                 maxLength={40}
-                className="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-teal-500/30 text-amber-50 placeholder-teal-300/35 text-xs sm:text-sm focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400/50"
+                className="w-full px-3.5 py-2 rounded-xl bg-black/40 border border-amber-500/30 text-amber-50 placeholder-amber-300/30 text-xs sm:text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50"
               />
             </div>
 
-            {/* 清理時長與扣點方案選擇 */}
+            {/* 清理時長選擇（全程免費） */}
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-xs text-teal-200 font-medium flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-teal-300" />
+                <label className="text-xs text-amber-200 font-medium flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-amber-300" />
                   <span>選擇和解清理時長：</span>
                 </label>
-                <span className="text-[10.5px] text-amber-300 font-mono">
-                  1分免費 ‧ 3分1點 ‧ 5分3點 ‧ 10分5點
+                <span className="text-[10.5px] text-emerald-300 font-mono">
+                  ✦ 100% 免費 ‧ 隨時隨地清理 ✦
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {DURATION_OPTIONS.map((opt) => {
                   const isSelected = selectedDuration.minutes === opt.minutes;
                   return (
@@ -398,27 +397,17 @@ export default function HooponoponoCleansingModal({
                       key={opt.minutes}
                       type="button"
                       onClick={() => handleSelectOption(opt)}
-                      className={`p-2.5 sm:p-3 rounded-2xl border text-left transition-all relative flex flex-col justify-between cursor-pointer ${
+                      className={`p-2.5 rounded-2xl border text-center transition-all relative flex flex-col items-center justify-between cursor-pointer ${
                         isSelected
-                          ? 'bg-gradient-to-br from-teal-500/25 via-cyan-500/20 to-teal-900/40 border-teal-300 shadow-[0_0_15px_rgba(20,184,166,0.35)] scale-[1.02]'
-                          : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-teal-500/30 text-teal-100/80'
+                          ? 'bg-gradient-to-br from-amber-500/25 via-rose-500/20 to-amber-900/40 border-amber-300 shadow-[0_0_15px_rgba(251,191,36,0.35)] scale-[1.02]'
+                          : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-amber-500/30 text-amber-100/80'
                       }`}
                     >
-                      <div className="flex items-center justify-between w-full mb-0.5">
-                        <span className="text-xs sm:text-sm font-semibold text-white">{opt.label}</span>
-                        <span
-                          className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-medium ${
-                            opt.cost === 0
-                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30'
-                              : isSelected
-                              ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40'
-                              : 'bg-white/10 text-amber-200/80'
-                          }`}
-                        >
-                          {opt.cost === 0 ? '免費 0 點' : `扣 ${opt.cost} 點`}
-                        </span>
-                      </div>
-                      <p className="text-[9.5px] sm:text-[10px] text-teal-200/70 font-light leading-tight line-clamp-1">
+                      <span className="text-xs sm:text-sm font-semibold text-white">{opt.label}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full font-mono font-medium mt-1 bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                        免費
+                      </span>
+                      <p className="text-[9.5px] text-amber-200/70 font-light mt-1 line-clamp-1">
                         {opt.tag}
                       </p>
                     </button>
@@ -427,34 +416,16 @@ export default function HooponoponoCleansingModal({
               </div>
             </div>
 
-            {/* 點數不足警告 */}
-            {insufficientPointsNotice && (
-              <motion.div
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-2.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs flex items-center gap-2"
-              >
-                <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>
-                  星心點數不足（目前 {currentPoints} 點，需 {selectedDuration.cost} 點）。
-                  您可以選擇 1 分鐘免費體驗，或前往「02 靜心之門」呼吸集點。
-                </span>
-              </motion.div>
-            )}
-
-            {/* 進入清理殿堂按鈕 */}
+            {/* 最底下鏈接按鈕：準備開啟清理之門 */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               type="button"
               onClick={handleStartCleansing}
-              className="w-full py-3 sm:py-3.5 rounded-xl flex items-center justify-center gap-2 font-medium tracking-wider text-xs sm:text-sm text-white bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-600 hover:from-teal-400 hover:via-cyan-400 hover:to-teal-500 shadow-[0_0_20px_rgba(20,184,166,0.45)] border border-teal-300/40 cursor-pointer transition-all mt-1"
+              className="w-full py-3 sm:py-3.5 rounded-2xl flex items-center justify-center gap-2 font-medium tracking-wider text-xs sm:text-sm text-white bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 hover:from-amber-400 hover:via-rose-400 hover:to-amber-500 shadow-[0_0_22px_rgba(251,191,36,0.38)] border border-amber-300/45 cursor-pointer transition-all mt-1"
             >
-              <Sparkles className="w-4 h-4 text-white animate-pulse" />
-              <span>
-                開啟清理之門 ‧ 進入和解真言冥想
-                {selectedDuration.cost > 0 ? `（扣 ${selectedDuration.cost} 點）` : '（免費）'}
-              </span>
+              <Sparkles className="w-4 h-4 text-amber-100 animate-pulse" />
+              <span className="font-semibold text-sm sm:text-base">準備開啟清理之門 ➔</span>
             </motion.button>
           </div>
         )}
@@ -479,19 +450,22 @@ export default function HooponoponoCleansingModal({
               }}
             />
 
-            {/* 頂部和解對象與時間倒數 (溫暖玫瑰金與暖光) */}
-            <div className="w-full flex items-center justify-between text-xs mb-2 z-10">
-              <div className="flex items-center gap-1.5 bg-rose-950/40 px-3.5 py-1.5 rounded-full border border-rose-400/30 text-rose-200">
-                <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400/40 animate-pulse" />
-                <span className="font-light">
+            {/* 頂部和解引導：想著和解的那個人、那件事，開始念著... */}
+            <div className="w-full flex flex-col items-center justify-center text-center mb-2 z-10 px-2">
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/25 via-rose-500/25 to-amber-500/25 border border-amber-300/50 text-amber-100 shadow-[0_0_20px_rgba(251,191,36,0.25)]"
+              >
+                <Heart className="w-4 h-4 text-rose-300 fill-rose-300/40 animate-pulse shrink-0" />
+                <span className="text-xs sm:text-sm font-medium tracking-wide">
                   {cleansingTarget.trim()
-                    ? `此刻專注和解：${cleansingTarget}`
-                    : '此刻專注和解：內在重播的一切記憶'}
+                    ? `想著要和解的【${cleansingTarget.trim()}】，開始念著...`
+                    : '想著和解的那個人、那件事，開始念著...'}
                 </span>
-              </div>
-
-              <div className="text-sm font-mono font-medium text-amber-100 tracking-widest bg-black/50 px-3.5 py-1 rounded-full border border-amber-400/30 shadow-inner">
-                {formatTime(timeLeft)}
+              </motion.div>
+              <div className="text-[11px] text-amber-200/70 font-mono mt-1 flex items-center gap-2">
+                <span>剩餘時間：{formatTime(timeLeft)}</span>
               </div>
             </div>
 
